@@ -12,7 +12,7 @@ namespace _5thSemesterProject.Controllers
 {
     public class EmployeesController : Controller
     {
-        private DB5thSemesterEntities db = new DB5thSemesterEntities();
+        private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
 
         // GET: Employees
         public ActionResult Index()
@@ -48,7 +48,7 @@ namespace _5thSemesterProject.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "employee_id,cpr,Firstname,Lastname,position_id,special_agreement_id")] Employee employee)
+        public ActionResult Create([Bind(Include = "employee_id,cpr,firstname,lastname,position_id,special_agreement_id,initials,password")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -82,7 +82,7 @@ namespace _5thSemesterProject.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "employee_id,cpr,Firstname,Lastname,position_id,special_agreement_id")] Employee employee)
+        public ActionResult Edit([Bind(Include = "employee_id,cpr,firstname,lastname,position_id,special_agreement_id,initials,password")] Employee employee)
         {
             if (ModelState.IsValid)
             {
