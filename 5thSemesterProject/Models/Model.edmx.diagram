@@ -14,6 +14,8 @@
         <AssociationConnector Association="DB5thSemesterModel.FK_Employee_SpecialAgreement" ManuallyRouted="false" />
         <AssociationConnector Association="DB5thSemesterModel.FK_Schedule_Employee" ManuallyRouted="false" />
         <AssociationConnector Association="DB5thSemesterModel.FK_Schedule_Shift" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DB5thSemesterModel.Log" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DB5thSemesterModel.Message" Width="1.5" PointX="7.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
