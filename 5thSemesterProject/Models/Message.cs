@@ -15,22 +15,18 @@ namespace _5thSemesterProject.Models
 using System;
     using System.Collections.Generic;
     
-public partial class Schedule
+public partial class Message
 {
 
-    public int schedule_id { get; set; }
+    public int message_id { get; set; }
 
-    public int employee_id { get; set; }
+    public string sender { get; set; }
 
-    public int shift_id { get; set; }
+    public string reciever { get; set; }
+
+    public int reciever_id { get; set; }
 
     public System.DateTime date { get; set; }
-
-
-
-    public virtual Employee Employee { get; set; }
-
-    public virtual Shift Shift { get; set; }
 
 }
 
