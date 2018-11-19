@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DB5thSemesterModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="employee_id" />
+    </Key>
+    <Property Name="employee_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cpr" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="Firstname" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Lastname" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="position_id" Type="Int32" Nullable="false" />
+    <Property Name="special_agreement_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Position" Relationship="Self.FK_Employee_Position" FromRole="Employee" ToRole="Position" />
+    <NavigationProperty Name="SpecialAgreement" Relationship="Self.FK_Employee_SpecialAgreement" FromRole="Employee" ToRole="SpecialAgreement" />
+    <NavigationProperty Name="Schedule" Relationship="Self.FK_Schedule_Employee" FromRole="Employee" ToRole="Schedule" />
+  </EntityType>
+  <EntityType Name="Position">
+    <Key>
+      <PropertyRef Name="position_id" />
+    </Key>
+    <Property Name="position_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_Employee_Position" FromRole="Position" ToRole="Employee" />
+  </EntityType>
+  <EntityType Name="Schedule">
+    <Key>
+      <PropertyRef Name="schedule_id" />
+    </Key>
+    <Property Name="schedule_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="employee_id" Type="Int32" Nullable="false" />
+    <Property Name="shift_id" Type="Int32" Nullable="false" />
+    <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_Schedule_Employee" FromRole="Schedule" ToRole="Employee" />
+    <NavigationProperty Name="Shift" Relationship="Self.FK_Schedule_Shift" FromRole="Schedule" ToRole="Shift" />
+  </EntityType>
+  <EntityType Name="Shift">
+    <Key>
+      <PropertyRef Name="shift_id" />
+    </Key>
+    <Property Name="shift_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="start_time" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="end_time" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Schedule" Relationship="Self.FK_Schedule_Shift" FromRole="Shift" ToRole="Schedule" />
+  </EntityType>
+  <EntityType Name="SpecialAgreement">
+    <Key>
+      <PropertyRef Name="special_agreement_id" />
+    </Key>
+    <Property Name="special_agreement_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="is_work_allowed_mon" Type="Int32" Nullable="false" />
+    <Property Name="is_work_allowed_tue" Type="Int32" Nullable="false" />
+    <Property Name="is_work_allowed_wed" Type="Int32" Nullable="false" />
+    <Property Name="is_work_allowed_thu" Type="Int32" Nullable="false" />
+    <Property Name="is_work_allowed_fri" Type="Int32" Nullable="false" />
+    <Property Name="is_work_allowed_sat" Type="Int32" Nullable="false" />
+    <Property Name="is_work_allowed_sun" Type="Int32" Nullable="false" />
+    <Property Name="employee_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_Employee_SpecialAgreement" FromRole="SpecialAgreement" ToRole="Employee" />
+  </EntityType>
+  <Association Name="FK_Employee_Position">
+    <End Role="Position" Type="Self.Position" Multiplicity="1" />
+    <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Position">
+        <PropertyRef Name="position_id" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="position_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_SpecialAgreement">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="SpecialAgreement" Type="Self.SpecialAgreement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="employee_id" />
+      </Principal>
+      <Dependent Role="SpecialAgreement">
+        <PropertyRef Name="employee_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Schedule_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="employee_id" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="employee_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Schedule_Shift">
+    <End Role="Shift" Type="Self.Shift" Multiplicity="1" />
+    <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Shift">
+        <PropertyRef Name="shift_id" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="shift_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DB5thSemesterEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Employee" EntityType="Self.Employee" />
+    <EntitySet Name="Position" EntityType="Self.Position" />
+    <EntitySet Name="Schedule" EntityType="Self.Schedule" />
+    <EntitySet Name="Shift" EntityType="Self.Shift" />
+    <EntitySet Name="SpecialAgreement" EntityType="Self.SpecialAgreement" />
+    <AssociationSet Name="FK_Employee_Position" Association="Self.FK_Employee_Position">
+      <End Role="Position" EntitySet="Position" />
+      <End Role="Employee" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_SpecialAgreement" Association="Self.FK_Employee_SpecialAgreement">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="SpecialAgreement" EntitySet="SpecialAgreement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Schedule_Employee" Association="Self.FK_Schedule_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Schedule" EntitySet="Schedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Schedule_Shift" Association="Self.FK_Schedule_Shift">
+      <End Role="Shift" EntitySet="Shift" />
+      <End Role="Schedule" EntitySet="Schedule" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

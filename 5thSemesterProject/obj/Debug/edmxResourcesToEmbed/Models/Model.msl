@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DB5thSemesterModelStoreContainer" CdmEntityContainer="DB5thSemesterEntities">
+    <EntitySetMapping Name="Employee">
+      <EntityTypeMapping TypeName="DB5thSemesterModel.Employee">
+        <MappingFragment StoreEntitySet="Employee">
+          <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+          <ScalarProperty Name="cpr" ColumnName="cpr" />
+          <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+          <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+          <ScalarProperty Name="position_id" ColumnName="position_id" />
+          <ScalarProperty Name="special_agreement_id" ColumnName="special_agreement_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Position">
+      <EntityTypeMapping TypeName="DB5thSemesterModel.Position">
+        <MappingFragment StoreEntitySet="Position">
+          <ScalarProperty Name="position_id" ColumnName="position_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Schedule">
+      <EntityTypeMapping TypeName="DB5thSemesterModel.Schedule">
+        <MappingFragment StoreEntitySet="Schedule">
+          <ScalarProperty Name="schedule_id" ColumnName="schedule_id" />
+          <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+          <ScalarProperty Name="shift_id" ColumnName="shift_id" />
+          <ScalarProperty Name="date" ColumnName="date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Shift">
+      <EntityTypeMapping TypeName="DB5thSemesterModel.Shift">
+        <MappingFragment StoreEntitySet="Shift">
+          <ScalarProperty Name="shift_id" ColumnName="shift_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="start_time" ColumnName="start_time" />
+          <ScalarProperty Name="end_time" ColumnName="end_time" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SpecialAgreement">
+      <EntityTypeMapping TypeName="DB5thSemesterModel.SpecialAgreement">
+        <MappingFragment StoreEntitySet="SpecialAgreement">
+          <ScalarProperty Name="special_agreement_id" ColumnName="special_agreement_id" />
+          <ScalarProperty Name="is_work_allowed_mon" ColumnName="is_work_allowed_mon" />
+          <ScalarProperty Name="is_work_allowed_tue" ColumnName="is_work_allowed_tue" />
+          <ScalarProperty Name="is_work_allowed_wed" ColumnName="is_work_allowed_wed" />
+          <ScalarProperty Name="is_work_allowed_thu" ColumnName="is_work_allowed_thu" />
+          <ScalarProperty Name="is_work_allowed_fri" ColumnName="is_work_allowed_fri" />
+          <ScalarProperty Name="is_work_allowed_sat" ColumnName="is_work_allowed_sat" />
+          <ScalarProperty Name="is_work_allowed_sun" ColumnName="is_work_allowed_sun" />
+          <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
