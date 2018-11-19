@@ -15,22 +15,18 @@ namespace _5thSemesterProject.Models
 using System;
     using System.Collections.Generic;
     
-public partial class Schedule
+public partial class Log
 {
 
-    public int schedule_id { get; set; }
+    public int log_id { get; set; }
 
     public int employee_id { get; set; }
 
-    public int shift_id { get; set; }
+    public string employee_name { get; set; }
 
-    public System.DateTime date { get; set; }
+    public string action { get; set; }
 
-
-
-    public virtual Employee Employee { get; set; }
-
-    public virtual Shift Shift { get; set; }
+    public System.DateTime timestamp { get; set; }
 
 }
 
