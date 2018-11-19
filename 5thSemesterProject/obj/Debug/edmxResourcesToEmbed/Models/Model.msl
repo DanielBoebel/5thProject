@@ -4,10 +4,12 @@
     <EntitySetMapping Name="Employee">
       <EntityTypeMapping TypeName="DB5thSemesterModel.Employee">
         <MappingFragment StoreEntitySet="Employee">
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="initials" ColumnName="initials" />
+          <ScalarProperty Name="lastname" ColumnName="lastname" />
+          <ScalarProperty Name="firstname" ColumnName="firstname" />
           <ScalarProperty Name="employee_id" ColumnName="employee_id" />
           <ScalarProperty Name="cpr" ColumnName="cpr" />
-          <ScalarProperty Name="Firstname" ColumnName="Firstname" />
-          <ScalarProperty Name="Lastname" ColumnName="Lastname" />
           <ScalarProperty Name="position_id" ColumnName="position_id" />
           <ScalarProperty Name="special_agreement_id" ColumnName="special_agreement_id" />
         </MappingFragment>
@@ -53,6 +55,28 @@
           <ScalarProperty Name="is_work_allowed_sat" ColumnName="is_work_allowed_sat" />
           <ScalarProperty Name="is_work_allowed_sun" ColumnName="is_work_allowed_sun" />
           <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Log">
+      <EntityTypeMapping TypeName="DB5thSemesterModel.Log">
+        <MappingFragment StoreEntitySet="Log">
+          <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+          <ScalarProperty Name="action" ColumnName="action" />
+          <ScalarProperty Name="employee_name" ColumnName="employee_name" />
+          <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+          <ScalarProperty Name="log_id" ColumnName="log_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Message">
+      <EntityTypeMapping TypeName="DB5thSemesterModel.Message">
+        <MappingFragment StoreEntitySet="Message">
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="reciever_id" ColumnName="reciever_id" />
+          <ScalarProperty Name="reciever" ColumnName="reciever" />
+          <ScalarProperty Name="sender" ColumnName="sender" />
+          <ScalarProperty Name="message_id" ColumnName="message_id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

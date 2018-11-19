@@ -1,2 +1,12 @@
 
 \.vs/5thSemesterProject/v15/Server/sqlite3/db\.lock
+
+\.vs/5thSemesterProject/v15/Server/sqlite3/storage\.ide
+
+\.vs/config/applicationhost\.config
+
+5thSemesterProject/obj/Debug/5thSemesterProject\.csproj\.CoreCompileInputs\.cache
+
+5thSemesterProject/obj/Debug/CoreCompileInputs\.cache
+
+*.cache

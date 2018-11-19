@@ -6,10 +6,32 @@
     </Key>
     <Property Name="employee_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="cpr" Type="char" MaxLength="10" Nullable="false" />
-    <Property Name="Firstname" Type="varchar" MaxLength="128" Nullable="false" />
-    <Property Name="Lastname" Type="varchar" MaxLength="128" Nullable="false" />
+    <Property Name="firstname" Type="varchar" MaxLength="128" Nullable="false" />
+    <Property Name="lastname" Type="varchar" MaxLength="128" Nullable="false" />
     <Property Name="position_id" Type="int" Nullable="false" />
     <Property Name="special_agreement_id" Type="int" Nullable="false" />
+    <Property Name="initials" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Log">
+    <Key>
+      <PropertyRef Name="log_id" />
+    </Key>
+    <Property Name="log_id" Type="int" Nullable="false" />
+    <Property Name="employee_id" Type="int" Nullable="false" />
+    <Property Name="employee_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="action" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="timestamp" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Message">
+    <Key>
+      <PropertyRef Name="message_id" />
+    </Key>
+    <Property Name="message_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="sender" Type="varchar" MaxLength="128" Nullable="false" />
+    <Property Name="reciever" Type="varchar" MaxLength="128" Nullable="false" />
+    <Property Name="reciever_id" Type="int" Nullable="false" />
+    <Property Name="date" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="Position">
     <Key>
@@ -100,6 +122,8 @@
   </Association>
   <EntityContainer Name="DB5thSemesterModelStoreContainer">
     <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Message" EntityType="Self.Message" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Position" EntityType="Self.Position" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Shift" EntityType="Self.Shift" Schema="dbo" store:Type="Tables" />
