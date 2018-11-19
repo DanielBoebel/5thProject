@@ -35,5 +35,11 @@ namespace _5thSemesterProject.Controllers
 
             return View(db.Employee.ToList());
         }
+        public ActionResult Delete()
+        {
+            ViewBag.Message = "Your employee page.";
+
+            return View(db.Employee.ToList());
+        }
     }
 }
