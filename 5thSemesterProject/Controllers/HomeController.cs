@@ -9,7 +9,7 @@ namespace _5thSemesterProject.Controllers
 {
     public class HomeController : Controller
     {
-        private DB5thSemesterEntities db = new DB5thSemesterEntities();
+        private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
 
         public ActionResult Index()
         {

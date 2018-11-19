@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="DB5thSemesterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="DB5thSemesterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Employee">
           <Key>
             <PropertyRef Name="employee_id" />
@@ -150,7 +150,8 @@
             <End Role="Schedule" EntitySet="Schedule" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DB5thSemesterModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -160,15 +161,35 @@
           </Key>
           <Property Name="employee_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="cpr" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="firstname" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="lastname" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="position_id" Type="Int32" Nullable="false" />
           <Property Name="special_agreement_id" Type="Int32" Nullable="false" />
+          <Property Name="initials" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Position" Relationship="Self.FK_Employee_Position" FromRole="Employee" ToRole="Position" />
           <NavigationProperty Name="SpecialAgreement" Relationship="Self.FK_Employee_SpecialAgreement" FromRole="Employee" ToRole="SpecialAgreement" />
           <NavigationProperty Name="Schedule" Relationship="Self.FK_Schedule_Employee" FromRole="Employee" ToRole="Schedule" />
-          <Property Name="firstname" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="lastname" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="initials" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="log_id" />
+          </Key>
+          <Property Name="log_id" Type="Int32" Nullable="false" />
+          <Property Name="employee_id" Type="Int32" Nullable="false" />
+          <Property Name="employee_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="action" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="message_id" />
+          </Key>
+          <Property Name="message_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sender" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="reciever" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="reciever_id" Type="Int32" Nullable="false" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="Position">
           <Key>
@@ -262,8 +283,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="DB5thSemesterEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="DB5thSemesterEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Employee" EntityType="Self.Employee" />
+          <EntitySet Name="Log" EntityType="Self.Log" />
+          <EntitySet Name="Message" EntityType="Self.Message" />
           <EntitySet Name="Position" EntityType="Self.Position" />
           <EntitySet Name="Schedule" EntityType="Self.Schedule" />
           <EntitySet Name="Shift" EntityType="Self.Shift" />
@@ -284,46 +307,46 @@
             <End Role="Shift" EntitySet="Shift" />
             <End Role="Schedule" EntitySet="Schedule" />
           </AssociationSet>
-          <EntitySet Name="Log" EntityType="DB5thSemesterModel.Log" />
-          <EntitySet Name="Message" EntityType="DB5thSemesterModel.Message" />
         </EntityContainer>
-        <EntityType Name="Log">
-          <Key>
-            <PropertyRef Name="log_id" />
-          </Key>
-          <Property Name="log_id" Type="Int32" Nullable="false" />
-          <Property Name="employee_id" Type="Int32" Nullable="false" />
-          <Property Name="employee_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="action" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
-        <EntityType Name="Message">
-          <Key>
-            <PropertyRef Name="message_id" />
-          </Key>
-          <Property Name="message_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="sender" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="reciever" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="reciever_id" Type="Int32" Nullable="false" />
-          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="DB5thSemesterModelStoreContainer" CdmEntityContainer="DB5thSemesterEntities">
+        <EntityContainerMapping StorageEntityContainer="DB5thSemesterModelStoreContainer" CdmEntityContainer="DB5thSemesterEntities1">
           <EntitySetMapping Name="Employee">
             <EntityTypeMapping TypeName="DB5thSemesterModel.Employee">
               <MappingFragment StoreEntitySet="Employee">
-                <ScalarProperty Name="password" ColumnName="password" />
-                <ScalarProperty Name="initials" ColumnName="initials" />
-                <ScalarProperty Name="lastname" ColumnName="lastname" />
-                <ScalarProperty Name="firstname" ColumnName="firstname" />
                 <ScalarProperty Name="employee_id" ColumnName="employee_id" />
                 <ScalarProperty Name="cpr" ColumnName="cpr" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
                 <ScalarProperty Name="position_id" ColumnName="position_id" />
                 <ScalarProperty Name="special_agreement_id" ColumnName="special_agreement_id" />
+                <ScalarProperty Name="initials" ColumnName="initials" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Log">
+            <EntityTypeMapping TypeName="DB5thSemesterModel.Log">
+              <MappingFragment StoreEntitySet="Log">
+                <ScalarProperty Name="log_id" ColumnName="log_id" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="employee_name" ColumnName="employee_name" />
+                <ScalarProperty Name="action" ColumnName="action" />
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Message">
+            <EntityTypeMapping TypeName="DB5thSemesterModel.Message">
+              <MappingFragment StoreEntitySet="Message">
+                <ScalarProperty Name="message_id" ColumnName="message_id" />
+                <ScalarProperty Name="sender" ColumnName="sender" />
+                <ScalarProperty Name="reciever" ColumnName="reciever" />
+                <ScalarProperty Name="reciever_id" ColumnName="reciever_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -367,28 +390,6 @@
                 <ScalarProperty Name="is_work_allowed_sat" ColumnName="is_work_allowed_sat" />
                 <ScalarProperty Name="is_work_allowed_sun" ColumnName="is_work_allowed_sun" />
                 <ScalarProperty Name="employee_id" ColumnName="employee_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Log">
-            <EntityTypeMapping TypeName="DB5thSemesterModel.Log">
-              <MappingFragment StoreEntitySet="Log">
-                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
-                <ScalarProperty Name="action" ColumnName="action" />
-                <ScalarProperty Name="employee_name" ColumnName="employee_name" />
-                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
-                <ScalarProperty Name="log_id" ColumnName="log_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Message">
-            <EntityTypeMapping TypeName="DB5thSemesterModel.Message">
-              <MappingFragment StoreEntitySet="Message">
-                <ScalarProperty Name="date" ColumnName="date" />
-                <ScalarProperty Name="reciever_id" ColumnName="reciever_id" />
-                <ScalarProperty Name="reciever" ColumnName="reciever" />
-                <ScalarProperty Name="sender" ColumnName="sender" />
-                <ScalarProperty Name="message_id" ColumnName="message_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
