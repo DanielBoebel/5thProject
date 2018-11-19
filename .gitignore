@@ -6,3 +6,7 @@
 \.vs/config/applicationhost\.config
 
 5thSemesterProject/obj/Debug/5thSemesterProject\.csproj\.CoreCompileInputs\.cache
+
+5thSemesterProject/obj/Debug/CoreCompileInputs\.cache
+
+*.cache
