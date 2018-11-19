@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace _5thSemesterProject.Controllers
 {
@@ -22,13 +23,17 @@ namespace _5thSemesterProject.Controllers
 		[HttpPost]
 		public ActionResult Index(string username, string password)
 		{
-			var testname = db.Employee.Where(x => x.cpr == username).Select(x => x.cpr).ToList();
+			var dbuser = db.Employee.Where(x => x.cpr == username).FirstOrDefault().ToString();
+			var dbusername = db.Employee.Where(x => x.cpr == username).Select(x => x.cpr).ToList();
 			var dbpassword = db.Employee.Where(x => x.cpr == username).Select(x => x.password).ToList();
-			Trace.WriteLine(testname[0]);
-			if (testname[0] == username)
+			Trace.WriteLine(dbusername[0]);
+			if (dbusername[0] == username)
 			{
 				if (dbpassword[0] == password)
 				{
+					Session["USEROBJ"] = dbuser;
+					Session["username"] = username;
+					FormsAuthentication.SetAuthCookie(username, true);
 					return RedirectToAction("../Home/Index");
 				}
 				else { return View(); }
