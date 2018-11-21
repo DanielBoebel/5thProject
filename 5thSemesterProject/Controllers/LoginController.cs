@@ -26,11 +26,14 @@ namespace _5thSemesterProject.Controllers
 			var dbuser = "";
 			List<string> dbusername = null;
 			List<string> dbpassword = null;
+			Boolean nonHashed = false;
 			try
 			{
 				dbuser = db.Employee.Where(x => x.cpr == username).FirstOrDefault().ToString();
 				dbusername = db.Employee.Where(x => x.cpr == username).Select(x => x.cpr).ToList();
 				dbpassword = db.Employee.Where(x => x.cpr == username).Select(x => x.password).ToList();
+				nonHashed = BCrypt.Net.BCrypt.Verify(password, dbpassword[0]);
+
 			}
 			catch (Exception e)
 			{
@@ -42,7 +45,7 @@ namespace _5thSemesterProject.Controllers
 			{
 				if (dbusername[0] == username)
 				{
-					if (dbpassword[0] == password)
+					if (nonHashed != false)
 					{
 						Session["USEROBJ"] = dbuser;
 						Session["username"] = username;
