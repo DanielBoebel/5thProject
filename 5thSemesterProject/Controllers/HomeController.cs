@@ -13,7 +13,7 @@ namespace _5thSemesterProject.Controllers
 
         public ActionResult Index()
         {
-			if (Session["USEROBJ"] != null || Session["ADMINOBJ"] != null)
+			if (Session["employeeId"] != null || Session["ADMINOBJ"] != null)
 			{
 				return View();
 			}
@@ -22,7 +22,7 @@ namespace _5thSemesterProject.Controllers
 
         public ActionResult About()
         {
-			if (Session["USEROBJ"] != null || Session["ADMINOBJ"] != null)
+			if (Session["employeeId"] != null || Session["ADMINOBJ"] != null)
 			{
 				ViewBag.Message = "Your application description page.";
 
@@ -34,7 +34,7 @@ namespace _5thSemesterProject.Controllers
 
         public ActionResult Contact()
         {
-			if (Session["USEROBJ"] != null || Session["ADMINOBJ"] != null)
+			if (Session["employeeId"] != null || Session["ADMINOBJ"] != null)
 			{
 				ViewBag.Message = "Your contact page.";
 
@@ -45,7 +45,7 @@ namespace _5thSemesterProject.Controllers
         }
         public ActionResult Employee()
         {
-			if (Session["USEROBJ"] != null || Session["ADMINOBJ"] != null)
+			if (Session["employeeId"] != null || Session["ADMINOBJ"] != null)
 			{
 				ViewBag.Message = "Your employee page.";
 
@@ -56,7 +56,7 @@ namespace _5thSemesterProject.Controllers
         }
         public ActionResult Delete()
         {
-			if (Session["USEROBJ"] != null || Session["ADMINOBJ"] != null)
+			if (Session["employeeId"] != null || Session["ADMINOBJ"] != null)
 			{
 				ViewBag.Message = "Your employee page.";
 

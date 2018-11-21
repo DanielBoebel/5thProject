@@ -23,13 +23,13 @@ namespace _5thSemesterProject.Controllers
 		[HttpPost]
 		public ActionResult Index(string username, string password)
 		{
-			var dbuser = "";
+			List<int> employeeId = null;
 			List<string> dbusername = null;
 			List<string> dbpassword = null;
 			Boolean nonHashed = false;
 			try
 			{
-				dbuser = db.Employee.Where(x => x.cpr == username).FirstOrDefault().ToString();
+				employeeId = db.Employee.Where(x => x.cpr == username).Select(x => x.employee_id).ToList();
 				dbusername = db.Employee.Where(x => x.cpr == username).Select(x => x.cpr).ToList();
 				dbpassword = db.Employee.Where(x => x.cpr == username).Select(x => x.password).ToList();
 				nonHashed = BCrypt.Net.BCrypt.Verify(password, dbpassword[0]);
@@ -47,7 +47,7 @@ namespace _5thSemesterProject.Controllers
 				{
 					if (nonHashed != false)
 					{
-						Session["USEROBJ"] = dbuser;
+						Session["employeeId"] = employeeId[0];
 						Session["username"] = username;
 						FormsAuthentication.SetAuthCookie(username, true);
 						string action = "Logged in";
@@ -85,7 +85,7 @@ namespace _5thSemesterProject.Controllers
 			Log logUser = new Log(username, action, timestamp);
 			db.Log.Add(logUser);
 			db.SaveChanges();
-			Session["USEROBJ"] = null;
+			Session["employeeId"] = null;
 			return RedirectToAction("../Login/Index");
 		}
 
