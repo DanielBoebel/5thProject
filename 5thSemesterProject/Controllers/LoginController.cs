@@ -23,23 +23,53 @@ namespace _5thSemesterProject.Controllers
 		[HttpPost]
 		public ActionResult Index(string username, string password)
 		{
-			var dbuser = db.Employee.Where(x => x.cpr == username).FirstOrDefault().ToString();
-			var dbusername = db.Employee.Where(x => x.cpr == username).Select(x => x.cpr).ToList();
-			var dbpassword = db.Employee.Where(x => x.cpr == username).Select(x => x.password).ToList();
-			Trace.WriteLine(dbusername[0]);
-			if (dbusername[0] == username)
+			var dbuser = "";
+			List<string> dbusername = null;
+			List<string> dbpassword = null;
+			Boolean nonHashed = false;
+			try
 			{
-				if (dbpassword[0] == password)
+				dbuser = db.Employee.Where(x => x.cpr == username).FirstOrDefault().ToString();
+				dbusername = db.Employee.Where(x => x.cpr == username).Select(x => x.cpr).ToList();
+				dbpassword = db.Employee.Where(x => x.cpr == username).Select(x => x.password).ToList();
+				nonHashed = BCrypt.Net.BCrypt.Verify(password, dbpassword[0]);
+
+			}
+			catch (Exception e)
+			{
+
+			}
+
+
+			try
+			{
+				if (dbusername[0] == username)
 				{
-					Session["USEROBJ"] = dbuser;
-					Session["username"] = username;
-					FormsAuthentication.SetAuthCookie(username, true);
-					return RedirectToAction("../Home/Index");
+					if (nonHashed != false)
+					{
+						Session["USEROBJ"] = dbuser;
+						Session["username"] = username;
+						FormsAuthentication.SetAuthCookie(username, true);
+						return RedirectToAction("../Home/Index");
+					}
+					else
+					{
+						TempData["msg"] = "Wrong e-mail or password";
+						return View();
+					}
 				}
-				else { return View(); }
-			} else { return View(); }
+				else
+				{
+					TempData["msg"] = "Wrong e-mail or password";
+					return View();
+				}
+			}
+			catch (Exception e)
+			{
+
+			}
+			TempData["msg"] = "Wrong e-mail or password";
+			return View();
 		}
-
-
 	}
 }

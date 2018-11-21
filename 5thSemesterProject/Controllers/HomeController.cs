@@ -13,33 +13,57 @@ namespace _5thSemesterProject.Controllers
 
         public ActionResult Index()
         {
-            return View();
+			if (Session["USEROBJ"] != null || Session["ADMINOBJ"] != null)
+			{
+				return View();
+			}
+			else { return RedirectToAction("../Login/Index"); }
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+			if (Session["USEROBJ"] != null || Session["ADMINOBJ"] != null)
+			{
+				ViewBag.Message = "Your application description page.";
 
-            return View();
+				return View();
+			}
+			else { return RedirectToAction("../Login/Index"); }
+			
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+			if (Session["USEROBJ"] != null || Session["ADMINOBJ"] != null)
+			{
+				ViewBag.Message = "Your contact page.";
 
-            return View();
+				return View();
+			}
+			else { return RedirectToAction("../Login/Index"); }
+
         }
         public ActionResult Employee()
         {
-            ViewBag.Message = "Your employee page.";
+			if (Session["USEROBJ"] != null || Session["ADMINOBJ"] != null)
+			{
+				ViewBag.Message = "Your employee page.";
 
-            return View(db.Employee.ToList());
+				return View(db.Employee.ToList());
+			}
+			else { return RedirectToAction("../Login/Index"); }
+
         }
         public ActionResult Delete()
         {
-            ViewBag.Message = "Your employee page.";
+			if (Session["USEROBJ"] != null || Session["ADMINOBJ"] != null)
+			{
+				ViewBag.Message = "Your employee page.";
 
-            return View(db.Employee.ToList());
+				return View(db.Employee.ToList());
+			}
+			else { return RedirectToAction("../Login/Index"); }
+
         }
     }
 }
