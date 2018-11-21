@@ -22,7 +22,7 @@
           <Key>
             <PropertyRef Name="log_id" />
           </Key>
-          <Property Name="log_id" Type="int" Nullable="false" />
+          <Property Name="log_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="employee_id" Type="int" Nullable="false" />
           <Property Name="employee_name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="action" Type="nvarchar(max)" Nullable="false" />

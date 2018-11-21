@@ -50,6 +50,11 @@ namespace _5thSemesterProject.Controllers
 						Session["USEROBJ"] = dbuser;
 						Session["username"] = username;
 						FormsAuthentication.SetAuthCookie(username, true);
+						string action = "Logged in";
+						var timestamp = DateTime.Now;
+						Log logUser = new Log(username, action, timestamp);
+						db.Log.Add(logUser);
+						db.SaveChanges();
 						return RedirectToAction("../Home/Index");
 					}
 					else
@@ -71,5 +76,19 @@ namespace _5thSemesterProject.Controllers
 			TempData["msg"] = "Wrong e-mail or password";
 			return View();
 		}
+
+		public ActionResult Logout()
+		{
+			string username = Session["username"].ToString();
+			string action = "Logged Out";
+			var timestamp = DateTime.Now;
+			Log logUser = new Log(username, action, timestamp);
+			db.Log.Add(logUser);
+			db.SaveChanges();
+			Session["USEROBJ"] = null;
+			return RedirectToAction("../Login/Index");
+		}
+
+
 	}
 }
