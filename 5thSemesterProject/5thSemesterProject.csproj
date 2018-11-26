@@ -304,7 +304,6 @@
     <None Include="Views\Schedules\CalendarDay.cshtml" />
     <Content Include="Views\Schedules\CalendarMonth.cshtml" />
     <None Include="Views\Schedules\CalendarWeek.cshtml" />
-    <None Include="Views\Schedules\CalendarMonth1.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

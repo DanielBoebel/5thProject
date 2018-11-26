@@ -1,4 +1,4 @@
-﻿@model _5thSemesterProject.Models.Schedule
+﻿@model IEnumerable<_5thSemesterProject.Models.Schedule>
 <!DOCTYPE html>
 <html>
 
@@ -34,12 +34,16 @@
         <div class="card-header text-center" style="background-color: #ffffff;">
             <div class="btn-toolbar" style="padding: 0;margin: 0;">
                 <div class="btn-group btn-group-sm" role="group" style="padding: 0;margin: 0;height: 36px;font-size: 12px;">
-                    <button class="btn btn-primary border rounded" type="button" id="prevDay">Forrige dag</button>
-                    <button class="btn btn-primary border rounded" type="button" id="currentDay" style="margin: 0px 10px 0px 10px;">I dag</button>
-                    <button class="btn btn-primary border rounded" id="nxtDay" type="button" ;>
-                        Næste dag
+                    <button class="btn btn-primary border rounded" type="button" id="prevDay">@Html.ActionLink("Forrige dag", "PrevDay")</button>
+                    <button class="btn btn-primary border rounded" type="button" id="currentDay" style="margin: 0px 10px 0px 10px;">@Html.ActionLink("I dag", "CalendarDay")</button>
+                    <button class="btn btn-primary border rounded" id="nxtDay" type="button" ;>@Html.ActionLink("Næste dag", "NextDay")</button>
+                    <button class="btn btn-secondary border rounded" type="button" disabled="disabled" id="showingDay" style="margin: 0px 0px 0px 10px;">
+                        @TempData["showingDate"]
                     </button>
-                    <button class="btn btn-secondary border rounded" type="button" disabled="disabled" id="showingDay" style="margin: 0px 0px 0px 10px;">Mandag 21/11</button>
+                    <div>
+                        <asp:Button class="btn btn-secondary border rounded" ID="Button1" runat="server" onserverclick="PrevDay" Text="Button" />
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -50,31 +54,36 @@
                         <th>Dato</th>
                         <th>Navn</th>
                         <th>Initialer</th>
+                        <th>Stilling</th>
                         <th>Start tidspunkt</th>
                         <th>Slut tidspunkt</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
-                     {
-                        <tr id="dateCell">
-
-
-                            <td>
-                                @Html.DisplayFor(modelItem => item.firstname)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.lastname)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.initials)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Position.name)
-                            </td>
-                        </tr>
-                     }
-                    </tbody>
+                    {
+                    <tr id="dateCell">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.date.Day)-@Html.DisplayFor(modelItem => item.date.Month)-@Html.DisplayFor(modelItem => item.date.Year)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Employee.initials)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Employee.Position.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Shift.start_time)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Shift.end_time)
+                        </td>
+                    </tr>
+                    }
+                </tbody>
             </table>
         </div>
     </div>
