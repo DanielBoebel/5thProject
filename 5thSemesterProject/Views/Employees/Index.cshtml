@@ -7,30 +7,21 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Opret ny", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.cpr)
+            @Html.DisplayName("Fornavn")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.firstname)
+            @Html.DisplayName("Efternavn")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.lastname)
+            @Html.DisplayName("Initialer")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.special_agreement_id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.initials)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.password)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Position.name)
+            @Html.DisplayName("Stilling")
         </th>
         <th></th>
     </tr>
@@ -38,30 +29,21 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.cpr)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.firstname)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.lastname)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.special_agreement_id)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.initials)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.password)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Position.name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.employee_id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.employee_id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.employee_id })
+            @Html.ActionLink("Ændre", "Edit", new { id=item.employee_id }) |
+            @Html.ActionLink("Detajler", "Details", new { id=item.employee_id }) |
+            @Html.ActionLink("Slet", "Delete", new { id=item.employee_id })
         </td>
     </tr>
 }

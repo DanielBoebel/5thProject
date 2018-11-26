@@ -15,7 +15,6 @@
 .nav {
   display: inline-flex;
   list-style-type: none;
-  margin: 0px 0px -200px 0px;
 }
 
 /*
@@ -25,12 +24,12 @@
 } 
 */
 
-#week:hover {
+#month:hover {
   color: #059ee8 !important;
   background-color: white !important; 
 }
 
-#day:hover {
+#week:hover {
   color: #059ee8 !important;
   background-color: white !important; 
 }
