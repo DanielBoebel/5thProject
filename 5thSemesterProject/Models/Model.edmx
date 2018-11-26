@@ -14,7 +14,6 @@
           <Property Name="firstname" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="lastname" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="position_id" Type="int" Nullable="false" />
-          <Property Name="special_agreement_id" Type="int" Nullable="false" />
           <Property Name="initials" Type="varchar" MaxLength="5" Nullable="false" />
           <Property Name="password" Type="varchar(max)" Nullable="false" />
         </EntityType>
@@ -37,6 +36,7 @@
           <Property Name="reciever" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="reciever_id" Type="int" Nullable="false" />
           <Property Name="date" Type="datetime" Nullable="false" />
+          <Property Name="content" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Position">
           <Key>
@@ -163,7 +163,6 @@
           <Property Name="firstname" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="lastname" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="position_id" Type="Int32" Nullable="false" />
-          <Property Name="special_agreement_id" Type="Int32" Nullable="false" />
           <Property Name="initials" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Position" Relationship="Self.FK_Employee_Position" FromRole="Employee" ToRole="Position" />
@@ -189,6 +188,7 @@
           <Property Name="reciever" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="reciever_id" Type="Int32" Nullable="false" />
           <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Position">
           <Key>
@@ -321,7 +321,6 @@
                 <ScalarProperty Name="firstname" ColumnName="firstname" />
                 <ScalarProperty Name="lastname" ColumnName="lastname" />
                 <ScalarProperty Name="position_id" ColumnName="position_id" />
-                <ScalarProperty Name="special_agreement_id" ColumnName="special_agreement_id" />
                 <ScalarProperty Name="initials" ColumnName="initials" />
                 <ScalarProperty Name="password" ColumnName="password" />
               </MappingFragment>
@@ -341,6 +340,7 @@
           <EntitySetMapping Name="Message">
             <EntityTypeMapping TypeName="DB5thSemesterModel.Message">
               <MappingFragment StoreEntitySet="Message">
+                <ScalarProperty Name="content" ColumnName="content" />
                 <ScalarProperty Name="message_id" ColumnName="message_id" />
                 <ScalarProperty Name="sender" ColumnName="sender" />
                 <ScalarProperty Name="reciever" ColumnName="reciever" />

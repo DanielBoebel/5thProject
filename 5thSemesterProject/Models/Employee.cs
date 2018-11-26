@@ -26,7 +26,6 @@ namespace _5thSemesterProject.Models
         public string firstname { get; set; }
         public string lastname { get; set; }
         public int position_id { get; set; }
-        public int special_agreement_id { get; set; }
         public string initials { get; set; }
         public string password { get; set; }
     
