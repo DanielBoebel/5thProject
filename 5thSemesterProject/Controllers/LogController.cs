@@ -21,6 +21,7 @@ namespace _5thSemesterProject.Controllers
 			ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
 			ViewBag.UsernameSortParm = sortOrder == "username" ? "username_desc" : "username";
 			ViewBag.TimestampSortParm = sortOrder == "timestamp" ? "timestamp_desc" : "timestamp";
+			ViewBag.ActionSortParm = sortOrder == "action" ? "action_desc" : "action";
 
 			if (searchString != null)
 			{
@@ -46,6 +47,12 @@ namespace _5thSemesterProject.Controllers
 				case "username_desc":
 					logs = logs.OrderByDescending(s => s.employee_name);
 					break;
+				case "action":
+					logs = logs.OrderBy(s => s.action);
+					break;
+				case "action_desc":
+					logs = logs.OrderByDescending(s => s.action);
+					break;
 				case "timestamp":
 					logs = logs.OrderBy(s => s.timestamp);
 					break;
@@ -53,7 +60,7 @@ namespace _5thSemesterProject.Controllers
 					logs = logs.OrderByDescending(s => s.timestamp);
 					break;
 				default:
-					logs = logs.OrderByDescending(s => s.log_id);
+					logs = logs.OrderByDescending(s => s.timestamp);
 					break;
 			}
 

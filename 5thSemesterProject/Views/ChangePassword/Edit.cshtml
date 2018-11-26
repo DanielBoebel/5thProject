@@ -1,7 +1,7 @@
 ﻿@model _5thSemesterProject.Models.Employee
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Redigér";
 }
 
 @if (ViewBag.ErrorMessage != null)
@@ -16,26 +16,18 @@
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm("Edit", "ChangePassword", FormMethod.Post))
+@using (Html.BeginForm("Ændre kodeord", "ChangePassword", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Employee</h4>
+        <h4>Medarbejder</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.employee_id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.cpr, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.cpr, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.cpr, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.firstname, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.firstname, "Fornavn", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.firstname, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                 @Html.ValidationMessageFor(model => model.firstname, "", new { @class = "text-danger" })
@@ -43,7 +35,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.lastname, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.lastname, "Efternavn", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.lastname, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                 @Html.ValidationMessageFor(model => model.lastname, "", new { @class = "text-danger" })
@@ -51,7 +43,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.position_id, "position_id", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.position_id, "Stiling", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Position.name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                 @Html.ValidationMessageFor(model => model.position_id, "", new { @class = "text-danger" })
@@ -59,7 +51,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.initials, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.initials, "Initialer", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.initials, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                 @Html.ValidationMessageFor(model => model.initials, "", new { @class = "text-danger" })
@@ -68,31 +60,31 @@
 
         <div class="form-group">
 
-            @Html.Label("Old password", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Gammelt kodeord", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.Editor("oldPassword", new { htmlAttributes = new { @class = "form-control", placeholder = "Old password", type = "password" } })
+                @Html.Editor("oldPassword", new { htmlAttributes = new { @class = "form-control", placeholder = "Gammelt kodeord", type = "password" } })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Label("New password", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Nyt kodeord", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.Editor("newPassword", new { htmlAttributes = new { @class = "form-control", placeholder = "Contain 6 letters/An uppercase/A digit", type = "password" } })
+                @Html.Editor("newPassword", new { htmlAttributes = new { @class = "form-control", placeholder = "Skal indeholde 6 tegn/Store og små bogstaver/Et tal", type = "password" } })
 
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Label("Confirm password", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Bekræft kodeord", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.Editor("confirmPassword", new { htmlAttributes = new { @class = "form-control", @placeholder = "Confirm password", type = "password" } })
+                @Html.Editor("confirmPassword", new { htmlAttributes = new { @class = "form-control", @placeholder = "Bekræft kodeord", type = "password" } })
 
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Gem" class="btn btn-default" />
             </div>
         </div>
     </div>
