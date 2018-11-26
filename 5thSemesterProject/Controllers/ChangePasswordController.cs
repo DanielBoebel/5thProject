@@ -28,7 +28,7 @@ namespace _5thSemesterProject.Controllers
             
                 if (employee == null) return HttpNotFound();
                 
-				return View();
+				return View(employee);
             }
             else
             {
