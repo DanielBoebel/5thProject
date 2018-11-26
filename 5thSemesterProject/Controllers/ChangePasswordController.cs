@@ -27,8 +27,8 @@ namespace _5thSemesterProject.Controllers
                 if (idString == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             
                 if (employee == null) return HttpNotFound();
-
-				return RedirectToAction("../Home/Index");
+                
+				return View();
             }
             else
             {
