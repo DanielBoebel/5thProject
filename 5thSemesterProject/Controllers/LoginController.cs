@@ -26,10 +26,12 @@ namespace _5thSemesterProject.Controllers
 			List<int> employeeId = null;
 			List<string> dbusername = null;
 			List<string> dbpassword = null;
+			List<string> dbinitialer = null;
 			Boolean nonHashed = false;
 			try
 			{
 				employeeId = db.Employee.Where(x => x.cpr == username).Select(x => x.employee_id).ToList();
+				dbinitialer = db.Employee.Where(x => x.cpr == username).Select(x => x.initials).ToList();
 				dbusername = db.Employee.Where(x => x.cpr == username).Select(x => x.cpr).ToList();
 				dbpassword = db.Employee.Where(x => x.cpr == username).Select(x => x.password).ToList();
 				nonHashed = BCrypt.Net.BCrypt.Verify(password, dbpassword[0]);
@@ -48,11 +50,11 @@ namespace _5thSemesterProject.Controllers
 					if (nonHashed != false)
 					{
 						Session["employeeId"] = employeeId[0];
-						Session["username"] = username;
-						FormsAuthentication.SetAuthCookie(username, true);
+						Session["username"] = dbinitialer[0];
+						FormsAuthentication.SetAuthCookie(dbinitialer[0], true);
 						string action = "Logged in";
 						var timestamp = DateTime.Now;
-						Log logUser = new Log(username, action, timestamp);
+						Log logUser = new Log(dbinitialer[0], action, timestamp);
 						db.Log.Add(logUser);
 						db.SaveChanges();
 						return RedirectToAction("../Home/Index");
@@ -71,7 +73,7 @@ namespace _5thSemesterProject.Controllers
 			}
 			catch (Exception e)
 			{
-
+                Trace.WriteLine(e);
 			}
 			TempData["msg"] = ErrorMsg;
 			return View();
