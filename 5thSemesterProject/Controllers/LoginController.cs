@@ -11,7 +11,7 @@ namespace _5thSemesterProject.Controllers
 {
 	public class LoginController : Controller
 	{
-
+        private String ErrorMsg = "Forkert brugernavn eller kodeord";
 		private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
 
 		// GET: Login
@@ -59,13 +59,13 @@ namespace _5thSemesterProject.Controllers
 					}
 					else
 					{
-						TempData["msg"] = "Wrong e-mail or password";
+						TempData["msg"] = ErrorMsg;
 						return View();
 					}
 				}
 				else
 				{
-					TempData["msg"] = "Wrong e-mail or password";
+					TempData["msg"] = ErrorMsg;
 					return View();
 				}
 			}
@@ -73,7 +73,7 @@ namespace _5thSemesterProject.Controllers
 			{
 
 			}
-			TempData["msg"] = "Wrong e-mail or password";
+			TempData["msg"] = ErrorMsg;
 			return View();
 		}
 

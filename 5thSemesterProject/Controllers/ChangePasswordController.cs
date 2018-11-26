@@ -62,7 +62,7 @@ namespace _5thSemesterProject.Controllers
                             employee.password = newPasswordHashed;
                             db.Entry(employee).State = EntityState.Modified;
                             db.SaveChanges();
-                            ViewBag.ErrorMessage = "You have successfully changed password";
+                            ViewBag.ErrorMessage = "Du har nu skiftet kodeord";
                             //string action = "changed password";
                             //logAction(action);
 
@@ -70,14 +70,14 @@ namespace _5thSemesterProject.Controllers
                         }
                         else
                         {
-                            ViewBag.ErrorMessage = "Your passwords dosent match";
+                            ViewBag.ErrorMessage = "Kodeord er ikke ens";
                         }
                     }
-                    else { ViewBag.ErrorMessage = "Your password must contain atleast 6 letters, an uppercase letter and a digit"; }
+                    else { ViewBag.ErrorMessage = "Kodeordet skal indeholde 6 tegn/Store og små bogstaver/Tal"; }
                 }
                 else
                 {
-                    ViewBag.ErrorMessage = "Your current password dosent match what you typed";
+                    ViewBag.ErrorMessage = "Indtastede kodeord er ikke det samme som det gamle";
                 }
 
             }
