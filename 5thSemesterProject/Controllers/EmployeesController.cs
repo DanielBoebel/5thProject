@@ -39,7 +39,8 @@ namespace _5thSemesterProject.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
-            ViewBag.position_id = new SelectList(db.Position, "position_id", "name");
+			ViewBag.position_id = new SelectList(db.Position, "position_id", "name");
+
             return View();
         }
 
@@ -48,9 +49,10 @@ namespace _5thSemesterProject.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "employee_id,cpr,firstname,lastname,position_id,special_agreement_id,initials,password")] Employee employee)
+        public ActionResult Create([Bind(Include = "employee_id,cpr,firstname,lastname,position_id,special_agreement_id,initials,password")] Employee employee, string password)
         {
-            if (ModelState.IsValid)
+			employee.password = BCrypt.Net.BCrypt.HashPassword(password).ToString();
+			if (ModelState.IsValid)
             {
                 db.Employee.Add(employee);
                 db.SaveChanges();
