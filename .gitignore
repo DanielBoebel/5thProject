@@ -1,2 +1,18 @@
 
 \.vs/5thSemesterProject/v15/Server/sqlite3/db\.lock
+
+\.vs/config/
+
+\.vs/5thSemesterProject/v15/
+
+5thSemesterProject/obj/Debug/
+
+5thSemesterProject/obj/Debug/CoreCompileInputs\.cache
+
+*.cache
+
+\.vs/5thSemesterProject/v15/\.suo
+
+5thSemesterProject/bin/5thSemesterProject\.dll
+
+5thSemesterProject/bin/5thSemesterProject\.pdb
