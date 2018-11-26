@@ -12,7 +12,7 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.cpr)
+            @Html.DisplayName("CPR")
         </dt>
 
         <dd>
@@ -20,31 +20,31 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Firstname)
+            @Html.DisplayName("Fornavn")
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Firstname)
+            @Html.DisplayFor(model => model.firstname)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Lastname)
+            @Html.DisplayName("Efternavn")
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Lastname)
+            @Html.DisplayFor(model => model.lastname)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.special_agreement_id)
+            @Html.DisplayName("Initialer")
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.special_agreement_id)
+            @Html.DisplayFor(model => model.initials)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Position.name)
+            @Html.DisplayName("Stilling")
         </dt>
 
         <dd>
@@ -58,7 +58,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Tilbage til listen", "Index")
         </div>
     }
 </div>

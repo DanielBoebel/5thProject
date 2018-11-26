@@ -1,0 +1,64 @@
+﻿@model PagedList.IPagedList<_5thSemesterProject.Models.Log>
+@using PagedList.Mvc;
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+<form id="floating-panel">
+
+    @using (Html.BeginForm("Index", "Log", FormMethod.Get, null))
+    {<p>
+
+            Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { id = "searchBar" })
+            <input type="submit" value="Search" />
+            <button onclick="document.getElementById('searchBar').value = ''">Clear</button>
+        </p>
+    }
+
+</form>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+	<tr>
+		<th>
+			@Html.ActionLink("Initialer", "Index", new { sortOrder = ViewBag.UsernameSortParm, currentFilter = ViewBag.CurrentFilter })
+		</th>
+		<th>
+			@Html.ActionLink("Aktion", "Index", new { sortOrder = ViewBag.ActionSortParm, currentFilter = ViewBag.CurrentFilter })
+		</th>
+		<th>
+			@Html.ActionLink("Timestamp", "Index", new { sortOrder = ViewBag.TimestampSortParm, currentFilter = ViewBag.CurrentFilter })
+		</th>
+		<th></th>
+	</tr>
+
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.employee_name)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.action)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.timestamp)
+			</td>
+		</tr>
+	}
+
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+	new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+<div>
+	@Html.ActionLink("Back to List", "../Users")
+</div>
