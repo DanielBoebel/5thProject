@@ -27,13 +27,13 @@
 <table class="table">
 	<tr>
 		<th>
-			@Html.ActionLink("Employee_name", "Index", new { sortOrder = ViewBag.UsernameSortParm, currentFilter = ViewBag.CurrentFilter })
+			@Html.ActionLink("Initialer", "Index", new { sortOrder = ViewBag.UsernameSortParm, currentFilter = ViewBag.CurrentFilter })
+		</th>
+		<th>
+			@Html.ActionLink("Aktion", "Index", new { sortOrder = ViewBag.ActionSortParm, currentFilter = ViewBag.CurrentFilter })
 		</th>
 		<th>
 			@Html.ActionLink("Timestamp", "Index", new { sortOrder = ViewBag.TimestampSortParm, currentFilter = ViewBag.CurrentFilter })
-		</th>
-		<th>
-			@Html.Label("Actions")
 		</th>
 		<th></th>
 	</tr>
