@@ -19,5 +19,6 @@ namespace _5thSemesterProject.Models
         public string reciever { get; set; }
         public int reciever_id { get; set; }
         public System.DateTime date { get; set; }
+        public string content { get; set; }
     }
 }

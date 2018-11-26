@@ -71,7 +71,7 @@ namespace _5thSemesterProject.Controllers
 			}
 			catch (Exception e)
 			{
-
+                Trace.WriteLine(e);
 			}
 			TempData["msg"] = "Wrong e-mail or password";
 			return View();
