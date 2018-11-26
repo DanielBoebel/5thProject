@@ -171,7 +171,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\SchedulesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -221,10 +220,7 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\CSS\CalendarDay.css" />
-    <Content Include="Content\CSS\CalendarMonth.css" />
-    <Content Include="Content\CSS\CalendarWeek.css" />
-    <Content Include="Content\CSS\Message.css" />
+    <Content Include="Content\CSS\Calendar.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -300,11 +296,9 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Message\Index.cshtml" />
     <None Include="Views\Schedules\CalendarDay.cshtml" />
     <Content Include="Views\Schedules\CalendarMonth.cshtml" />
     <None Include="Views\Schedules\CalendarWeek.cshtml" />
-    <None Include="Views\Schedules\CalendarMonth1.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
