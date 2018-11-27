@@ -226,6 +226,7 @@
     <Content Include="Content\CSS\CalendarWeek.css" />
     <Content Include="Content\CSS\Message.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\Scripts\CalendarScript.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />

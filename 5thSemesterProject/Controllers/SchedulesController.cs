@@ -15,7 +15,7 @@ namespace _5thSemesterProject.Controllers
         private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
 
         // Date used for showing the correct schedule
-        private String ShowingDate = DateTime.Now.ToString("dd/MM/yyyy");
+        private double ShowingDate = 0.0;
 
         // GET: Schedules
         public ActionResult Index()
@@ -141,24 +141,11 @@ namespace _5thSemesterProject.Controllers
         // GET: Schedules for a day
         public ActionResult CalendarDay()
         {
+            ShowingDate = 0.0;
+            Console.WriteLine(ShowingDate);
             TempData["showingDate"] = DateTime.Now.ToString("dd/MM/yy");
             var schedule = db.Schedule.Include(s => s.Employee).Include(s => s.Shift);
             return View(schedule.ToList());
-        }
-
-        public ActionResult NextDay()
-        {
-            TempData["showingDate"] = DateTime.Now.AddDays(1).ToString("dd/MM/yy");
-            var schedule = db.Schedule.Include(s => s.Employee).Include(s => s.Shift);
-            return View("CalendarDay", schedule.ToList());
-
-        }
-
-        public ActionResult PrevDay()
-        {
-            TempData["showingDate"] = DateTime.Now.AddDays(-1).ToString("dd/MM/yy");
-            var schedule = db.Schedule.Include(s => s.Employee).Include(s => s.Shift);
-            return View("CalendarDay", schedule.ToList());
         }
 
         protected override void Dispose(bool disposing)

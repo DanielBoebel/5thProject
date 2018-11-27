@@ -39,8 +39,6 @@ namespace _5thSemesterProject.Controllers
 
 			switch (sortOrder)
 			{
-
-
 				case "Name":
 					logs = logs.OrderBy(s => s.employee_name);
 					break;
@@ -67,76 +65,6 @@ namespace _5thSemesterProject.Controllers
 			int pageSize = 25;
 			int pageNumber = (page ?? 1);
 			return View(logs.ToPagedList(pageNumber, pageSize));
-		}
-		public ActionResult Details(int id)
-		{
-			return View();
-		}
-
-		// GET: Log/Create
-		public ActionResult Create()
-		{
-			return View();
-		}
-
-		// POST: Log/Create
-		[HttpPost]
-		public ActionResult Create(FormCollection collection)
-		{
-			try
-			{
-				// TODO: Add insert logic here
-
-				return RedirectToAction("Index");
-			}
-			catch
-			{
-				return View();
-			}
-		}
-
-		// GET: Log/Edit/5
-		public ActionResult Edit(int id)
-		{
-			return View();
-		}
-
-		// POST: Log/Edit/5
-		[HttpPost]
-		public ActionResult Edit(int id, FormCollection collection)
-		{
-			try
-			{
-				// TODO: Add update logic here
-
-				return RedirectToAction("Index");
-			}
-			catch
-			{
-				return View();
-			}
-		}
-
-		// GET: Log/Delete/5
-		public ActionResult Delete(int id)
-		{
-			return View();
-		}
-
-		// POST: Log/Delete/5
-		[HttpPost]
-		public ActionResult Delete(int id, FormCollection collection)
-		{
-			try
-			{
-				// TODO: Add delete logic here
-
-				return RedirectToAction("Index");
-			}
-			catch
-			{
-				return View();
-			}
 		}
 	}
 }
