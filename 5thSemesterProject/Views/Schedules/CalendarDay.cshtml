@@ -1,30 +1,24 @@
-﻿<!DOCTYPE html>
+﻿@model IEnumerable<_5thSemesterProject.Models.Schedule>
+<!DOCTYPE html>
 <html>
 
 <head>
     @{
         ViewBag.Title = "Kalender dag";
     }
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
     <title>Kalender</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/Content/CSS/Calendar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/CSS/Calendar.css" />
 </head>
 
 <body>
-    @*<div class="text-center" style="background-color: #059ee8;font-size: 22px;">
-        <div class="container" style="background-color: rgba(5,158,232,0);">
-            <div class="row">
-                <div class="col-md-12"><label class="col-form-label text-center" style="color: rgb(255,255,255);">Kalender</label></div>
-            </div>
-        </div>
-    </div>*@
     <div class="card text-center d-flex d-sm-flex justify-content-center justify-content-sm-center" style="background-color: #ffffff;">
         <div class="card-header" style="background-color: #ffffff;">
             <ul class="nav nav-tabs card-header-tabs text-center" style="margin: 0px -4px -12px;">
                 <li class="nav-item"><a class="nav-link active" id="month" style="color: #059ee8;background-color: #ffffff;">@Html.ActionLink("Måned", "CalendarMonth")</a></li>
-                <li class="nav-item"><a class="nav-link active" style="color: #059ee8;background-color: #ffffff;">@Html.ActionLink("Uge", "CalendarWeek")</a></li>
+                <li class="nav-item"><a class="nav-link active" id="week" style="color: #059ee8;background-color: #ffffff;">@Html.ActionLink("Uge", "CalendarWeek")</a></li>
                 <li class="nav-item"><a class="nav-link active" id="day">@Html.ActionLink("Dag", "CalendarDay")</a></li>
             </ul>
         </div>
@@ -33,12 +27,10 @@
         <div class="card-header text-center" style="background-color: #ffffff;">
             <div class="btn-toolbar" style="padding: 0;margin: 0;">
                 <div class="btn-group btn-group-sm" role="group" style="padding: 0;margin: 0;height: 36px;font-size: 12px;">
-                    <button class="btn btn-primary border rounded" type="button" id="prevDay">Forrige dag</button>
-                    <button class="btn btn-primary border rounded" type="button" id="currentDay" style="margin: 0px 10px 0px 10px;">I dag</button>
-                    <button class="btn btn-primary border rounded" id="nxtDay" type="button" ;>
-                        Næste dag
-                    </button>
-                    <button class="btn btn-secondary border rounded" type="button" disabled="disabled" id="showingDay" style="margin: 0px 0px 0px 10px;">Mandag 21/11</button>
+                    <button class="btn btn-primary border rounded" type="button" id="prevDay" onclick="prevDay()">Forrige dag</button>
+                    <button class="btn btn-primary border rounded" type="button" id="currentDay" onclick="today()" style="margin: 0px 10px 0px 10px;">I dag</button>
+                    <button class="btn btn-primary border rounded" type="button" id="nxtDay" onclick="nextDay()" ;=;>Næste dag</button>
+                    <button class="btn btn-secondary border rounded" type="button" disabled="disabled" id="showingDay" style="margin: 0px 0px 0px 10px;"></button>
                 </div>
             </div>
         </div>
@@ -49,25 +41,56 @@
                         <th>Dato</th>
                         <th>Navn</th>
                         <th>Initialer</th>
+                        <th>Stilling</th>
                         <th>Start tidspunkt</th>
                         <th>Slut tidspunkt</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr id="dateCell">
-                        <td>12/12</td>
-                        <td>Mikkel Hansen</td>
-                        <td>ABC</td>
-                        <td>08:00</td>
-                        <td>16:00</td>
-                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr id="dateCell">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.date.Day)-@Html.DisplayFor(modelItem => item.date.Month)-@Html.DisplayFor(modelItem => item.date.Year)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Employee.initials)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Employee.Position.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Shift.start_time)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Shift.end_time)
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
     </div>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="~/Content/Scripts/CalendarScript.js"></script>
 </body>
 
 </html>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            @*@if()
+            {
+                Output.WriteLine("What's up");
+            }*@
+                @*$("#prevDay").click(function () {
+                    $("#mytext").val('@DateTime.Now.AddDays(-50).ToString("dd/MM/yyyy")');
+                });*@
+        });
+    </script>
+}
