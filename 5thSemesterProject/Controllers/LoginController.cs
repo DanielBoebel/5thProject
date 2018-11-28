@@ -17,6 +17,11 @@ namespace _5thSemesterProject.Controllers
 		// GET: Login
 		public ActionResult Index()
 		{
+			MessageViewModel messageViewModel = new MessageViewModel();
+			List<Employee> employees = messageViewModel.Employees.ToList();
+			List<Message> messages = messageViewModel.Messages.ToList();
+			messageViewModel.Employees = db.Employee.ToList();
+			messageViewModel.Messages = db.Message.ToList();
 			return View();
 		}
 
