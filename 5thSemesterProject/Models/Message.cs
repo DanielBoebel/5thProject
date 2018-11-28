@@ -33,5 +33,16 @@ namespace _5thSemesterProject.Models
 			this.date = date;
 			this.content = content;
 		}
+<<<<<<< HEAD
 	}
 }
+=======
+
+		public int message_id { get; set; }
+        public int reciever_id { get; set; }
+        public string date { get; set; }
+        public string content { get; set; }
+        public int sender_id { get; set; }
+    }
+}
+>>>>>>> CaspersHomeBranch
