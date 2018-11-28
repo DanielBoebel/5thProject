@@ -81,6 +81,18 @@ namespace _5thSemesterProject.Controllers
 			return View();
 		}
 
+        
+        public ActionResult ForgotPassword()
+        {
+
+
+            return View();
+
+        }
+
+        
+
+
 		public ActionResult Logout()
 		{
 			string username = Session["username"].ToString();
@@ -96,3 +108,8 @@ namespace _5thSemesterProject.Controllers
 
 	}
 }
+			//MessageViewModel messageViewModel = new MessageViewModel();
+			//List<Employee> employees = messageViewModel.Employees.ToList();
+			//List<Message> messages = messageViewModel.Messages.ToList();
+			//messageViewModel.Employees = db.Employee.ToList();
+			//messageViewModel.Messages = db.Message.ToList();
