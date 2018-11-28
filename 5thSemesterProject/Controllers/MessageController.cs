@@ -65,7 +65,7 @@ namespace _5thSemesterProject.Controllers
 			DateTime timestamp = new DateTime();
 			int sender_id = 0;
 			Int32.TryParse(Session["employeeId"].ToString(), out sender_id);
-			Message message = new Message(sender_id, reciever_id, timestamp.Date, content);
+			Message message = new Message(sender_id, reciever_id, timestamp.Date.ToString(), content);
 			db.Message.Add(message);
 			db.SaveChanges();
 			return RedirectToAction("_MessageContent","Message");
