@@ -51,7 +51,7 @@
           <Property Name="schedule_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="employee_id" Type="int" Nullable="false" />
           <Property Name="shift_id" Type="int" Nullable="false" />
-          <Property Name="date" Type="datetime" Nullable="false" />
+          <Property Name="date" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Shift">
           <Key>
@@ -203,7 +203,7 @@
           <Property Name="schedule_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="employee_id" Type="Int32" Nullable="false" />
           <Property Name="shift_id" Type="Int32" Nullable="false" />
-          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="date" Type="String" Nullable="false" />
           <NavigationProperty Name="Employee" Relationship="Self.FK_Schedule_Employee" FromRole="Schedule" ToRole="Employee" />
           <NavigationProperty Name="Shift" Relationship="Self.FK_Schedule_Shift" FromRole="Schedule" ToRole="Shift" />
         </EntityType>

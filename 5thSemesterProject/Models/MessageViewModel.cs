@@ -7,7 +7,6 @@ namespace _5thSemesterProject.Models
 {
 	public class MessageViewModel
 	{
-
 		public List<Employee> employeeList { get; set; }
 		public List<Message> messageSenderList { get; set; }
 		public List<Message> messageRecieverList { get; set; }

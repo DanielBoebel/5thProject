@@ -28,10 +28,10 @@
         <div class="card-header text-center" style="background-color: #ffffff;">
             <div class="btn-toolbar" style="padding: 0;margin: 0;">
                 <div class="btn-group btn-group-sm" role="group" style="padding: 0;margin: 0;height: 36px;font-size: 12px;">
-                    <button class="btn btn-primary border rounded" type="submit" id="prevDay">Forrige dag</button>
-                    <button class="btn btn-primary border rounded" type="submit" id="currentDay" style="margin: 0px 10px 0px 10px;">I dag</button>
-                    <button class="btn btn-primary border rounded" type="submit" id="nextDay">Næste dag</button>
-                    <button class="btn btn-secondary border rounded" type="button" disabled="disabled" id="showingDay" style="margin: 0px 0px 0px 10px;">@TempData["showingDate"]</button>
+                        <button class="btn btn-primary border rounded" type="submit" id="prevDay">Forrige dag</button>
+                        <button class="btn btn-primary border rounded" type="submit" id="currentDay" style="margin: 0px 10px 0px 10px;">I dag</button>
+                        <button class="btn btn-primary border rounded" type="submit" id="nextDay">Næste dag</button>
+                        <button class="btn btn-secondary border rounded" type="button" disabled="disabled" id="showingDay" name="date" style="margin: 0px 0px 0px 10px;">@TempData["showingDate"]</button>
                 </div>
             </div>
         </div>
@@ -50,30 +50,26 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <!-- If the date of the item is equal to the displayed date, show items-->
-                        if (item.date.ToString("dd/MM/yyyy").Equals("28-11-2018"))
-                        {
-                            <tr id="dateCell">
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.date.Day)-@Html.DisplayFor(modelItem => item.date.Month)-@Html.DisplayFor(modelItem => item.date.Year)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Employee.initials)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Employee.Position.name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Shift.start_time)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Shift.end_time)
-                                </td>
-                            </tr>
-                        }
+                        <tr id="dateCell">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Employee.initials)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Employee.Position.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Shift.start_time)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Shift.end_time)
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
