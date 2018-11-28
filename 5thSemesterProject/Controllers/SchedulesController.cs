@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -162,8 +163,9 @@ namespace _5thSemesterProject.Controllers
 
         public JsonResult ScheduleList(string date)
         {
-            var result = from r in db.Schedule
-                         where r.date.Equals("28-11-2018")
+            Console.WriteLine(date);
+            var result = from r in db.Schedule  // from Schedule table
+                         where r.date.Day.ToString().Equals("26") && r.date.Month.ToString().Equals("11") && r.date.Year.ToString().Equals("2018") // where date is equal to the showing date
                          select new { r.date, r.Employee.firstname, r.Employee.lastname, r.Employee.Position.name, r.Shift.start_time, r.Shift.end_time};
             return Json(result, JsonRequestBehavior.AllowGet);
         }
