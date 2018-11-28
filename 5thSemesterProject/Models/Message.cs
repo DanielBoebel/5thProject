@@ -9,6 +9,7 @@
 
 namespace _5thSemesterProject.Models
 {
+<<<<<<< HEAD
 	using System;
 	using System.Collections.Generic;
 
@@ -39,6 +40,14 @@ namespace _5thSemesterProject.Models
 =======
 
 		public int message_id { get; set; }
+=======
+    using System;
+    using System.Collections.Generic;
+    
+    public partial class Message
+    {
+        public int message_id { get; set; }
+>>>>>>> CaspersHomeBranch
         public int reciever_id { get; set; }
         public string date { get; set; }
         public string content { get; set; }
