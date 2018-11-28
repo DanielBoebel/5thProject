@@ -135,20 +135,19 @@ namespace _5thSemesterProject.Controllers
         // GET: Schedules for a day
         public ActionResult CalendarDay()
         {
-            Console.WriteLine(ShowingDate);
-            TempData["showingDate"] = DateTime.Now.ToString("dd/MM/yyyy");
-            var schedule = db.Schedule.Include(s => s.Employee).Include(s => s.Shift);
+            string today = DateTime.Now.Day.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString();
+            TempData["showingDate"] = today;
+            var schedule = db.Schedule.Where(x => x.date.Equals(today));
             return View(schedule.ToList());
         }
 
-        [HttpPost]
-        public ActionResult NextDay()
+        [HttpGet]
+        public ActionResult NextDay(int daysAhead)
         {
-            ShowingDate += 1;
-            Console.WriteLine(ShowingDate);
-            TempData["showingDate"] = DateTime.Now.AddDays(ShowingDate).ToString("dd/MM/yyyy");
-            var schedule = db.Schedule.Include(s => s.Employee).Include(s => s.Shift);
-            return View("../Schedules/CalendarDay");
+            
+
+            //var schedule = db.Schedule.Include(s => s.Employee).Include(s => s.Shift);
+            return View();
         }
 
         [HttpPost]
@@ -165,7 +164,7 @@ namespace _5thSemesterProject.Controllers
         {
             Console.WriteLine(date);
             var result = from r in db.Schedule  // from Schedule table
-                         where r.date.Day.ToString().Equals("26") && r.date.Month.ToString().Equals("11") && r.date.Year.ToString().Equals("2018") // where date is equal to the showing date
+                         where r.date.Equals(date) // where date is equal to the showing date
                          select new { r.date, r.Employee.firstname, r.Employee.lastname, r.Employee.Position.name, r.Shift.start_time, r.Shift.end_time};
             return Json(result, JsonRequestBehavior.AllowGet);
         }

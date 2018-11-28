@@ -37,7 +37,6 @@ namespace _5thSemesterProject.Controllers
 		[HttpGet]
 		public ActionResult _MessageContent(int reciever_id)
 		{
-
 			int sender_id = 0;
 			//Int32.TryParse(Session["employeeId"].ToString(), out sender_id);
 			MessageViewModel model = new MessageViewModel();
