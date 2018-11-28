@@ -92,7 +92,7 @@
 
 					<div class="type_msg">
 						<div class="input_msg_write">
-							@using (Html.BeginForm("postMessage", "Message", new { reciever_id = ViewBag.recieverId }))
+							@using (Html.BeginForm("_MessageContent", "Message", new { reciever_id = ViewBag.recieverId }))
 							{
 							<input type="text" class="write_msg" placeholder="Type a message" name="content" id="content" />
 

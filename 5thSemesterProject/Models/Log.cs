@@ -1,6 +1,5 @@
 namespace _5thSemesterProject.Models
 {
-<<<<<<< HEAD
 	using System;
 	using System.Collections.Generic;
 
@@ -27,17 +26,3 @@ namespace _5thSemesterProject.Models
 		public System.DateTime timestamp { get; set; }
 	}
 }
-=======
-    using System;
-    using System.Collections.Generic;
-    
-    public partial class Log
-    {
-        public int log_id { get; set; }
-        public int employee_id { get; set; }
-        public string employee_name { get; set; }
-        public string action { get; set; }
-        public System.DateTime timestamp { get; set; }
-    }
-}
->>>>>>> CaspersHomeBranch
