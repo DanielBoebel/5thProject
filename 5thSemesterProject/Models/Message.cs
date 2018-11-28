@@ -19,7 +19,7 @@ namespace _5thSemesterProject.Models
 			
 		}
 
-		public Message(int sender_id, int reciever_id, DateTime date, string content)
+		public Message(int sender_id, int reciever_id, string date, string content)
 		{
 			this.sender_id = sender_id;
 			this.reciever_id = reciever_id;
@@ -29,7 +29,7 @@ namespace _5thSemesterProject.Models
 
 		public int message_id { get; set; }
         public int reciever_id { get; set; }
-        public System.DateTime date { get; set; }
+        public string date { get; set; }
         public string content { get; set; }
         public int sender_id { get; set; }
     }

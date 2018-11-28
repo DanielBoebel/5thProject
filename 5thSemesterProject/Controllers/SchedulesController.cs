@@ -132,25 +132,23 @@ namespace _5thSemesterProject.Controllers
             return View();
         }
 
-        // GET: Schedules for a day
+        // GET: Schedules for today
         public ActionResult CalendarDay()
         {
-            string today = DateTime.Now.AddDays(DaysDifference).ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString();
+            string today = DateTime.Now.AddDays(DaysDifference).Day.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString();
             TempData["showingDate"] = today;
             var schedule = db.Schedule.Where(x => x.date.Equals(today));
             return View(schedule.ToList());
         }
 
-        [HttpGet]
-        public ActionResult NextDay(int daysAhead)
+        public void CalendarDay(double dayDiff)
         {
-            
 
+            DaysDifference++;
+            Console.WriteLine(DaysDifference);
             //var schedule = db.Schedule.Include(s => s.Employee).Include(s => s.Shift);
-            return View();
         }
-
-        [HttpPost]
+        
         public ActionResult PrevDay()
         {
             return View("../Schedules/CalendarDay");
