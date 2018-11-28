@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _5thSemesterProject.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +9,20 @@ namespace _5thSemesterProject.Controllers
 {
     public class MessageController : Controller
     {
-        // GET: Message
-        public ActionResult Index()
+		private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
+
+		// GET: Message
+		public ActionResult Index()
         {
-            return View();
+			var employee = db.Employee;
+            return View(employee.ToList());
         }
+
+		//Get Message content for specific person
+		[HttpGet]
+		public ActionResult _MessageContent(string sender_id, string reciever_id)
+		{
+			return View();
+		}
     }
 }

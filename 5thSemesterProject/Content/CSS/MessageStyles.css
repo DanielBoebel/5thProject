@@ -35,6 +35,7 @@ img {
 	display: inline-block;
 	text-align: right;
 	width: 60%;
+	padding:
 }
 
 .headind_srch {
@@ -109,7 +110,7 @@ img {
 }
 
 .inbox_chat {
-	height: 550px;
+	height: 600px;
 	overflow-y: scroll;
 }
 
