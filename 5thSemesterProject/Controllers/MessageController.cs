@@ -37,9 +37,9 @@ namespace _5thSemesterProject.Controllers
 		[HttpGet]
 		public ActionResult _MessageContent(int reciever_id)
 		{
-
 			int sender_id = 0;
-			//Int32.TryParse(Session["employeeId"].ToString(), out sender_id);
+			Int32.TryParse(Session["employeeId"].ToString(), out sender_id);
+			ViewBag.recieverId = reciever_id;
 			MessageViewModel model = new MessageViewModel();
 			model.employeeList = new List<Employee>();
 			model.messageSenderList = new List<Message>();
@@ -48,8 +48,8 @@ namespace _5thSemesterProject.Controllers
 
 			List<Message> listSender = new List<Message>();
 			List<Message> listReciever = new List<Message>();
-			listSender = db.Message.Where(x => x.sender_id == reciever_id).ToList();
-			listReciever = db.Message.Where(x => x.reciever_id == reciever_id).ToList();
+			listSender = db.Message.Where(x => x.sender_id == sender_id ).ToList();
+			listReciever = db.Message.Where(x => x.reciever_id == sender_id).ToList();
 			List<Employee> employeeList = db.Employee.ToList();
 			model.employeeList = employeeList;
 			model.messageSenderList = listSender;
@@ -57,5 +57,19 @@ namespace _5thSemesterProject.Controllers
 
 			return View(model);
 		}
+
+
+		[HttpPost]
+		public ActionResult postMessage(int reciever_id, string content)
+		{
+			DateTime timestamp = new DateTime();
+			int sender_id = 0;
+			Int32.TryParse(Session["employeeId"].ToString(), out sender_id);
+			Message message = new Message(sender_id, reciever_id, timestamp.Date, content);
+			db.Message.Add(message);
+			db.SaveChanges();
+			return RedirectToAction("_MessageContent","Message");
+		}
+
     }
 }
