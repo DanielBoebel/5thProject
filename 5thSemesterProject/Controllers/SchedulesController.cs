@@ -17,13 +17,6 @@ namespace _5thSemesterProject.Controllers
         // Date used for showing the correct schedule
         private double ShowingDate = 0.0;
 
-        // GET: Schedules
-        public ActionResult Index()
-        {
-            var schedule = db.Schedule.Include(s => s.Employee).Include(s => s.Shift);
-            return View(schedule.ToList());
-        }
-
         // GET: Schedules/Details/5
         public ActionResult Details(int? id)
         {
@@ -141,11 +134,38 @@ namespace _5thSemesterProject.Controllers
         // GET: Schedules for a day
         public ActionResult CalendarDay()
         {
-            ShowingDate = 0.0;
             Console.WriteLine(ShowingDate);
-            TempData["showingDate"] = DateTime.Now.ToString("dd/MM/yy");
+            TempData["showingDate"] = DateTime.Now.ToString("dd/MM/yyyy");
             var schedule = db.Schedule.Include(s => s.Employee).Include(s => s.Shift);
             return View(schedule.ToList());
+        }
+
+        [HttpPost]
+        public ActionResult NextDay()
+        {
+            ShowingDate += 1;
+            Console.WriteLine(ShowingDate);
+            TempData["showingDate"] = DateTime.Now.AddDays(ShowingDate).ToString("dd/MM/yyyy");
+            var schedule = db.Schedule.Include(s => s.Employee).Include(s => s.Shift);
+            return View("../Schedules/CalendarDay");
+        }
+
+        [HttpPost]
+        public ActionResult PrevDay()
+        {
+            ShowingDate -= 1;
+            Console.WriteLine(ShowingDate);
+            TempData["showingDate"] = DateTime.Now.AddDays(ShowingDate).ToString("dd/MM/yyyy");
+            var schedule = db.Schedule.Include(s => s.Employee).Include(s => s.Shift);
+            return View("../Schedules/CalendarDay");
+        }
+
+        public JsonResult ScheduleList(string date)
+        {
+            var result = from r in db.Schedule
+                         where r.date.Equals("28-11-2018")
+                         select new { r.date, r.Employee.firstname, r.Employee.lastname, r.Employee.Position.name, r.Shift.start_time, r.Shift.end_time};
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)
