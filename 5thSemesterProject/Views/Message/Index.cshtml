@@ -1,4 +1,4 @@
-﻿@model IEnumerable<_5thSemesterProject.Models.Employee>
+﻿@model _5thSemesterProject.Models.MessageViewModel
 <html>
 <head>
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -28,23 +28,25 @@
 							</div>
 						</div>
 					</div>
-				@foreach (var item in Model)
-				{
-					<div class="inbox_chat">
-						<div class="chat_list">
-							<div class="chat_people">
-								<div class="chat_ib">
-									<h5>@Html.DisplayFor(modelItem => item.initials)</h5>
-									<p>
-										Stilling: @Html.DisplayFor(modelItem => item.Position)
-										Fornavn: @Html.DisplayFor(modelItem => item.firstname)
-										Efternavn: @Html.DisplayFor(modelItem => item.lastname)
-									</p>
+						<div class="inbox_chat">
+
+							@foreach (var item in Model.employeeList)
+							{
+								<div class="chat_list">
+									<div class="chat_people">
+										<div class="chat_ib">
+											<a href="@Url.Action("_MessageContent","Message", new {reciever_id = item.employee_id })">
+												<h5>@Html.DisplayFor(modelItem => item.initials)</h5>
+												<p>
+													Employee ID: @Html.DisplayFor(modelItem => item.employee_id)
+													Navn: @Html.DisplayFor(modelItem => item.firstname) @Html.DisplayFor(modelItem => item.lastname)
+												</p>
+											</a>
+										</div>
+									</div>
 								</div>
-							</div>
-						</div>
+							}
 					</div>
-				}
 				</div>
 
 

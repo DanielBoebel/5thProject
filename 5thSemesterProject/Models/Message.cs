@@ -15,10 +15,9 @@ namespace _5thSemesterProject.Models
     public partial class Message
     {
         public int message_id { get; set; }
-        public string sender { get; set; }
-        public string reciever { get; set; }
         public int reciever_id { get; set; }
         public System.DateTime date { get; set; }
         public string content { get; set; }
+        public int sender_id { get; set; }
     }
 }

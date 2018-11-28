@@ -32,8 +32,7 @@
             <PropertyRef Name="message_id" />
           </Key>
           <Property Name="message_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="sender" Type="varchar" MaxLength="128" Nullable="false" />
-          <Property Name="reciever" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="sender_id" Type="int" Nullable="false" />
           <Property Name="reciever_id" Type="int" Nullable="false" />
           <Property Name="date" Type="datetime" Nullable="false" />
           <Property Name="content" Type="varchar(max)" />
@@ -184,11 +183,10 @@
             <PropertyRef Name="message_id" />
           </Key>
           <Property Name="message_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="sender" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="reciever" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="reciever_id" Type="Int32" Nullable="false" />
           <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="sender_id" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Position">
           <Key>
@@ -340,10 +338,9 @@
           <EntitySetMapping Name="Message">
             <EntityTypeMapping TypeName="DB5thSemesterModel.Message">
               <MappingFragment StoreEntitySet="Message">
+                <ScalarProperty Name="sender_id" ColumnName="sender_id" />
                 <ScalarProperty Name="content" ColumnName="content" />
                 <ScalarProperty Name="message_id" ColumnName="message_id" />
-                <ScalarProperty Name="sender" ColumnName="sender" />
-                <ScalarProperty Name="reciever" ColumnName="reciever" />
                 <ScalarProperty Name="reciever_id" ColumnName="reciever_id" />
                 <ScalarProperty Name="date" ColumnName="date" />
               </MappingFragment>
