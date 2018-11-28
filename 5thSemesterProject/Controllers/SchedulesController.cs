@@ -16,7 +16,7 @@ namespace _5thSemesterProject.Controllers
         private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
 
         // Date used for showing the correct schedule
-        private double ShowingDate = 0.0;
+        private double DaysDifference = 0.0;
 
         // GET: Schedules/Details/5
         public ActionResult Details(int? id)
@@ -135,7 +135,7 @@ namespace _5thSemesterProject.Controllers
         // GET: Schedules for a day
         public ActionResult CalendarDay()
         {
-            string today = DateTime.Now.Day.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString();
+            string today = DateTime.Now.AddDays(DaysDifference).ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString();
             TempData["showingDate"] = today;
             var schedule = db.Schedule.Where(x => x.date.Equals(today));
             return View(schedule.ToList());
@@ -153,10 +153,6 @@ namespace _5thSemesterProject.Controllers
         [HttpPost]
         public ActionResult PrevDay()
         {
-            ShowingDate -= 1;
-            Console.WriteLine(ShowingDate);
-            TempData["showingDate"] = DateTime.Now.AddDays(ShowingDate).ToString("dd/MM/yyyy");
-            var schedule = db.Schedule.Include(s => s.Employee).Include(s => s.Shift);
             return View("../Schedules/CalendarDay");
         }
 
