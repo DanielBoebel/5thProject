@@ -28,20 +28,17 @@
         <div class="card-header text-center" style="background-color: #ffffff;">
             <div class="btn-toolbar" style="padding: 0;margin: 0;">
                 <div class="btn-group btn-group-sm" role="group" style="padding: 0;margin: 0;height: 36px;font-size: 12px;">
-<<<<<<< HEAD
 						<button class="btn btn-primary border rounded" type="submit" id="prevDay">Forrige dag</button>
 						<button class="btn btn-primary border rounded" type="submit" id="currentDay" style="margin: 0px 10px 0px 10px;">I dag</button>
 						<button class="btn btn-primary border rounded" type="submit" id="nextDay">Næste dag</button>
 						<button class="btn btn-secondary border rounded" type="button" disabled="disabled" id="showingDay" name="date" style="margin: 0px 0px 0px 10px;">@TempData["showingDate"]</button>
 </div>
-=======
                     <button class="btn btn-primary border rounded" type="button" onclick="location.href='@Url.Action("CalendarDay", "Schedules")'">Test</button>
                     <button class="btn btn-primary border rounded" type="submit" id="prevDay">Forrige dag</button>
                     <button class="btn btn-primary border rounded" type="submit" id="currentDay" style="margin: 0px 10px 0px 10px;">I dag</button>
                     <button class="btn btn-primary border rounded" type="submit" id="nextDay">Næste dag</button>
                     <button class="btn btn-secondary border rounded" type="button" disabled="disabled" id="showingDay" name="date" style="margin: 0px 0px 0px 10px;">@TempData["showingDate"]</button>
                 </div>
->>>>>>> CaspersHomeBranch
             </div>
         </div>
         <div class="table-responsive">
@@ -94,7 +91,7 @@
     <script type="text/javascript">
     $(document).ready(function () {
         $("#prevDay").click(function () {
-            $.getJSON('/Schedules/ScheduleList/' + $('#showingDay').val(), function (data) { // takes the value of showingDay
+            $.getJSON('/Schedules/ScheduleList/' + 26-11-2018, function (data) { // takes the value of showingDay
                 console.log(data)
             });
         });
