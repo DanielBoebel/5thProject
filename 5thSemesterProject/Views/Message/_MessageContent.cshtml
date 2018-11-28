@@ -92,10 +92,12 @@
 
 					<div class="type_msg">
 						<div class="input_msg_write">
-							<form method="post">
-								<input type="text" class="write_msg" placeholder="Type a message" name="content" id="content" />
-								<button class="msg_send_btn" type="submit" onclick="location.href="@Url.Action("postMessage", "Message", new {reciever_id = ViewBag.recieverId })"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-							</form>
+							@using (Html.BeginForm("_MessageContent", "Message", new { reciever_id = ViewBag.recieverId }))
+							{
+							<input type="text" class="write_msg" placeholder="Type a message" name="content" id="content" />
+
+								<button class="msg_send_btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+							}
 						</div>
 					</div>
 				</div>
