@@ -17,7 +17,9 @@ namespace _5thSemesterProject.Controllers
 		// GET: Log
 		public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-			ViewBag.CurrentSort = sortOrder;
+
+            int myID = 0;
+            ViewBag.CurrentSort = sortOrder;
 			ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
 			ViewBag.UsernameSortParm = sortOrder == "username" ? "username_desc" : "username";
 			ViewBag.TimestampSortParm = sortOrder == "timestamp" ? "timestamp_desc" : "timestamp";
@@ -34,8 +36,31 @@ namespace _5thSemesterProject.Controllers
 
 			ViewBag.CurrentFilter = searchString;
 
-			var logs = from s in db.Log.ToList()
-					   select s;
+            var logs = from s in db.Log.ToList()
+                       select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                try
+                {
+                    myID = Int32.Parse(searchString);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                if (myID != 0)
+                {
+                    logs = logs.Where(s => s.log_id == myID);
+                }
+                else
+                {
+                    logs = logs.Where(s => s.action.ToUpper().Contains(searchString.ToUpper()) || s.employee_name.ToUpper().Contains(searchString.ToUpper()) ||
+                    s.timestamp.ToString().ToUpper().Contains(searchString.ToUpper()));
+                }
+            }
+
+            
 
 			switch (sortOrder)
 			{

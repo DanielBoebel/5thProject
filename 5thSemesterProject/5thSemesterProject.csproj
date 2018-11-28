@@ -302,6 +302,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Message\Index.cshtml" />
     <Content Include="Views\Message\_MessageContent.cshtml" />
+    <Content Include="Views\Login\ForgotPassword.cshtml" />
     <None Include="Views\Schedules\CalendarDay.cshtml" />
     <Content Include="Views\Schedules\CalendarMonth.cshtml" />
     <None Include="Views\Schedules\CalendarWeek.cshtml" />
