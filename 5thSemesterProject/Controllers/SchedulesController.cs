@@ -135,20 +135,30 @@ namespace _5thSemesterProject.Controllers
         // GET: Schedules for today
         public ActionResult CalendarDay()
         {
+			ViewBag.dayId = 0;
+			ViewBag.monthId = 0;
             string today = DateTime.Now.AddDays(DaysDifference).Day.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString();
             TempData["showingDate"] = today;
             var schedule = db.Schedule.Where(x => x.date.Equals(today));
             return View(schedule.ToList());
         }
 
-        public void CalendarDay(double dayDiff)
-        {
+		[HttpPost]
+		public ActionResult CalendarDay(int dayId, int monthId)
+		{
 
-            DaysDifference++;
-            Console.WriteLine(DaysDifference);
-            //var schedule = db.Schedule.Include(s => s.Employee).Include(s => s.Shift);
-        }
-        
+			int dayTemp = dayId;
+			int monthTemp = monthId;
+
+			string nextDay = DateTime.Now.AddDays(dayTemp).Day.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString();
+			TempData["showingDate"] = nextDay;
+			var schedule = db.Schedule.Where(x => x.date.Equals(nextDay));
+			ViewBag.dayId = dayTemp;
+			ViewBag.monthId = monthTemp;
+
+			return View(schedule.ToList());
+		}
+
         public ActionResult PrevDay()
         {
             return View("../Schedules/CalendarDay");
