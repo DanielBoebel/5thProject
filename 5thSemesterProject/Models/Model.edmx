@@ -338,7 +338,7 @@
           <EntitySetMapping Name="Message">
             <EntityTypeMapping TypeName="DB5thSemesterModel.Message">
               <MappingFragment StoreEntitySet="Message">
-                <ScalarProperty Name="content" ColumnName="date" />
+                <ScalarProperty Name="date" ColumnName="date" />
                 <ScalarProperty Name="sender_id" ColumnName="sender_id" />
                 <ScalarProperty Name="content" ColumnName="content" />
                 <ScalarProperty Name="message_id" ColumnName="message_id" />

@@ -141,12 +141,16 @@ namespace _5thSemesterProject.Controllers
             return View(schedule.ToList());
         }
 
-        public void CalendarDay(double dayDiff)
+        [HttpGet]
+        public ActionResult NextDay(int count)
         {
+            DaysDifference+= count;
+            //string today = DateTime.Now.AddDays(DaysDifference).Day.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString();
+            string today = "Rasmus"; 
+            TempData["showingDate"] = DaysDifference;
+            var schedule = db.Schedule.Where(x => x.Employee.firstname.Equals(today));
 
-            DaysDifference++;
-            Console.WriteLine(DaysDifference);
-            //var schedule = db.Schedule.Include(s => s.Employee).Include(s => s.Shift);
+            return View(schedule.ToList());
         }
         
         public ActionResult PrevDay()

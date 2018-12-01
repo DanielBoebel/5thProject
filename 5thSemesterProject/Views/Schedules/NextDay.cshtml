@@ -29,9 +29,9 @@
                 <div class="btn-group btn-group-sm" role="group" style="padding: 0;margin: 0;height: 36px;font-size: 12px;">
                     <button class="btn btn-primary border rounded" type="submit" id="prevDay">Forrige dag</button>
                     <button class="btn btn-primary border rounded" type="submit" id="currentDay" style="margin: 0px 10px 0px 10px;">I dag</button>
-                   
-                    <button class="btn btn-primary border rounded" type="submit" id="nextDay" onclick="location.href='@Url.Action("NextDay", "Schedules", new {count=1 })'" >Næste dag</button>
-                    
+
+                    <button class="btn btn-primary border rounded" type="submit" id="nextDay" onclick="location.href='@Url.Action("NextDay", "Schedules")'">Næste dag</button>
+
                     <button class="btn btn-secondary border rounded" type="button" disabled="disabled" id="showingDay" name="date" style="margin: 0px 0px 0px 10px;">@TempData["showingDate"]</button>
                 </div>
             </div>
@@ -86,7 +86,7 @@
     <script type="text/javascript">
         $("#nextDay").click(function changeDay() {
     var test = document.getElementById('showingDay').value;
-    
+
     $.ajax({
         // do the rest of work here
         type: "POST",
@@ -119,4 +119,4 @@
             });
     });
     </script>
-}   
+}
