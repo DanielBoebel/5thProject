@@ -50,6 +50,7 @@ namespace _5thSemesterProject.Controllers
 
 			List<Message> listSender = new List<Message>();
 			List<Message> listReciever = new List<Message>();
+			List<CorrectOrder> listCorrectOrder = new List<CorrectOrder>();
 			listSender = db.Message.Where(x => x.sender_id == sender_id ).ToList();
 			listReciever = db.Message.Where(x => x.reciever_id == sender_id).ToList();
 			List<Employee> employeeList = db.Employee.ToList();
@@ -57,21 +58,22 @@ namespace _5thSemesterProject.Controllers
 			model.messageSenderList = listSender;
 			model.messageRecieverList = listReciever;
 
+			
 			return View(model);
 		}
 
 
+		//Sending a message
 		[HttpPost]
 		public ActionResult _MessageContent(int reciever_id, string content)
 		{
 
 
-
-
-
 			int sender_id = 0;
 			Int32.TryParse(Session["employeeId"].ToString(), out sender_id);
 			ViewBag.recieverId = reciever_id;
+
+
 			MessageViewModel model = new MessageViewModel();
 			model.employeeList = new List<Employee>();
 			model.messageSenderList = new List<Message>();
@@ -79,21 +81,17 @@ namespace _5thSemesterProject.Controllers
 
 
 			List<Employee> employeeList = db.Employee.ToList();
-			model.employeeList = employeeList;
-
-
-
-
 			List<Message> listSender = new List<Message>();
 			List<Message> listReciever = new List<Message>();
 			listSender = db.Message.Where(x => x.sender_id == sender_id).ToList();
 			listReciever = db.Message.Where(x => x.reciever_id == sender_id).ToList();
 			model.messageSenderList = listSender;
 			model.messageRecieverList = listReciever;
+			model.employeeList = employeeList;
 
 
-			DateTime timestamp = new DateTime();
-			Message message = new Message(sender_id, reciever_id, timestamp.Date.ToString(), content);
+			DateTime timestamp = DateTime.Now;
+			Message message = new Message(sender_id, reciever_id, timestamp.ToString("dd/MM/yyyy HH:mm"), content);
 			db.Message.Add(message);
 			db.SaveChanges();
 			return View(model);
