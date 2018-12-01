@@ -22,6 +22,8 @@ namespace _5thSemesterProject.Controllers
 
 
 			List<Employee> employeeList = db.Employee.ToList();
+			model.employeeList = employeeList;
+
 			List<Message> messageSenderList = db.Message.ToList();
 			List<Message> messageReciverList = db.Message.ToList();
 
@@ -48,6 +50,7 @@ namespace _5thSemesterProject.Controllers
 
 			List<Message> listSender = new List<Message>();
 			List<Message> listReciever = new List<Message>();
+			List<CorrectOrder> listCorrectOrder = new List<CorrectOrder>();
 			listSender = db.Message.Where(x => x.sender_id == sender_id ).ToList();
 			listReciever = db.Message.Where(x => x.reciever_id == sender_id).ToList();
 			List<Employee> employeeList = db.Employee.ToList();
@@ -55,20 +58,43 @@ namespace _5thSemesterProject.Controllers
 			model.messageSenderList = listSender;
 			model.messageRecieverList = listReciever;
 
+			
 			return View(model);
 		}
 
 
+		//Sending a message
 		[HttpPost]
-		public ActionResult postMessage(int reciever_id, string content)
+		public ActionResult _MessageContent(int reciever_id, string content)
 		{
-			DateTime timestamp = new DateTime();
+
+
 			int sender_id = 0;
 			Int32.TryParse(Session["employeeId"].ToString(), out sender_id);
-			Message message = new Message(sender_id, reciever_id, timestamp.Date.ToString(), content);
+			ViewBag.recieverId = reciever_id;
+
+
+			MessageViewModel model = new MessageViewModel();
+			model.employeeList = new List<Employee>();
+			model.messageSenderList = new List<Message>();
+			model.messageRecieverList = new List<Message>();
+
+
+			List<Employee> employeeList = db.Employee.ToList();
+			List<Message> listSender = new List<Message>();
+			List<Message> listReciever = new List<Message>();
+			listSender = db.Message.Where(x => x.sender_id == sender_id).ToList();
+			listReciever = db.Message.Where(x => x.reciever_id == sender_id).ToList();
+			model.messageSenderList = listSender;
+			model.messageRecieverList = listReciever;
+			model.employeeList = employeeList;
+
+
+			DateTime timestamp = DateTime.Now;
+			Message message = new Message(sender_id, reciever_id, timestamp.ToString("dd/MM/yyyy HH:mm"), content);
 			db.Message.Add(message);
 			db.SaveChanges();
-			return RedirectToAction("_MessageContent","Message");
+			return View(model);
 		}
 
     }

@@ -7,7 +7,7 @@
       <Diagram DiagramId="aed6870a10504b9e83e9fb17f0f97442" Name="Diagram1">
         <EntityTypeShape EntityType="DB5thSemesterModel.Employee" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
         <EntityTypeShape EntityType="DB5thSemesterModel.Log" Width="1.5" PointX="0.75" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB5thSemesterModel.Message" Width="1.5" PointX="7.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB5thSemesterModel.Message" Width="1.5" PointX="7.75" PointY="2.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DB5thSemesterModel.Position" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="DB5thSemesterModel.Schedule" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
         <EntityTypeShape EntityType="DB5thSemesterModel.Shift" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
