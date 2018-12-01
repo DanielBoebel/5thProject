@@ -137,7 +137,7 @@ namespace _5thSemesterProject.Controllers
         {
 			ViewBag.dayId = 0;
 			ViewBag.monthId = 0;
-            string today = DateTime.Now.Day.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString();
+            string today = DateTime.Now.ToString("dd-MM-yyyy"); //.Day.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString();
             TempData["showingDate"] = today;
             var schedule = db.Schedule.Where(x => x.date.Equals(today));
             return View(schedule.ToList());
@@ -146,7 +146,6 @@ namespace _5thSemesterProject.Controllers
 		[HttpPost]
 		public ActionResult CalendarDay(int dayId)
 		{
-
 			int dayTemp = dayId;
 
 			ViewBag.dayId = dayTemp;
@@ -157,20 +156,6 @@ namespace _5thSemesterProject.Controllers
 
 			return View(schedule.ToList());
 		}
-
-        public ActionResult PrevDay()
-        {
-            return View("../Schedules/CalendarDay");
-        }
-
-        public JsonResult ScheduleList(string date)
-        {
-            Console.WriteLine(date);
-            var result = from r in db.Schedule  // from Schedule table
-                         where r.date.Equals(date) // where date is equal to the showing date
-                         select new { r.date, r.Employee.firstname, r.Employee.lastname, r.Employee.Position.name, r.Shift.start_time, r.Shift.end_time};
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
 
         protected override void Dispose(bool disposing)
         {

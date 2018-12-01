@@ -91,28 +91,3 @@
     @*<script type="text/javascript" src="~/Content/Scripts/CalendarScript.js"></script>*@
 </body>
 </html>
-
-@section Scripts {
-    <script type="text/javascript">
-    $(document).ready(function () {
-        $("#prevDay").click(function () {
-            $.getJSON('/Schedules/ScheduleList/' + 26-11-2018, function (data) { // takes the value of showingDay
-                console.log(data)
-            });
-        });
-
-        $("#nextDay").click(function () {
-            $.getJSON('/Schedules/ScheduleList/' + $('#showingDay').val(), function (data) { // takes the value of showingDay
-                console.log(data)
-            });
-        });
-
-            $("#today").click(function () {
-                $("#showingDay").val('@DateTime.Now.ToString("dd/MM/yyyy")');
-                $.getJSON('/Schedules/ScheduleList/' + $('#showingDay').val(), function (data) { // takes the value of showingDay
-                    console.log(data)
-                });
-            });
-    });
-    </script>
-}   
