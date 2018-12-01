@@ -137,24 +137,23 @@ namespace _5thSemesterProject.Controllers
         {
 			ViewBag.dayId = 0;
 			ViewBag.monthId = 0;
-            string today = DateTime.Now.AddDays(DaysDifference).Day.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString();
+            string today = DateTime.Now.Day.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString();
             TempData["showingDate"] = today;
             var schedule = db.Schedule.Where(x => x.date.Equals(today));
             return View(schedule.ToList());
         }
 
 		[HttpPost]
-		public ActionResult CalendarDay(int dayId, int monthId)
+		public ActionResult CalendarDay(int dayId)
 		{
 
 			int dayTemp = dayId;
-			int monthTemp = monthId;
 
-			string nextDay = DateTime.Now.AddDays(dayTemp).Day.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString();
-			TempData["showingDate"] = nextDay;
-			var schedule = db.Schedule.Where(x => x.date.Equals(nextDay));
 			ViewBag.dayId = dayTemp;
-			ViewBag.monthId = monthTemp;
+			string day = DateTime.Now.AddDays(dayTemp).ToString("dd-MM-yyyy");
+			TempData["showingDate"] = day;
+			var schedule = db.Schedule.Where(x => x.date.Equals(day));
+			
 
 			return View(schedule.ToList());
 		}
