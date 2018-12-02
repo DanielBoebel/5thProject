@@ -164,7 +164,7 @@ namespace _5thSemesterProject.Controllers
                 daysToAdd--;
                 if (weekDays[i].Equals(dayOfWeek)) // if the weekDay is equal to current weekday, get starting date and last date
                 {
-                    DateTime startDate = dt.AddDays(-i).Date;
+                    DateTime startDate = dt.AddDays(-i).Date; 
 
                     for (int j = 0; j < 7; j++)
                     {
@@ -174,8 +174,19 @@ namespace _5thSemesterProject.Controllers
                 }
             }
 
+            // Because LINQ is not smart
+            string monday = weekDayDates[0];
+            string tuesday = weekDayDates[1];
+            string wednessday = weekDayDates[2];
+            string thursday = weekDayDates[3];
+            string friday = weekDayDates[4];
+            string saturday = weekDayDates[5];
+            string sunday = weekDayDates[6];
+
+            ViewBag.monday = monday;
+
             TempData["showingWeek"] = "Uge " + weekNum;
-            var schedule = db.Schedule.Where(x => x.date.Equals(weekDayDates[0]));// || x.date.Equals(weekDayDates[1]) || x.date.Equals(weekDayDates[2]) || x.date.Equals(weekDayDates[3]) || x.date.Equals(weekDayDates[4]) || x.date.Equals(weekDayDates[5]) || x.date.Equals(weekDayDates[6]));
+            var schedule = db.Schedule.Where(x => x.date.Equals(monday) || x.date.Equals(tuesday) || x.date.Equals(wednessday) || x.date.Equals(thursday) || x.date.Equals(friday) || x.date.Equals(saturday) || x.date.Equals(sunday));
             return View(schedule.ToList());
         }
 
