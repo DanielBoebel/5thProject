@@ -19,8 +19,6 @@ namespace _5thSemesterProject.Controllers
         {
             if (Session["employeeId"] != null)
             {
-
-
                 string idString = Session["employeeId"].ToString();
                 int id = Int32.Parse(idString);
                 Employee employee = db.Employee.Find(id);

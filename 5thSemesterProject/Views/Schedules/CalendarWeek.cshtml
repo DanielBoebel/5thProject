@@ -32,15 +32,15 @@
                     {
                         <button class="btn btn-primary border rounded" type="submit" id="prevWeek">Forrige uge</button>
                     }
-                    @using (Html.BeginForm("CalendarWeek", "Schedules", new { weekId = ViewBag.weekId - ViewBag.weekId, diff = ViewBag.diff - ViewBag.diff }))
+                    @using (Html.BeginForm("CalendarWeek", "Schedules", new { weekId = ViewBag.weekId, diff = ViewBag.diff - ViewBag.diff }))
                     {
                         <button class="btn btn-primary border rounded" type="submit" id="currentWeek" style="margin: 0px 10px 0px 10px;">Denne uge</button>
                     }
                     @using (Html.BeginForm("CalendarWeek", "Schedules", new { weekId = ViewBag.weekId + 1, diff = ViewBag.diff + 1 }))
                     {
                         <button class="btn btn-primary border rounded" type="submit" id="nextWeek">Næste uge</button>
+                        <button class="btn btn-secondary border rounded" type="button" disabled="disabled" style="margin: 0px 0px 0px 10px;">@TempData["showingWeek"]</button>
                     }
-                    <button class="btn btn-secondary border rounded" type="button" disabled="disabled" style="margin: 0px 0px 0px 10px;">@TempData["showingWeek"]</button>
                 </div>
             </div>
         </div>

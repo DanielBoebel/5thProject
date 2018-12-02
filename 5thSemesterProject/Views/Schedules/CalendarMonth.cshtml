@@ -28,19 +28,19 @@
         <div class="card-header text-center" style="background-color: #ffffff;">
             <div class="btn-toolbar" style="padding: 0;margin: 0;">
                 <div class="btn-group btn-group-sm" role="group" style="padding: 0;margin: 0;height: 36px;font-size: 12px;">
-					@using (Html.BeginForm("CalendarMonth", "Schedules", new { monthId = ViewBag.monthId - 1 }))
-					{
-                    <button class="btn btn-primary border rounded" type="submit" id="prevMonth">Forrige måned</button>
-					}
-					@using (Html.BeginForm("CalendarMonth", "Schedules", new { monthId = ViewBag.monthId - ViewBag.monthId }))
-					{
-                    <button class="btn btn-primary border rounded" type="submit" id="currentMonth" style="margin: 0px 10px 0px 10px;">Denne måned</button>
-					}
-					@using (Html.BeginForm("CalendarMonth", "Schedules", new { monthId = ViewBag.monthId + 1 }))
-					{
-                    <button class="btn btn-primary border rounded" id="nxtMonth" type="submit";> Næste måned</button>
-					}
-                    <button class="btn btn-secondary border rounded" type="button" disabled="disabled" id="showingMonth" style="margin: 0px 0px 0px 10px;">@TempData["showingMonth"]</button>
+                    @using (Html.BeginForm("CalendarMonth", "Schedules", new { monthId = ViewBag.monthId - 1 }))
+                    {
+                        <button class="btn btn-primary border rounded" type="submit" id="prevMonth">Forrige måned</button>
+                    }
+                    @using (Html.BeginForm("CalendarMonth", "Schedules", new { monthId = ViewBag.monthId - ViewBag.monthId }))
+                    {
+                        <button class="btn btn-primary border rounded" type="submit" id="currentMonth" style="margin: 0px 10px 0px 10px;">Denne måned</button>
+                    }
+                    @using (Html.BeginForm("CalendarMonth", "Schedules", new { monthId = ViewBag.monthId + 1 }))
+                    {
+                        <button class="btn btn-primary border rounded" id="nxtMonth" type="submit" ;> Næste måned</button>
+                        <button class="btn btn-secondary border rounded" type="button" disabled="disabled" id="showingMonth" style="margin: 0px 0px 0px 10px;">@TempData["showingMonth"]</button>
+                    }
                 </div>
             </div>
         </div>
