@@ -55,10 +55,10 @@
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                    @*@if (item.date.Equals(DateTime.Now.Day.ToString()))
+                                    @if (item.date.Equals(DateTime.Now.Day.ToString()))
                                     {
 
-                                    }*@
+                                    }@
                                     <tr id="dateCell">
                                         <td>
                                             @Html.DisplayFor(modelItem => item.date) <br />
