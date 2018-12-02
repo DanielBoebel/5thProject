@@ -298,9 +298,10 @@ namespace _5thSemesterProject.Controllers
         // GET: Schedules for week
         public ActionResult CalendarWeek()
         {
-            double dayOfYear = DateTime.Now.DayOfYear / 7; 
+            double dayOfYear = DateTime.Now.DayOfYear / 7;
             double weekNum = Math.Ceiling(dayOfYear);
             ViewBag.weekId = weekNum;
+            ViewBag.diff = 0;
 
             // Current dayOfWeek (String format)
             string dayOfWeek = DateTime.Now.AddDays(0).DayOfWeek.ToString();
@@ -332,44 +333,22 @@ namespace _5thSemesterProject.Controllers
         }
 
         [HttpPost]
-        public ActionResult CalendarWeek(int weekId)
+        public ActionResult CalendarWeek(int weekId, int diff)
         {
-            double dayOfYear = DateTime.Now.DayOfYear / 7;
-            double weekNum = Math.Ceiling(dayOfYear);
-            ViewBag.weekId = weekNum;
+            if (weekId > 52) weekId = 1;
+            if (weekId < 1) weekId = 52;
 
-            DateTime tempWeek = new DateTime();
+            ViewBag.weekId = weekId;
+            ViewBag.diff = diff;
 
             // Current dayOfWeek (String format)
-            string dayOfWeek;
-            //int temp = ViewBag.weekId;
-            if (weekId > weekNum)
-            {
-                dayOfYear = DateTime.Now.AddDays(7).DayOfYear / 7;
-                weekNum = Math.Ceiling(dayOfYear);
-                dayOfWeek = DateTime.Now.AddDays(7).DayOfWeek.ToString();
-                ViewBag.weekId = weekNum;
-            }
-            else if (weekId < weekNum)
-            {
-                dayOfYear = DateTime.Now.AddDays(-7).DayOfYear / 7;
-                weekNum = Math.Ceiling(dayOfYear);
-                dayOfWeek = DateTime.Now.AddDays(-7).DayOfWeek.ToString();
-                ViewBag.weekId = weekNum;
-            } else
-            {
-                dayOfYear = DateTime.Now.DayOfYear / 7;
-                weekNum = Math.Ceiling(dayOfYear);
-                dayOfWeek = DateTime.Now.AddDays(0).DayOfWeek.ToString();
-                ViewBag.weekId = weekNum;
-            }
-
-
-            //// Current dayOfWeek (String format)
-            //string dayOfWeek = DateTime.Now.AddDays(weekId).DayOfWeek.ToString();
+            string dayOfWeek = DateTime.Now.AddDays(7 * diff).DayOfWeek.ToString();
 
             // Array of dates of current week - Contains the first date of the week on index 0 and last date of the week on index 6
-            string[] dates = getDatesOfWeek(dayOfWeek, 2);
+            string[] dates = getDatesOfWeek(dayOfWeek, 7 * diff);
+
+            //double dayOfYear = DateTime.Now.AddDays(weekId).DayOfYear / 7;
+            //double weekNum = Math.Ceiling(dayOfYear);
 
             // Because LINQ is not smart
             string monday = dates[0];
@@ -389,11 +368,12 @@ namespace _5thSemesterProject.Controllers
             ViewBag.saturday = saturday;
             ViewBag.sunday = sunday;
 
-            TempData["showingWeek"] = "Uge " + weekNum;
+            TempData["showingWeek"] = "Uge " + weekId;
             var schedule = db.Schedule.Where(x => x.date.Equals(monday) || x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday) || x.date.Equals(friday) || x.date.Equals(saturday) || x.date.Equals(sunday));
             return View(schedule.ToList());
         }
 
+        // Returns array with dates of desired week. dayOfWeek and addDay has to have the same number added 
         public string[] getDatesOfWeek(string dayOfWeek, int addDay)
         {
             // Current date (DateTime format)
@@ -409,7 +389,7 @@ namespace _5thSemesterProject.Controllers
             for (int i = 0; i < weekDays.Length; i++)
             {
                 daysToAdd--;
-                if (weekDays[i].Equals(dayOfWeek)) // if the weekDay is equal to current weekday, get starting date and last date
+                if (weekDays[i].Equals(dayOfWeek)) // if the weekDay is equal to current weekday, get start date -> last date
                 {
                     DateTime startDate = dt.AddDays(-i).Date;
 
