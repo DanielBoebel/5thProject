@@ -123,17 +123,189 @@ namespace _5thSemesterProject.Controllers
 
         public ActionResult CalendarMonth() {
 
-            return View();
+			int daysOfMonthConver = 0;
+			int monthConvert = 0;
+			int dateToday = 0;
+			string dateTodayString = "";
+			string monthString = "";
+			int day1 = 0;
+
+			DateTime date = DateTime.Today;
+			var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+			var firstDayOfMonthFormatted = new DateTime(date.Year, date.Month, 1).ToString("dd-MM-yyyy");
+			var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1).ToString("dd");
+
+			Int32.TryParse(lastDayOfMonth, out daysOfMonthConver);
+			var dayOfWeek = firstDayOfMonth.DayOfWeek;
+			ViewBag.monthId = 0;
+			ViewBag.numbOfDaysInMonth = daysOfMonthConver;
+			dateTodayString = date.ToString("dd");
+
+			Int32.TryParse(dateTodayString, out dateToday);
+			ViewBag.currentDate = dateToday;
+
+			day1 = (int)firstDayOfMonth.DayOfWeek;
+			ViewBag.startDate = day1;
+
+			string month = DateTime.Now.Month.ToString();
+			Int32.TryParse(month, out monthConvert);
+			switch (monthConvert)
+			{
+				case 1:
+					monthString = "Januar";
+					break;
+				case 2:
+					monthString = "Februar";
+					break;
+				case 3:
+					monthString = "Marts";
+					break;
+				case 4:
+					monthString = "April";
+					break;
+				case 5:
+					monthString = "Maj";
+					break;
+				case 6:
+					monthString = "Juni";
+					break;
+				case 7:
+					monthString = "Juli";
+					break;
+				case 8:
+					monthString = "August";
+					break;
+				case 9:
+					monthString = "September";
+					break;
+				case 10:
+					monthString = "October";
+					break;
+				case 11:
+					monthString = "November";
+					break;
+				case 12:
+					monthString = "December";
+					break;
+			}
+
+			var schedule = db.Schedule.Where(x => x.date.Substring(3, 2) == month);
+
+			TempData["showingMonth"] = monthString;
+
+			return View(schedule.ToList());
         }
 
-        public ActionResult CalendarWeek()
+		[HttpPost]
+		public ActionResult CalendarMonth(int monthId)
+		{
+			int daysOfMonthConver = 0;
+			int monthConvert = 0;
+			string monthString = "";
+			int day1 = 0;
+			int monthTemp = monthId;
+			int dateToday = 0;
+			string dateTodayString = "";
+
+			//DateTime dateMonth = DateTime.Today.AddMonths(monthTemp);
+			DateTime date = DateTime.Today.AddMonths(monthTemp);
+			string month = DateTime.Now.AddMonths(monthTemp).ToString("MM");
+
+			var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+			var firstDayOfMonthFormatted = new DateTime(date.Year, date.Month, 1).ToString("dd-MM-yyyy");
+			var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1).ToString("dd");
+
+			dateTodayString = date.ToString("dd");
+
+			Int32.TryParse(dateTodayString, out dateToday);
+			ViewBag.currentDate = dateToday;
+
+
+			Int32.TryParse(lastDayOfMonth, out daysOfMonthConver);
+			var dayOfWeek = firstDayOfMonth.DayOfWeek;
+
+
+			ViewBag.monthId = 0;
+			ViewBag.numbOfDaysInMonth = daysOfMonthConver;
+			ViewBag.monthId = monthTemp;
+
+			day1 = (int)firstDayOfMonth.DayOfWeek;
+			ViewBag.startDate = day1;
+
+
+			Int32.TryParse(month, out monthConvert);
+
+			switch (monthConvert)
+			{
+				case 1:
+					monthString = "Januar";
+					break;
+				case 2:
+					monthString = "Februar";
+					break;
+				case 3:
+					monthString = "Marts";
+					break;
+				case 4:
+					monthString = "April";
+					break;
+				case 5:
+					monthString = "Maj";
+					break;
+				case 6:
+					monthString = "Juni";
+					break;
+				case 7:
+					monthString = "Juli";
+					break;
+				case 8:
+					monthString = "August";
+					break;
+				case 9:
+					monthString = "September";
+					break;
+				case 10:
+					monthString = "October";
+					break;
+				case 11:
+					monthString = "November";
+					break;
+				case 12:
+					monthString = "December";
+					break;
+			}
+			
+			TempData["showingMonth"] = monthString;
+			var schedule = db.Schedule.Where(x => x.date.Substring(3,2) == month);
+
+			return View(schedule.ToList());
+		}
+
+
+
+		public ActionResult CalendarWeek()
         {
 
             return View();
         }
 
-        // GET: Schedules for today
-        public ActionResult CalendarDay()
+
+		[HttpPost]
+		public ActionResult CalendarWeek(int weeekId)
+		{
+			int weekTemp = weeekId;
+
+			ViewBag.weeekId = weekTemp;
+			string day = DateTime.Now.AddMonths(weekTemp).ToString("MM");
+			TempData["showingDate"] = day;
+			var schedule = db.Schedule.Where(x => x.date.Equals(day));
+
+
+			return View(schedule.ToList());
+		}
+
+		// GET: Schedules for today
+		public ActionResult CalendarDay()
         {
 			ViewBag.dayId = 0;
 			ViewBag.monthId = 0;

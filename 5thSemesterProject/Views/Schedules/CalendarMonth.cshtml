@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model IEnumerable<_5thSemesterProject.Models.Schedule>
+
+<!DOCTYPE html>
 @{
     ViewBag.Title = "Kalender måned";
 }
@@ -26,12 +28,19 @@
         <div class="card-header text-center" style="background-color: #ffffff;">
             <div class="btn-toolbar" style="padding: 0;margin: 0;">
                 <div class="btn-group btn-group-sm" role="group" style="padding: 0;margin: 0;height: 36px;font-size: 12px;">
-                    <button class="btn btn-primary border rounded" type="button" id="prevMonth">Forrige måned</button>
-                    <button class="btn btn-primary border rounded" type="button" id="currentMonth" style="margin: 0px 10px 0px 10px;">Denne måned</button>
-                    <button class="btn btn-primary border rounded" id="nxtMonth" type="button" ;>
-                        Næste måned
-                    </button>
-                    <button class="btn btn-secondary border rounded" type="button" disabled="disabled" id="showingMonth" style="margin: 0px 0px 0px 10px;">Maj</button>
+					@using (Html.BeginForm("CalendarMonth", "Schedules", new { monthId = ViewBag.monthId - 1 }))
+					{
+                    <button class="btn btn-primary border rounded" type="submit" id="prevMonth">Forrige måned</button>
+					}
+					@using (Html.BeginForm("CalendarMonth", "Schedules", new { monthId = ViewBag.monthId - ViewBag.monthId }))
+					{
+                    <button class="btn btn-primary border rounded" type="submit" id="currentMonth" style="margin: 0px 10px 0px 10px;">Denne måned</button>
+					}
+					@using (Html.BeginForm("CalendarMonth", "Schedules", new { monthId = ViewBag.monthId + 1 }))
+					{
+                    <button class="btn btn-primary border rounded" id="nxtMonth" type="submit";> Næste måned</button>
+					}
+                    <button class="btn btn-secondary border rounded" type="button" disabled="disabled" id="showingMonth" style="margin: 0px 0px 0px 10px;">@TempData["showingMonth"]</button>
                 </div>
             </div>
         </div>
@@ -49,57 +58,111 @@
                         <th>Søn</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr id="weekCell">
-                        <td>1</td>
-                        <td>Cell 1</td>
-                        <td>Cell 2</td>
-                        <td>Cell 2</td>
-                        <td>Cell 2</td>
-                        <td>Cell 2</td>
-                        <td>Cell 6</td>
-                        <td>Cell 6</td>
-                    </tr>
-                    <tr id="mondayCell" s>
-                        <td>2</td>
-                        <td>Cell 3</td>
-                        <td>Cell 2</td>
-                        <td>Cell 2</td>
-                        <td>Cell 2</td>
-                        <td>Cell 4</td>
-                        <td>Cell 6</td>
-                        <td>Cell 6</td>
-                    </tr>
-                    <tr id="tuesdayCell">
-                        <td>Cell 1</td>
-                        <td>Cell 2</td>
-                        <td>Cell 3</td>
-                        <td>Cell 4</td>
-                        <td>Cell 5</td>
-                        <td>Cell 6</td>
-                        <td>Cell 7</td>
-                        <td>Cell 8</td>
-                    </tr>
-                    <tr>
-                        <td>Cell 1</td>
-                        <td>Cell 2</td>
-                        <td>Cell 3</td>
-                        <td>Cell 4</td>
-                        <td>Cell 5</td>
-                        <td>Cell 6</td>
-                        <td>Cell 7</td>
-                        <td>Cell 8</td>
-                    </tr>
-                    <tr>
-                        <td>Cell 1</td>
-                        <td>Cell 2</td>
-                        <td>Cell 3</td>
-                        <td>Cell 4</td>
-                        <td>Cell 5</td>
-                        <td>Cell 6</td>
-                        <td>Cell 7</td>
-                        <td>Cell 8</td>
-                    </tr>
+				<tbody>
+					<tr>
+						<td>1</td>
+						@for (int i = 1; i <= 7; i++)
+						{
+							if (i >= ViewBag.startDate)
+							{
+								int date = i - @ViewBag.startDate + 1;
+								
+								<td>
+
+									@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = date - @ViewBag.currentDate }))
+									{
+										<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @date</button>
+									}
+								
+								</td>
+
+							}
+							else
+							{
+								<td>////</td>
+							}
+
+						}
+					</tr>
+					<tr>
+						<td>2</td>
+						@for (int i = 8 - @ViewBag.Startdate + 1; i <= 14 - @ViewBag.Startdate + 1; i++)
+						{
+							<td>
+								@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
+								{
+									<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+								}
+							</td>
+						}
+					</tr>
+					<tr>
+						<td>3</td>
+						@for (int i = 15 - @ViewBag.Startdate + 1; i <= 21 - @ViewBag.Startdate + 1; i++)
+						{
+							<td>
+								@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
+								{
+									<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+								}
+							</td>
+						}
+					</tr>
+					<tr>
+						<td>4</td>
+						@for (int i = 22 - @ViewBag.Startdate + 1; i <= 28 - @ViewBag.Startdate + 1; i++)
+						{
+							<td>
+								@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
+								{
+									<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+								}
+							</td>
+						}
+					</tr>
+					<tr>
+						<td>5</td>
+						@for (int i = 29 - @ViewBag.Startdate + 1; i <= 35 - @ViewBag.Startdate + 1; i++)
+						{
+							if (@ViewBag.numbOfDaysInMonth < i)
+							{
+								break;
+							}
+							else
+							{
+								<td>
+									@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
+									{
+										<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+									}
+								</td>
+							}
+
+						}
+					</tr>
+					<tr>
+						<td>6</td>
+					@for (int i = 36 - @ViewBag.Startdate + 1; i <= 42 - @ViewBag.Startdate + 1; i++)
+					{
+						if (ViewBag.numbOfDaysInMonth < i)
+						{
+							break;
+						}
+						else
+						{
+							<td>
+								@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
+								{
+									<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+								}
+							</td>
+						}
+
+					}
+					</tr>
+
+                 
+					
                 </tbody>
             </table>
         </div>
