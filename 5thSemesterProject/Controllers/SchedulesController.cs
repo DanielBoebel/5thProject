@@ -17,6 +17,18 @@ namespace _5thSemesterProject.Controllers
     {
         private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
 
+        
+
+        public ActionResult Index() {
+
+            var schedule = db.Schedule;
+
+
+            return View(schedule.ToList());
+        }
+
+
+
         // GET: Schedules/Details/5
         public ActionResult Details(int? id)
         {
@@ -44,14 +56,13 @@ namespace _5thSemesterProject.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "schedule_id,employee_id,shift_id,date")] Schedule schedule)
         {
             if (ModelState.IsValid)
             {
                 db.Schedule.Add(schedule);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("CalendarMonth");
             }
 
             ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "cpr", schedule.employee_id);
