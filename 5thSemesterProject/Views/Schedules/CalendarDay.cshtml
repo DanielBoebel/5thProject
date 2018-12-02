@@ -27,24 +27,24 @@
         <div class="card-header text-center" style="background-color: #ffffff;">
             <div class="btn-toolbar" style="padding: 0;margin: 0;">
                 <div class="btn-group btn-group-sm" role="group" style="padding: 0;margin: 0;height: 36px;font-size: 12px;">
-
+					@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = ViewBag.dayId-1}))
+					{
 						<button class="btn btn-primary border rounded" type="submit" id="prevDay">Forrige dag</button>
+					}
+					@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = ViewBag.dayId - ViewBag.dayId}))
+					{
 						<button class="btn btn-primary border rounded" type="submit" id="currentDay" style="margin: 0px 10px 0px 10px;">I dag</button>
+					}
+					@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = ViewBag.dayId+1}))
+					{
 						<button class="btn btn-primary border rounded" type="submit" id="nextDay">Næste dag</button>
+					}
 						<button class="btn btn-secondary border rounded" type="button" disabled="disabled" id="showingDay" name="date" style="margin: 0px 0px 0px 10px;">@TempData["showingDate"]</button>
-</div>
-
-                    <button class="btn btn-primary border rounded" type="button" onclick="location.href='@Url.Action("CalendarDay", "Schedules")'">Test</button>
-                    <button class="btn btn-primary border rounded" type="submit" id="prevDay">Forrige dag</button>
-                    <button class="btn btn-primary border rounded" type="submit" id="currentDay" style="margin: 0px 10px 0px 10px;">I dag</button>
-                   
-                    <button class="btn btn-primary border rounded" type="submit" id="nextDay" onclick="location.href='@Url.Action("NextDay", "Schedules", new {count=1 })'" >Næste dag</button>
+				</div>
                     
-                    <button class="btn btn-secondary border rounded" type="button" disabled="disabled" id="showingDay" name="date" style="margin: 0px 0px 0px 10px;">@TempData["showingDate"]</button>
-                </div>
-
-            </div>
-        </div>
+               </div>
+           </div>
+       </div>
         <div class="table-responsive">
             <table class="table" id="dayTable">
                 <thead>
@@ -90,42 +90,3 @@
     @*<script type="text/javascript" src="~/Content/Scripts/CalendarScript.js"></script>*@
 </body>
 </html>
-
-@section Scripts {
-    <script type="text/javascript">
-        $("#nextDay").click(function changeDay() {
-    var test = document.getElementById('showingDay').value;
-    
-    $.ajax({
-        // do the rest of work here
-        type: "POST",
-        data: { test: test },
-        url: '@Url.Action("NextDay", "Schedules")',
-        async: true,
-        success: function (data) {
-            console.log(data)
-            // do something
-        }
-    });
-})
-        $("#prevDay").click(function () {
-            $.getJSON('/Schedules/ScheduleList/' + $('#showingDay').val(), function (data) { // takes the value of showingDay
-                console.log(data)
-            });
-        });
-
-        $("#nextDay").click(function () {
-            $.getJSON('/Schedules/ScheduleList/' + $('#showingDay').val(), function (data) { // takes the value of showingDay
-                console.log(data)
-            });
-        });
-
-            $("#today").click(function () {
-                $("#showingDay").val('@DateTime.Now.ToString("dd/MM/yyyy")');
-                $.getJSON('/Schedules/ScheduleList/' + $('#showingDay').val(), function (data) { // takes the value of showingDay
-                    console.log(data)
-                });
-            });
-    });
-    </script>
-}   
