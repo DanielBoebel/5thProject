@@ -142,13 +142,15 @@ namespace _5thSemesterProject.Controllers
         // GET: Schedules for week
         public ActionResult CalendarWeek()
         {
-            ViewBag.weekId = 7;
-
             double dayOfYear = DateTime.Now.DayOfYear / 7; 
             double weekNum = Math.Ceiling(dayOfYear);
+            ViewBag.weekId = weekNum;
 
-            // Array of dates of current week
-            string[] dates = getDatesOfWeek();
+            // Current dayOfWeek (String format)
+            string dayOfWeek = DateTime.Now.DayOfWeek.ToString();
+
+            // Array of dates of current week - Contains the first date of the week on index 0 and last date of the week on index 6
+            string[] dates = getDatesOfWeek(dayOfWeek);
 
             // Because LINQ is not smart
             string monday = dates[0];
@@ -176,21 +178,45 @@ namespace _5thSemesterProject.Controllers
         [HttpPost]
         public ActionResult CalendarWeek(int weekId)
         {
-
             int tempWeek = weekId;
 
-            string today = DateTime.Now.ToString("dd-MM-yyyy");
-            TempData["showingWeek"] = today;
-            var schedule = db.Schedule.Where(x => x.date.Equals(today));
+            double dayOfYear = DateTime.Now.AddDays(7).DayOfYear / 7;
+            double weekNum = Math.Ceiling(dayOfYear);
+            ViewBag.weekId = weekNum;
+
+            // Current dayOfWeek (String format)
+            string dayOfWeek = DateTime.Now.AddDays(7).DayOfWeek.ToString();
+
+            // Array of dates of current week - Contains the first date of the week on index 0 and last date of the week on index 6
+            string[] dates = getDatesOfWeek(dayOfWeek);
+
+            // Because LINQ is not smart
+            string monday = dates[0];
+            string tuesday = dates[1];
+            string wednesday = dates[2];
+            string thursday = dates[3];
+            string friday = dates[4];
+            string saturday = dates[5];
+            string sunday = dates[6];
+
+            // Because spaghetti works
+            ViewBag.monday = monday;
+            ViewBag.tuesday = tuesday;
+            ViewBag.wednesday = wednesday;
+            ViewBag.thursday = thursday;
+            ViewBag.friday = friday;
+            ViewBag.saturday = saturday;
+            ViewBag.sunday = sunday;
+
+            TempData["showingWeek"] = "Uge " + weekNum;
+            var schedule = db.Schedule.Where(x => x.date.Equals(monday) || x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday) || x.date.Equals(friday) || x.date.Equals(saturday) || x.date.Equals(sunday));
             return View(schedule.ToList());
         }
 
-        public string[] getDatesOfWeek()
+        public string[] getDatesOfWeek(string dayOfWeek)
         {
             // Current date (DateTime format)
             DateTime dt = DateTime.Now;
-            // Current dayOfWeek (String format)
-            string dayOfWeek = DateTime.Now.DayOfWeek.ToString();
             // Posible days
             string[] weekDays = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
             // Days of the week difference
