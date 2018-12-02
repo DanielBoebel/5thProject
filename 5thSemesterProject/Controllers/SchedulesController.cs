@@ -147,12 +147,52 @@ namespace _5thSemesterProject.Controllers
             double dayOfYear = DateTime.Now.DayOfYear / 7; 
             double weekNum = Math.Ceiling(dayOfYear);
 
+            // Array of dates of current week
+            string[] dates = getDatesOfWeek();
+
+            // Because LINQ is not smart
+            string monday = dates[0];
+            string tuesday = dates[1];
+            string wednesday = dates[2];
+            string thursday = dates[3];
+            string friday = dates[4];
+            string saturday = dates[5];
+            string sunday = dates[6];
+
+            // Because spaghetti works
+            ViewBag.monday = monday;
+            ViewBag.tuesday = tuesday;
+            ViewBag.wednesday = wednesday;
+            ViewBag.thursday = thursday;
+            ViewBag.friday = friday;
+            ViewBag.saturday = saturday;
+            ViewBag.sunday = sunday;
+
+            TempData["showingWeek"] = "Uge " + weekNum;
+            var schedule = db.Schedule.Where(x => x.date.Equals(monday) || x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday) || x.date.Equals(friday) || x.date.Equals(saturday) || x.date.Equals(sunday));
+            return View(schedule.ToList());
+        }
+
+        [HttpPost]
+        public ActionResult CalendarWeek(int weekId)
+        {
+
+            int tempWeek = weekId;
+
+            string today = DateTime.Now.ToString("dd-MM-yyyy");
+            TempData["showingWeek"] = today;
+            var schedule = db.Schedule.Where(x => x.date.Equals(today));
+            return View(schedule.ToList());
+        }
+
+        public string[] getDatesOfWeek()
+        {
             // Current date (DateTime format)
-            DateTime dt = DateTime.Now.AddDays(-5);
+            DateTime dt = DateTime.Now;
             // Current dayOfWeek (String format)
-            string dayOfWeek = DateTime.Now.AddDays(-5).DayOfWeek.ToString();
+            string dayOfWeek = DateTime.Now.DayOfWeek.ToString();
             // Posible days
-            string[] weekDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+            string[] weekDays = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
             // Days of the week difference
             int daysToAdd = 7;
             // Dates of the days in the week
@@ -164,7 +204,7 @@ namespace _5thSemesterProject.Controllers
                 daysToAdd--;
                 if (weekDays[i].Equals(dayOfWeek)) // if the weekDay is equal to current weekday, get starting date and last date
                 {
-                    DateTime startDate = dt.AddDays(-i).Date; 
+                    DateTime startDate = dt.AddDays(-i).Date;
 
                     for (int j = 0; j < 7; j++)
                     {
@@ -174,41 +214,7 @@ namespace _5thSemesterProject.Controllers
                 }
             }
 
-            // Because LINQ is not smart
-            string monday = weekDayDates[0];
-            string tuesday = weekDayDates[1];
-            string wednessday = weekDayDates[2];
-            string thursday = weekDayDates[3];
-            string friday = weekDayDates[4];
-            string saturday = weekDayDates[5];
-            string sunday = weekDayDates[6];
-
-            ViewBag.monday = monday;
-
-            TempData["showingWeek"] = "Uge " + weekNum;
-            var schedule = db.Schedule.Where(x => x.date.Equals(monday) || x.date.Equals(tuesday) || x.date.Equals(wednessday) || x.date.Equals(thursday) || x.date.Equals(friday) || x.date.Equals(saturday) || x.date.Equals(sunday));
-            return View(schedule.ToList());
-        }
-
-        [HttpPost]
-        public ActionResult CalendarWeek(int weekId)
-        {
-
-            int tempWeek = weekId;
-
-            //if (myDateTime >= checkDate1 && myDateTime <= checkDate2)
-            //{
-            //    //is between the 2 dates
-            //}
-            //else
-            //{
-
-
-            //}
-            string today = DateTime.Now.ToString("dd-MM-yyyy");
-            TempData["showingWeek"] = today;
-            var schedule = db.Schedule.Where(x => x.date.Equals(today));
-            return View(schedule.ToList());
+            return weekDayDates;
         }
 
         // GET: Schedules for today
