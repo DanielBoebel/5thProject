@@ -334,8 +334,6 @@ namespace _5thSemesterProject.Controllers
         [HttpPost]
         public ActionResult CalendarWeek(int weekId)
         {
-            int tempWeek = weekId;
-
             double dayOfYear = DateTime.Now.AddDays(7).DayOfYear / 7;
             double weekNum = Math.Ceiling(dayOfYear);
             ViewBag.weekId = weekNum;
