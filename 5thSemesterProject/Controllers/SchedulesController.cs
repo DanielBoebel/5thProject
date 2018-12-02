@@ -303,10 +303,10 @@ namespace _5thSemesterProject.Controllers
             ViewBag.weekId = weekNum;
 
             // Current dayOfWeek (String format)
-            string dayOfWeek = DateTime.Now.DayOfWeek.ToString();
+            string dayOfWeek = DateTime.Now.AddDays(0).DayOfWeek.ToString();
 
             // Array of dates of current week - Contains the first date of the week on index 0 and last date of the week on index 6
-            string[] dates = getDatesOfWeek(dayOfWeek);
+            string[] dates = getDatesOfWeek(dayOfWeek, 0);
 
             // Because LINQ is not smart
             string monday = dates[0];
@@ -334,15 +334,42 @@ namespace _5thSemesterProject.Controllers
         [HttpPost]
         public ActionResult CalendarWeek(int weekId)
         {
-            double dayOfYear = DateTime.Now.AddDays(7).DayOfYear / 7;
+            double dayOfYear = DateTime.Now.DayOfYear / 7;
             double weekNum = Math.Ceiling(dayOfYear);
             ViewBag.weekId = weekNum;
 
+            DateTime tempWeek = new DateTime();
+
             // Current dayOfWeek (String format)
-            string dayOfWeek = DateTime.Now.AddDays(7).DayOfWeek.ToString();
+            string dayOfWeek;
+            //int temp = ViewBag.weekId;
+            if (weekId > weekNum)
+            {
+                dayOfYear = DateTime.Now.AddDays(7).DayOfYear / 7;
+                weekNum = Math.Ceiling(dayOfYear);
+                dayOfWeek = DateTime.Now.AddDays(7).DayOfWeek.ToString();
+                ViewBag.weekId = weekNum;
+            }
+            else if (weekId < weekNum)
+            {
+                dayOfYear = DateTime.Now.AddDays(-7).DayOfYear / 7;
+                weekNum = Math.Ceiling(dayOfYear);
+                dayOfWeek = DateTime.Now.AddDays(-7).DayOfWeek.ToString();
+                ViewBag.weekId = weekNum;
+            } else
+            {
+                dayOfYear = DateTime.Now.DayOfYear / 7;
+                weekNum = Math.Ceiling(dayOfYear);
+                dayOfWeek = DateTime.Now.AddDays(0).DayOfWeek.ToString();
+                ViewBag.weekId = weekNum;
+            }
+
+
+            //// Current dayOfWeek (String format)
+            //string dayOfWeek = DateTime.Now.AddDays(weekId).DayOfWeek.ToString();
 
             // Array of dates of current week - Contains the first date of the week on index 0 and last date of the week on index 6
-            string[] dates = getDatesOfWeek(dayOfWeek);
+            string[] dates = getDatesOfWeek(dayOfWeek, 2);
 
             // Because LINQ is not smart
             string monday = dates[0];
@@ -367,10 +394,10 @@ namespace _5thSemesterProject.Controllers
             return View(schedule.ToList());
         }
 
-        public string[] getDatesOfWeek(string dayOfWeek)
+        public string[] getDatesOfWeek(string dayOfWeek, int addDay)
         {
             // Current date (DateTime format)
-            DateTime dt = DateTime.Now;
+            DateTime dt = DateTime.Now.AddDays(addDay);
             // Posible days
             string[] weekDays = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
             // Days of the week difference
@@ -393,7 +420,6 @@ namespace _5thSemesterProject.Controllers
                     break;
                 }
             }
-
             return weekDayDates;
         }
 
