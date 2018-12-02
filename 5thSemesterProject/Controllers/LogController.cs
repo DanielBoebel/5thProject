@@ -17,7 +17,9 @@ namespace _5thSemesterProject.Controllers
 		// GET: Log
 		public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-			ViewBag.CurrentSort = sortOrder;
+
+            int myID = 0;
+            ViewBag.CurrentSort = sortOrder;
 			ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
 			ViewBag.UsernameSortParm = sortOrder == "username" ? "username_desc" : "username";
 			ViewBag.TimestampSortParm = sortOrder == "timestamp" ? "timestamp_desc" : "timestamp";
@@ -34,13 +36,34 @@ namespace _5thSemesterProject.Controllers
 
 			ViewBag.CurrentFilter = searchString;
 
-			var logs = from s in db.Log.ToList()
-					   select s;
+            var logs = from s in db.Log.ToList()
+                       select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                try
+                {
+                    myID = Int32.Parse(searchString);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                if (myID != 0)
+                {
+                    logs = logs.Where(s => s.log_id == myID);
+                }
+                else
+                {
+                    logs = logs.Where(s => s.action.ToUpper().Contains(searchString.ToUpper()) || s.employee_name.ToUpper().Contains(searchString.ToUpper()) ||
+                    s.timestamp.ToString().ToUpper().Contains(searchString.ToUpper()));
+                }
+            }
+
+            
 
 			switch (sortOrder)
 			{
-
-
 				case "Name":
 					logs = logs.OrderBy(s => s.employee_name);
 					break;
@@ -67,76 +90,6 @@ namespace _5thSemesterProject.Controllers
 			int pageSize = 25;
 			int pageNumber = (page ?? 1);
 			return View(logs.ToPagedList(pageNumber, pageSize));
-		}
-		public ActionResult Details(int id)
-		{
-			return View();
-		}
-
-		// GET: Log/Create
-		public ActionResult Create()
-		{
-			return View();
-		}
-
-		// POST: Log/Create
-		[HttpPost]
-		public ActionResult Create(FormCollection collection)
-		{
-			try
-			{
-				// TODO: Add insert logic here
-
-				return RedirectToAction("Index");
-			}
-			catch
-			{
-				return View();
-			}
-		}
-
-		// GET: Log/Edit/5
-		public ActionResult Edit(int id)
-		{
-			return View();
-		}
-
-		// POST: Log/Edit/5
-		[HttpPost]
-		public ActionResult Edit(int id, FormCollection collection)
-		{
-			try
-			{
-				// TODO: Add update logic here
-
-				return RedirectToAction("Index");
-			}
-			catch
-			{
-				return View();
-			}
-		}
-
-		// GET: Log/Delete/5
-		public ActionResult Delete(int id)
-		{
-			return View();
-		}
-
-		// POST: Log/Delete/5
-		[HttpPost]
-		public ActionResult Delete(int id, FormCollection collection)
-		{
-			try
-			{
-				// TODO: Add delete logic here
-
-				return RedirectToAction("Index");
-			}
-			catch
-			{
-				return View();
-			}
 		}
 	}
 }

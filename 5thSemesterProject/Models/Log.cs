@@ -7,15 +7,17 @@ namespace _5thSemesterProject.Models
 	{
 
 
-        public Log()
-        { }
+		public Log()
+		{
 
-        public Log(string employee_name, string action, DateTime timestamp)
-        {
-            this.employee_name = employee_name;
-            this.action = action;
-            this.timestamp = timestamp;
-        } 
+		}
+
+		public Log(string employee_name, string action, DateTime timestamp)
+		{
+			this.employee_name = employee_name;
+			this.action = action;
+			this.timestamp = timestamp;
+		}
 
 		public int log_id { get; set; }
 		public int employee_id { get; set; }
