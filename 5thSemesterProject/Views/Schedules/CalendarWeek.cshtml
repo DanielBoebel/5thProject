@@ -49,66 +49,200 @@
 
             <div class="row weekdays" id="section1">
                 <div class="column" id="monday">
-                    <h3>Mandag 23/06</h3>
                     <div class="table-responsive">
                         <table class="table" id="dayTable">
+                            <thead>
+                                <tr>
+                                    <th>Mandag <br />@ViewBag.monday</th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                    @*@if (item.date.Equals(DateTime.Now.Day.ToString()))
+                                    if (item.date.Equals(ViewBag.monday))
                                     {
-
-                                    }*@
-                                    <tr id="dateCell">
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.date) <br />
-                                            @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.firstname)<br />
-                                            @Html.DisplayFor(modelItem => item.Employee.initials)<br />
-                                            @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
-                                            @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
-                                            @Html.DisplayFor(modelItem => item.Shift.end_time)
-                                        </td>
-                                    </tr>
+                                        <tr id="dateCell">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.firstname)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.initials)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
+                                                @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
+                                                @Html.DisplayFor(modelItem => item.Shift.end_time)
+                                            </td>
+                                        </tr>
+                                    }
                                 }
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="column" id="tuesday">
-                    <h3>Tirsdag 24/06</h3>
-                    <h4>Vagt type: </h4>
-                    <h4>Start tidspunkt: </h4>
-                    <h4>Slut tidspunkt: </h4>
+                    <div class="table-responsive">
+                        <table class="table" id="dayTable">
+                            <thead>
+                                <tr>
+                                    <th>Tirsdag <br />@ViewBag.tuesday</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    if (item.date.Equals(ViewBag.tuesday))
+                                    {
+                                        <tr id="dateCell">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.firstname)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.initials)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
+                                                @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
+                                                @Html.DisplayFor(modelItem => item.Shift.end_time)
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="column" id="wednessday">
-                    <h3>Onsdag 25/06</h3>
-                    <h4>Vagt type: </h4>
-                    <h4>Start tidspunkt: </h4>
-                    <h4>Slut tidspunkt: </h4>
+                    <div class="table-responsive">
+                        <table class="table" id="dayTable">
+                            <thead>
+                                <tr>
+                                    <th>Onsdag <br />@ViewBag.wednesday</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    if (item.date.Equals(ViewBag.wednesday))
+                                    {
+                                        <tr id="dateCell">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.firstname)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.initials)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
+                                                @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
+                                                @Html.DisplayFor(modelItem => item.Shift.end_time)
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="column" id="thursday">
-                    <h3>Torsdag 26/06</h3>
-                    <h4>Vagt type: </h4>
-                    <h4>Start tidspunkt: </h4>
-                    <h4>Slut tidspunkt: </h4>
+                    <div class="table-responsive">
+                        <table class="table" id="dayTable">
+                            <thead>
+                                <tr>
+                                    <th>Torsdag <br />@ViewBag.thursday</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    if (item.date.Equals(ViewBag.thursday))
+                                    {
+                                        <tr id="dateCell">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.firstname)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.initials)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
+                                                @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
+                                                @Html.DisplayFor(modelItem => item.Shift.end_time)
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="column" id="friday">
-                    <h3>Fredag 27/06</h3>
-                    <h4>Vagt type: </h4>
-                    <h4>Start tidspunkt: </h4>
-                    <h4>Slut tidspunkt: </h4>
+                    <div class="table-responsive">
+                        <table class="table" id="dayTable">
+                            <thead>
+                                <tr>
+                                    <th>Fridag <br />@ViewBag.friday</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    if (item.date.Equals(ViewBag.friday))
+                                    {
+                                        <tr id="dateCell">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.firstname)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.initials)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
+                                                @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
+                                                @Html.DisplayFor(modelItem => item.Shift.end_time)
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="column" id="saturday">
-                    <h3>Lørdag 28/06</h3>
-                    <h4>Vagt type: </h4>
-                    <h4>Start tidspunkt: </h4>
-                    <h4>Slut tidspunkt: </h4>
+                    <div class="table-responsive">
+                        <table class="table" id="dayTable">
+                            <thead>
+                                <tr>
+                                    <th>Lørdag <br />@ViewBag.saturday</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    if (item.date.Equals(ViewBag.saturday))
+                                    {
+                                        <tr id="dateCell">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.firstname)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.initials)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
+                                                @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
+                                                @Html.DisplayFor(modelItem => item.Shift.end_time)
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="column" id="sunday">
-                    <h3>Søndag 29/06</h3>
-                    <h4>Vagt type: </h4>
-                    <h4>Start tidspunkt: </h4>
-                    <h4>Slut tidspunkt: </h4>
+                    <div class="table-responsive">
+                        <table class="table" id="dayTable">
+                            <thead>
+                                <tr>
+                                    <th>Søndag <br />@ViewBag.sunday</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    if (item.date.Equals(ViewBag.sunday))
+                                    {
+                                        <tr id="dateCell">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.firstname)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.initials)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
+                                                @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
+                                                @Html.DisplayFor(modelItem => item.Shift.end_time)
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

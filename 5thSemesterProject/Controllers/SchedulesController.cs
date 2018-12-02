@@ -147,12 +147,52 @@ namespace _5thSemesterProject.Controllers
             double dayOfYear = DateTime.Now.DayOfYear / 7; 
             double weekNum = Math.Ceiling(dayOfYear);
 
+            // Array of dates of current week
+            string[] dates = getDatesOfWeek();
+
+            // Because LINQ is not smart
+            string monday = dates[0];
+            string tuesday = dates[1];
+            string wednesday = dates[2];
+            string thursday = dates[3];
+            string friday = dates[4];
+            string saturday = dates[5];
+            string sunday = dates[6];
+
+            // Because spaghetti works
+            ViewBag.monday = monday;
+            ViewBag.tuesday = tuesday;
+            ViewBag.wednesday = wednesday;
+            ViewBag.thursday = thursday;
+            ViewBag.friday = friday;
+            ViewBag.saturday = saturday;
+            ViewBag.sunday = sunday;
+
+            TempData["showingWeek"] = "Uge " + weekNum;
+            var schedule = db.Schedule.Where(x => x.date.Equals(monday) || x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday) || x.date.Equals(friday) || x.date.Equals(saturday) || x.date.Equals(sunday));
+            return View(schedule.ToList());
+        }
+
+        [HttpPost]
+        public ActionResult CalendarWeek(int weekId)
+        {
+
+            int tempWeek = weekId;
+
+            string today = DateTime.Now.ToString("dd-MM-yyyy");
+            TempData["showingWeek"] = today;
+            var schedule = db.Schedule.Where(x => x.date.Equals(today));
+            return View(schedule.ToList());
+        }
+
+        public string[] getDatesOfWeek()
+        {
             // Current date (DateTime format)
-            DateTime dt = DateTime.Now.AddDays(-5);
+            DateTime dt = DateTime.Now;
             // Current dayOfWeek (String format)
-            string dayOfWeek = DateTime.Now.AddDays(-5).DayOfWeek.ToString();
+            string dayOfWeek = DateTime.Now.DayOfWeek.ToString();
             // Posible days
-            string[] weekDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+            string[] weekDays = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
             // Days of the week difference
             int daysToAdd = 7;
             // Dates of the days in the week
@@ -174,30 +214,7 @@ namespace _5thSemesterProject.Controllers
                 }
             }
 
-            TempData["showingWeek"] = "Uge " + weekNum;
-            var schedule = db.Schedule.Where(x => x.date.Equals(weekDayDates[0]));// || x.date.Equals(weekDayDates[1]) || x.date.Equals(weekDayDates[2]) || x.date.Equals(weekDayDates[3]) || x.date.Equals(weekDayDates[4]) || x.date.Equals(weekDayDates[5]) || x.date.Equals(weekDayDates[6]));
-            return View(schedule.ToList());
-        }
-
-        [HttpPost]
-        public ActionResult CalendarWeek(int weekId)
-        {
-
-            int tempWeek = weekId;
-
-            //if (myDateTime >= checkDate1 && myDateTime <= checkDate2)
-            //{
-            //    //is between the 2 dates
-            //}
-            //else
-            //{
-
-
-            //}
-            string today = DateTime.Now.ToString("dd-MM-yyyy");
-            TempData["showingWeek"] = today;
-            var schedule = db.Schedule.Where(x => x.date.Equals(today));
-            return View(schedule.ToList());
+            return weekDayDates;
         }
 
         // GET: Schedules for today
