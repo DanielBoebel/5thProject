@@ -13,10 +13,12 @@ namespace _5thSemesterProject.Controllers
     public class EmployeesController : Controller
     {
         private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
-
+        
         // GET: Employees
         public ActionResult Index()
         {
+
+            
             var employee = db.Employee.Include(e => e.Position);
             return View(employee.ToList());
         }

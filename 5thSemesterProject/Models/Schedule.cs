@@ -16,6 +16,7 @@ namespace _5thSemesterProject.Models
     {
         public int schedule_id { get; set; }
         public int employee_id { get; set; }
+        public string initials { get; set; }
         public int shift_id { get; set; }
         public string date { get; set; }
     
