@@ -17,7 +17,7 @@ namespace _5thSemesterProject.Models
         public int schedule_id { get; set; }
         public int employee_id { get; set; }
         public int shift_id { get; set; }
-        public System.DateTime date { get; set; }
+        public string date { get; set; }
     
         public virtual Employee Employee { get; set; }
         public virtual Shift Shift { get; set; }

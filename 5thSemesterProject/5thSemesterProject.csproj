@@ -171,10 +171,12 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\SchedulesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CorrectOrder.cs" />
     <Compile Include="Models\Employee.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -211,6 +213,7 @@
     <Compile Include="Models\SpecialAgreement.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MessageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -221,7 +224,9 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\CSS\Calendar.css" />
+    <Content Include="Content\CSS\MessageStyles.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\Scripts\CalendarScript.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -296,6 +301,9 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Message\Index.cshtml" />
+    <Content Include="Views\Message\_MessageContent.cshtml" />
+    <Content Include="Views\Login\ForgotPassword.cshtml" />
     <None Include="Views\Schedules\CalendarDay.cshtml" />
     <Content Include="Views\Schedules\CalendarMonth.cshtml" />
     <None Include="Views\Schedules\CalendarWeek.cshtml" />
@@ -327,7 +335,6 @@
     <Content Include="Views\Schedules\Delete.cshtml" />
     <Content Include="Views\Schedules\Details.cshtml" />
     <Content Include="Views\Schedules\Edit.cshtml" />
-    <Content Include="Views\Schedules\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -49,7 +49,7 @@ namespace _5thSemesterProject.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "employee_id,cpr,firstname,lastname,position_id,special_agreement_id,initials,password")] Employee employee, string password)
+        public ActionResult Create([Bind(Include = "employee_id,cpr,firstname,lastname,position_id,initials,password")] Employee employee, string password)
         {
 			employee.password = BCrypt.Net.BCrypt.HashPassword(password).ToString();
 			if (ModelState.IsValid)
@@ -84,7 +84,7 @@ namespace _5thSemesterProject.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "employee_id,cpr,firstname,lastname,position_id,special_agreement_id,initials,password")] Employee employee)
+        public ActionResult Edit([Bind(Include = "employee_id,cpr,firstname,lastname,position_id,initials,password")] Employee employee)
         {
             if (ModelState.IsValid)
             {

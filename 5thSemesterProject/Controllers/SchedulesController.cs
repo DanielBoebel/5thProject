@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -14,12 +15,8 @@ namespace _5thSemesterProject.Controllers
     {
         private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
 
-        // GET: Schedules
-        public ActionResult Index()
-        {
-            var schedule = db.Schedule.Include(s => s.Employee).Include(s => s.Shift);
-            return View(schedule.ToList());
-        }
+        // Date used for showing the correct schedule
+        private double DaysDifference = 0.0;
 
         // GET: Schedules/Details/5
         public ActionResult Details(int? id)
@@ -129,16 +126,50 @@ namespace _5thSemesterProject.Controllers
             return View();
         }
 
-        public ActionResult CalendarDay()
+        public ActionResult CalendarWeek()
         {
 
             return View();
         }
 
-        public ActionResult CalendarWeek()
+        // GET: Schedules for today
+        public ActionResult CalendarDay()
         {
+			ViewBag.dayId = 0;
+			ViewBag.monthId = 0;
+            string today = DateTime.Now.Day.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString();
+            TempData["showingDate"] = today;
+            var schedule = db.Schedule.Where(x => x.date.Equals(today));
+            return View(schedule.ToList());
+        }
 
-            return View();
+		[HttpPost]
+		public ActionResult CalendarDay(int dayId)
+		{
+
+			int dayTemp = dayId;
+
+			ViewBag.dayId = dayTemp;
+			string day = DateTime.Now.AddDays(dayTemp).ToString("dd-MM-yyyy");
+			TempData["showingDate"] = day;
+			var schedule = db.Schedule.Where(x => x.date.Equals(day));
+			
+
+			return View(schedule.ToList());
+		}
+
+        public ActionResult PrevDay()
+        {
+            return View("../Schedules/CalendarDay");
+        }
+
+        public JsonResult ScheduleList(string date)
+        {
+            Console.WriteLine(date);
+            var result = from r in db.Schedule  // from Schedule table
+                         where r.date.Equals(date) // where date is equal to the showing date
+                         select new { r.date, r.Employee.firstname, r.Employee.lastname, r.Employee.Position.name, r.Shift.start_time, r.Shift.end_time};
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)
