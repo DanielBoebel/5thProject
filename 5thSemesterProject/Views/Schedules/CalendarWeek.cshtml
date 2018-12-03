@@ -32,7 +32,7 @@
                     {
                         <button class="btn btn-primary border rounded" type="submit" id="prevWeek">Forrige uge</button>
                     }
-                    @using (Html.BeginForm("CalendarWeek", "Schedules", new { weekId = ViewBag.weekId, diff = ViewBag.diff - ViewBag.diff }))
+                    @using (Html.BeginForm("CalendarWeek", "Schedules", FormMethod.Get))
                     {
                         <button class="btn btn-primary border rounded" type="submit" id="currentWeek" style="margin: 0px 10px 0px 10px;">Denne uge</button>
                     }
@@ -45,7 +45,7 @@
             </div>
         </div>
         <div class="card-body" style="background-color: #ffffff;padding: 20px;">
-
+            @ViewBag.test
 
             <div class="row weekdays" id="section1">
                 <div class="column" id="monday">

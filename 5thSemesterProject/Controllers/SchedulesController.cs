@@ -297,7 +297,7 @@ namespace _5thSemesterProject.Controllers
         {
             if (Session["employeeId"] != null)
             {
-                double dayOfYear = DateTime.Now.DayOfYear / 7;
+                double dayOfYear = DateTime.Now.DayOfYear / 7.0;
                 double weekNum = Math.Ceiling(dayOfYear);
                 ViewBag.weekId = weekNum;
                 ViewBag.diff = 0;
@@ -343,12 +343,12 @@ namespace _5thSemesterProject.Controllers
             {
                 if (weekId > 52) weekId = 1;
                 if (weekId < 1) weekId = 52;
-                if (diff == 0)
-                {
-                    double dayOfYear = DateTime.Now.AddDays(weekId).DayOfYear / 7;
-                    double weekNum = Math.Ceiling(dayOfYear);
-                    weekId = Convert.ToInt32(weekNum);
-                }
+                //if (diff == 0)
+                //{
+                //    double dayOfYear = DateTime.Now.AddDays(weekId).DayOfYear / 7;
+                //    double weekNum = Math.Ceiling(dayOfYear);
+                //    weekId = Convert.ToInt32(Math.Ceiling(weekNum));
+                //}
 
                 ViewBag.weekId = weekId;
                 ViewBag.diff = diff;
@@ -391,7 +391,7 @@ namespace _5thSemesterProject.Controllers
             }
         }
 
-        // Returns array with dates of desired week. dayOfWeek and addDay has to have the same number added 
+        // Returns array with dates of desired week. dayOfWeek and addDay hava to have the same number added 
         public string[] getDatesOfWeek(string dayOfWeek, int addDay)
         {
             // Current date (DateTime format)
