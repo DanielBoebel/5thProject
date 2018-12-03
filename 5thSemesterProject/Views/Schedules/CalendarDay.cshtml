@@ -38,9 +38,8 @@
                     @using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = ViewBag.dayId + 1 }))
                     {
                         <button class="btn btn-primary border rounded" type="submit" id="nextDay">Næste dag</button>
+                        <button class="btn btn-secondary border rounded" type="button" disabled="disabled" id="showingDay" name="date" style="margin: 0px 0px 0px 10px;">@TempData["showingDate"]</button>
                     }
-                    <button class="btn btn-secondary border rounded" type="button" disabled="disabled" id="showingDay" name="date" style="margin: 0px 0px 0px 10px;">@TempData["showingDate"]</button>
-                    
                 </div>
                     
                </div>
