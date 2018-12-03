@@ -6,6 +6,8 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="~/Content/font-awesome-4.7.0/css/font-awesome.css">
+
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-dark">
@@ -25,6 +27,8 @@
                     <li class="nav-item">@Html.ActionLink("Logs", "Index", "Log", null, new { @class = "nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Se vagtplan", "Index", "Schedules", null, new { @class = "nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Log ud", "Logout", "Login", null, new { @class = "nav-link" })</li>
+                    <li class="fa fa-bell" aria-hidden="true" style="color: white; font-size: 30px" ></li>
+
                 </ul>
             </div>
         </div>
