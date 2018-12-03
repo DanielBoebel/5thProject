@@ -17,8 +17,6 @@ namespace _5thSemesterProject.Controllers
         // GET: Employees
         public ActionResult Index()
         {
-
-            
             var employee = db.Employee.Include(e => e.Position);
             return View(employee.ToList());
         }
