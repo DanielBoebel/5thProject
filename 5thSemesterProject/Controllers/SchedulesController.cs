@@ -23,7 +23,7 @@ namespace _5thSemesterProject.Controllers
 
             var schedule = db.Schedule;
 
-
+            
             return View(schedule.ToList());
         }
 
@@ -456,6 +456,26 @@ namespace _5thSemesterProject.Controllers
                 return RedirectToAction("../Home/Index");
             }
         }
+
+        public ActionResult GenerateSchedule() {
+
+
+            return View();
+        }
+        [HttpPost]
+        public ActionResult GenerateSchedule(string start_date, string end_date)
+        {
+            var start = start_date;
+            var end = end_date;
+            
+
+            var employee = db.Employee.Where(e => e.Position.name.Contains("Obstetriker")).Select(e => e.employee_id).ToList();
+
+
+            return RedirectToAction("Index");
+        }
+
+
 
         protected override void Dispose(bool disposing)
         {
