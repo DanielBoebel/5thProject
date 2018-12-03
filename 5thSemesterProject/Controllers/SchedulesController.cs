@@ -462,6 +462,7 @@ namespace _5thSemesterProject.Controllers
 
             return View();
         }
+
         [HttpPost]
         public ActionResult GenerateSchedule(string start_date, string end_date)
         {
