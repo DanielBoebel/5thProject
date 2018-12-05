@@ -51,7 +51,13 @@ namespace _5thSemesterProject.Models
                 // Updates points, hours and isEligeble in allEmployees
                 UpdateEmployeesForAllEmployees(allEmployees, employeesNightShift, dbShiftTypes, shiftType+"Night");
 
-                
+                // Finds the eligeble employees with the lowest amount of points (night shift first) 
+                List<Employee> employeesDayShift = findEligebles(eligebleEmployees, numberOfEMplyeesDay);
+
+                // Updates points, hours and isEligeble in allEmployees
+                UpdateEmployeesForAllEmployees(allEmployees, employeesDayShift, dbShiftTypes, shiftType + "Day");
+
+                Console.WriteLine("Test");
 
                 // Removes all employees who was selected to the night shift
                 //RemoveSelectedEmployeesFromEligebleEmployees(eligebleEmployees, employeesNightShift);
@@ -113,11 +119,13 @@ namespace _5thSemesterProject.Models
         // Removes all employees who is not eligeble to work
         public List<Employee> findEligebleEmployees(List<Employee> allEmployees)
         {
+            List<Employee> tempList = new List<Employee>(allEmployees);
+
             foreach (var item in allEmployees)
             {
-                if (!item.isEligible) allEmployees.Remove(item);
+                if (!item.isEligible) tempList.Remove(item);
             }
-            return allEmployees;
+            return tempList;
         }
 
         // Returns list of the decided number of employees with the lowest points
@@ -183,7 +191,6 @@ namespace _5thSemesterProject.Models
 
         //Create new list and populate with randomly selected employees
         for (int num = 0; num < numOfEmployeeToReturn; num++) {
-
             var selectedEmployeeNum = rnd.Next(0, list.Count-1);
             returnList.Add(list[selectedEmployeeNum]);
             list.RemoveAt(selectedEmployeeNum);
@@ -193,32 +200,37 @@ namespace _5thSemesterProject.Models
 
         public void UpdateEmployeesForAllEmployees(List<Employee> allEmployees, List<Employee> list, List<Shift> shifts, string shiftType)
         {
+            // Set all employees isEligible variable to true
+            foreach (var item in allEmployees)
+            {
+                item.isEligible = true;
+            }
+
+            // Updates the employees variables
             foreach (var item in list)
             {
                var element = allEmployees.Find(e => e.employee_id == item.employee_id);
                 switch (shiftType)
                 {
                     case "WeekdayNight":
-                        Shift s1 = shifts.Find(e => e.name.Equals("Dagvagt"));
+                        Shift s1 = shifts.Find(e => e.name.Equals("Aftenvagt"));
                         element.points += s1.point;
-                        //element.totalHours +=
                         element.isEligible = false;
                         break;
                     case "WeekdayDay":
                     case "FridayDay":
-                        Shift s2 = shifts.Find(e => e.name.Equals("Aftenvagt"));
+                        Shift s2 = shifts.Find(e => e.name.Equals("Dagvagt"));
                         element.points += s2.point;
-                        element.isEligible = true;
                         break;
                     case "WeekendDay":
                         Shift s3 = shifts.Find(e => e.name.Equals("wDagvagt"));
                         element.points += s3.point;
-
                         break;
                     case "WeekendNight":
                     case "FridayNight":
                         Shift s4 = shifts.Find(e => e.name.Equals("wAftenvagt"));
                         element.points += s4.point;
+                        element.isEligible = false;
                         break;
                 }
             }

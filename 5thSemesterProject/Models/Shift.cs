@@ -25,7 +25,7 @@ namespace _5thSemesterProject.Models
         public string start_time { get; set; }
         public string end_time { get; set; }
         public int point { get; set; }
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Schedule> Schedule { get; set; }
     }

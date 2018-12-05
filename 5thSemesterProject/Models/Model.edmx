@@ -61,6 +61,7 @@
           <Property Name="name" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="start_time" Type="char" MaxLength="4" Nullable="false" />
           <Property Name="end_time" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="point" Type="int" />
         </EntityType>
         <EntityType Name="SpecialAgreement">
           <Key>
@@ -216,6 +217,7 @@
           <Property Name="start_time" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="end_time" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Schedule" Relationship="Self.FK_Schedule_Shift" FromRole="Shift" ToRole="Schedule" />
+          <Property Name="point" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="SpecialAgreement">
           <Key>
@@ -367,6 +369,7 @@
           <EntitySetMapping Name="Shift">
             <EntityTypeMapping TypeName="DB5thSemesterModel.Shift">
               <MappingFragment StoreEntitySet="Shift">
+                <ScalarProperty Name="point" ColumnName="point" />
                 <ScalarProperty Name="shift_id" ColumnName="shift_id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="start_time" ColumnName="start_time" />
