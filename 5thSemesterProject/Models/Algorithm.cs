@@ -51,7 +51,10 @@ namespace _5thSemesterProject.Models
                 // Updates points, hours and isEligeble in allEmployees
                 UpdateEmployeesForAllEmployees(allEmployees, employeesNightShift, dbShiftTypes, shiftType+"Night");
 
-                // Finds the eligeble employees with the lowest amount of points (night shift first) 
+                //remove all employees selected for nightshift from  eligebleEmployees
+                removeNightShoftFromEligible(employeesNightShift, eligebleEmployees);
+
+                // Finds the eligeble employees with the lowest amount of points 
                 List<Employee> employeesDayShift = findEligebles(eligebleEmployees, numberOfEMplyeesDay);
 
                 // Updates points, hours and isEligeble in allEmployees
@@ -233,6 +236,17 @@ namespace _5thSemesterProject.Models
                         element.isEligible = false;
                         break;
                 }
+            }
+        }
+
+        public void removeNightShoftFromEligible(List<Employee> nighShifts, List<Employee> eligible) {
+
+            foreach (var item in eligible)
+            {
+                if (nighShifts.Find(e => e.employee_id == item.employee_id) != null) {
+                    eligible.Remove(item);    
+                } 
+
             }
         }
     }
