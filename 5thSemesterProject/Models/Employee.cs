@@ -46,5 +46,11 @@ namespace _5thSemesterProject.Models
         public virtual ICollection<SpecialAgreement> SpecialAgreement { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Schedule> Schedule { get; set; }
+
+
+        public string ToNiceString()
+        {
+            return "Employee ID" + employee_id + " Points: " + points + " TotalHours: " + totalHours + " isEligible: " + isEligible;
+        }
     }
 }

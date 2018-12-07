@@ -9,14 +9,14 @@ namespace _5thSemesterProject.Models
     {
         private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
 
-        public int numberOfEmployeesNight = 5;
-        public int numberOfEMplyeesDay = 40;
+        public int numberOfEmployeesNight = 4;
+        public int numberOfEMplyeesDay = 25;
 
         public DateTime firstDayOfSchedule;
         public DateTime lastDayOfSchedule;
 
         // List containing the the final product of the algorithm
-        public List<Schedule> FinalList { get => FinalList; set => FinalList = value; }
+        public List<List<Schedule>> FinalList = new List<List<Schedule>>();
 
         // First method called from the SchedulesController
         public void GenerateSchedule(DateTime startDate, DateTime endDate) 
@@ -39,6 +39,9 @@ namespace _5thSemesterProject.Models
                 string dayOfWeek = day.DayOfWeek.ToString();
                 string shiftType = GetDayType(dayOfWeek);
 
+                // Set number of employees to work depending on weekday and shifttype
+                //SetNumberOfWorkingEmployees();
+
                 // Finds all eligeble employees for the specific day
                 List<Employee> unsortedEligibleEmployees = findEligebleEmployees(allEmployees);
 
@@ -52,7 +55,7 @@ namespace _5thSemesterProject.Models
                 UpdateEmployeesForAllEmployees(allEmployees, employeesNightShift, dbShiftTypes, shiftType+"Night");
 
                 //remove all employees selected for nightshift from  eligebleEmployees
-                removeNightShoftFromEligible(employeesNightShift, eligebleEmployees);
+                RemoveNightShiftFromEligible(employeesNightShift, eligebleEmployees);
 
                 // Finds the eligeble employees with the lowest amount of points 
                 List<Employee> employeesDayShift = findEligebles(eligebleEmployees, numberOfEMplyeesDay);
@@ -60,16 +63,22 @@ namespace _5thSemesterProject.Models
                 // Updates points, hours and isEligeble in allEmployees
                 UpdateEmployeesForAllEmployees(allEmployees, employeesDayShift, dbShiftTypes, shiftType + "Day");
 
-                Console.WriteLine("Test");
+                // Populate FinalList with type List<Schedule> (Night)
+                List<Schedule> finalNightEmployeeList = GenerateDaySchedule(day, dbShiftTypes, employeesNightShift, "Night");
 
-                // Removes all employees who was selected to the night shift
-                //RemoveSelectedEmployeesFromEligebleEmployees(eligebleEmployees, employeesNightShift);
+                // Populate FinalList with type List<Schedule> (Day)
+                List<Schedule> finalDayEmployeeList = GenerateDaySchedule(day, dbShiftTypes, employeesDayShift, "Day");
+
+                PopulateFinalList(finalNightEmployeeList, finalDayEmployeeList);
             }
 
             // Adds to Schedule in Database
-            //AddToDatabase(employeesNightShift, date, shiftType);
+            AddToDatabase(FinalList);
 
-
+            foreach (var item in allEmployees)
+            {
+                Console.WriteLine("HELLO");
+            }
         }
 
         public List<DateTime> GetDatesOfSchedule(DateTime startDate, DateTime endDate)
@@ -204,9 +213,11 @@ namespace _5thSemesterProject.Models
         public void UpdateEmployeesForAllEmployees(List<Employee> allEmployees, List<Employee> list, List<Shift> shifts, string shiftType)
         {
             // Set all employees isEligible variable to true
-            foreach (var item in allEmployees)
-            {
-                item.isEligible = true;
+            if (shiftType.Contains("Night")) {
+                foreach (var item in allEmployees)
+                {
+                    item.isEligible = true;
+                }
             }
 
             // Updates the employees variables
@@ -219,29 +230,59 @@ namespace _5thSemesterProject.Models
                         Shift s1 = shifts.Find(e => e.name.Equals("Aftenvagt"));
                         element.points += s1.point;
                         element.isEligible = false;
+                        element.totalHours += GetHoursOfShift(s1.start_time, s1.end_time);
                         break;
                     case "WeekdayDay":
                     case "FridayDay":
                         Shift s2 = shifts.Find(e => e.name.Equals("Dagvagt"));
                         element.points += s2.point;
+                        element.totalHours += GetHoursOfShift(s2.start_time, s2.end_time);
                         break;
                     case "WeekendDay":
                         Shift s3 = shifts.Find(e => e.name.Equals("wDagvagt"));
                         element.points += s3.point;
+                        element.totalHours += GetHoursOfShift(s3.start_time, s3.end_time);
                         break;
                     case "WeekendNight":
                     case "FridayNight":
                         Shift s4 = shifts.Find(e => e.name.Equals("wAftenvagt"));
                         element.points += s4.point;
                         element.isEligible = false;
+                        element.totalHours += GetHoursOfShift(s4.start_time, s4.end_time);
                         break;
                 }
             }
         }
 
-        public void removeNightShoftFromEligible(List<Employee> nighShifts, List<Employee> eligible) {
+        // Converst start and end time to a double
+        public double GetHoursOfShift(string start, string end)
+        {            
+            double startTime = Convert.ToDouble(start) / 100;
+            double endTime = Convert.ToDouble(end) / 100;
 
-            foreach (var item in eligible)
+            double time = 0.0;
+
+            // night shift
+            if (startTime > endTime)
+            {
+                time = 24 - (startTime - endTime);
+            } else if (startTime < endTime)
+            {
+                time = endTime - startTime;
+            } else
+            {
+                time = 24;
+            }
+
+            return time;
+        }
+
+
+        // Remove selected employee (for night shift) from eligible employees
+        public void RemoveNightShiftFromEligible(List<Employee> nighShifts, List<Employee> eligible) {
+
+            List<Employee> tempList = new List<Employee>(eligible);
+            foreach (var item in tempList)
             {
                 if (nighShifts.Find(e => e.employee_id == item.employee_id) != null) {
                     eligible.Remove(item);    
@@ -249,5 +290,93 @@ namespace _5thSemesterProject.Models
 
             }
         }
+
+        // Generates schedule for 1 type of shift and return a list
+        public List<Schedule> GenerateDaySchedule(DateTime day, List<Shift> shiftType, List<Employee> employees, string timeOfDay)
+        {
+            string date = day.Date.ToString("dd-MM-yyyy");
+            int shiftId = GetShiftId(day, shiftType, timeOfDay);
+            List<Schedule> tempDaySchedule = new List<Schedule>();
+            foreach (var employee in employees)
+            {
+                Schedule tempSchedule = new Schedule(employee.employee_id, shiftId, date);
+                tempDaySchedule.Add(tempSchedule);
+            }
+            return tempDaySchedule;
+        }
+
+        // Finds the desired shift ID
+        public int GetShiftId(DateTime day, List<Shift> shifts, string timeOfDay)
+        {
+            int id = 0;
+            switch(day.DayOfWeek.ToString())
+            {
+                case "Monday":
+                case "Tuesday":
+                case "Wednesday":
+                case "Thursday":
+                    if (timeOfDay.ToLower().Contains("day"))
+                    {
+                        Shift s1 = shifts.Find(e => e.name.Equals("Dagvagt"));
+                        id = s1.shift_id;
+                    } else
+                    {
+                        Shift s2 = shifts.Find(e => e.name.Equals("Aftenvagt"));
+                        id = s2.shift_id;
+                    }
+                    break;
+                case "Friday":
+                    if (timeOfDay.ToLower().Contains("day"))
+                    {
+                        Shift s1 = shifts.Find(e => e.name.Equals("Dagvagt"));
+                        id = s1.shift_id;
+                    }
+                    else
+                    {
+                        Shift s2 = shifts.Find(e => e.name.Equals("wAftenvagt"));
+                        id = s2.shift_id;
+                    }
+                    break;
+                case "Saturday":
+                case "Sunday":
+                    if (timeOfDay.ToLower().Contains("day"))
+                    {
+                        Shift s1 = shifts.Find(e => e.name.Equals("wDagvagt"));
+                        id = s1.shift_id;
+                    }
+                    else
+                    {
+                        Shift s2 = shifts.Find(e => e.name.Equals("wAftenvagt"));
+                        id = s2.shift_id;
+                    }
+                    break;
+            }
+            return id;
+        }
+
+        // Adds to FinalList which will be saved in the database
+        public void PopulateFinalList(List<Schedule> nightList, List<Schedule> dayList)
+        {
+            foreach (var schedule in nightList)
+            {
+                dayList.Add(schedule);
+            }
+            FinalList.Add(dayList);
+        }
+
+        // Save to Database
+        public void AddToDatabase(List<List<Schedule>> schedules)
+        {
+            foreach (var scheduleList in schedules)
+            {
+                foreach (var schedule in scheduleList)
+                {
+                    db.Schedule.Add(schedule);
+                }
+            }
+
+            db.SaveChanges();
+        }
+
     }
 }
