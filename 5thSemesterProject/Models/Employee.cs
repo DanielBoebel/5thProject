@@ -29,16 +29,9 @@ namespace _5thSemesterProject.Models
         public string initials { get; set; }
         public string password { get; set; }
 
-        // For algorithm
         public int points { get; set; }
         public double totalHours { get; set; }
         public bool isEligible { get; set; }
-
-        public virtual Position Position { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SpecialAgreement> SpecialAgreement { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Schedule> Schedule { get; set; }
 
         public Employee(int employee_id, int points, double totalHours, bool isEligible)
         {
@@ -48,8 +41,10 @@ namespace _5thSemesterProject.Models
             this.isEligible = isEligible;
         }
 
-
-
-
+        public virtual Position Position { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SpecialAgreement> SpecialAgreement { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Schedule> Schedule { get; set; }
     }
 }
