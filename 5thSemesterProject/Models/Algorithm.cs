@@ -9,18 +9,43 @@ namespace _5thSemesterProject.Models
     {
         private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
 
+        // Used to find the best posible outcome depending on being closest to avg hours
+        //public List<Employee> bestList = new List<Employee>();
+        public double avgHOURS = 139.14;   // totalHour / number of employees
+        public double minHOURS = 0.0;
+        public double maxHOURS = 1000.0;   // just a big number, that has to be higher than the highest posible outcome
+        public int count = 0;              // just to check when the algo found the best outcome
+        public int numberOfIteration = 100;// how many "tries" it should have to get the "best" solution
+
+        // Variables calculated values just below
+        public int employeesNight = 0;
+        public int employeesDay = 0;
+
+        // Variables set from the View (user input)
+        public int numberOfEmployeesWNight = 4;
+        public int numberOfEMplyeesWDay = 8;
         public int numberOfEmployeesNight = 4;
         public int numberOfEMplyeesDay = 25;
 
+        // Number of maximum nightshift
+        public double maxNumberOfNightShift = 0.0;
+
+        // Dates of schedules
         public DateTime firstDayOfSchedule;
         public DateTime lastDayOfSchedule;
 
-        // List containing the the final product of the algorithm
+        // List containing the the current schedule of one iteration of the algorithm
+        public List<List<Schedule>> IterationList = new List<List<Schedule>>();
+
+        // List containing the the final BEST product of the algorithm
         public List<List<Schedule>> FinalList = new List<List<Schedule>>();
+
+        //public List<List<Schedule>> FinalList { get; set; }
 
         // First method called from the SchedulesController
         public void GenerateSchedule(DateTime startDate, DateTime endDate) 
         {
+
             // List containing all employees of the same position
             var employees = db.Employee.Where(e => e.Position.name.Contains("Obstetriker")).Select(e => e.employee_id).ToList();
 
@@ -33,54 +58,76 @@ namespace _5thSemesterProject.Models
             // Gets all dates of current schedule
             List<DateTime> dates = GetDatesOfSchedule(startDate, endDate);
 
-            foreach (var day in dates)
+            // Number of maximum nightshift
+            maxNumberOfNightShift =  Math.Ceiling(Convert.ToDouble(dates.Count * numberOfEmployeesNight) / employees.Count);
+            for (int i = 1; i <= numberOfIteration; i++)
             {
-                // Finds the day (weekday, weekend or holiday)
-                string dayOfWeek = day.DayOfWeek.ToString();
-                string shiftType = GetDayType(dayOfWeek);
+                foreach (var day in dates)
+                {
+                    // Finds the day (weekday, weekend or holiday)
+                    string dayOfWeek = day.DayOfWeek.ToString();
+                    string shiftType = GetDayType(dayOfWeek);
 
-                // Set number of employees to work depending on weekday and shifttype
-                //SetNumberOfWorkingEmployees();
+                    // Set number of employees to work depending on weekday and shifttype
+                    SetNumberOfWorkingEmployees(shiftType);
 
-                // Finds all eligeble employees for the specific day
-                List<Employee> unsortedEligibleEmployees = findEligebleEmployees(allEmployees);
+                    // Finds all eligeble employees for the specific day
+                    List<Employee> unsortedEligibleEmployees = FindEligebleEmployees(allEmployees);
 
-                // Sorts all eligeble employees by point, highest to lowest
-                List<Employee> eligebleEmployees = unsortedEligibleEmployees.OrderBy(o => o.points).ToList();
+                    // Sorts all eligeble employees by point, highest to lowest
+                    List<Employee> eligebleEmployees = unsortedEligibleEmployees.OrderBy(o => o.points).ToList();
 
-                // Finds the eligeble employees with the lowest amount of points (night shift first) 
-                List<Employee> employeesNightShift = findEligebles(eligebleEmployees, numberOfEmployeesNight);
+                    // Finds the eligeble employees with the lowest amount of points (night shift first) 
+                    List<Employee> employeesNightShift = FindEligebles(eligebleEmployees, employeesNight, "Night");
 
-                // Updates points, hours and isEligeble in allEmployees
-                UpdateEmployeesForAllEmployees(allEmployees, employeesNightShift, dbShiftTypes, shiftType+"Night");
+                    // Updates points, hours and isEligeble in allEmployees
+                    UpdateEmployeesForAllEmployees(allEmployees, employeesNightShift, dbShiftTypes, shiftType + "Night");
 
-                //remove all employees selected for nightshift from  eligebleEmployees
-                RemoveNightShiftFromEligible(employeesNightShift, eligebleEmployees);
+                    //remove all employees selected for nightshift from  eligebleEmployees
+                    RemoveNightShiftFromEligible(employeesNightShift, eligebleEmployees);
 
-                // Finds the eligeble employees with the lowest amount of points 
-                List<Employee> employeesDayShift = findEligebles(eligebleEmployees, numberOfEMplyeesDay);
+                    // Finds the eligeble employees with the lowest amount of points 
+                    List<Employee> employeesDayShift = FindEligebles(eligebleEmployees, employeesDay, "Day");
 
-                // Updates points, hours and isEligeble in allEmployees
-                UpdateEmployeesForAllEmployees(allEmployees, employeesDayShift, dbShiftTypes, shiftType + "Day");
+                    // Updates points, hours and isEligeble in allEmployees
+                    UpdateEmployeesForAllEmployees(allEmployees, employeesDayShift, dbShiftTypes, shiftType + "Day");
 
-                // Populate FinalList with type List<Schedule> (Night)
-                List<Schedule> finalNightEmployeeList = GenerateDaySchedule(day, dbShiftTypes, employeesNightShift, "Night");
+                    // Populate IterationList with type List<Schedule> (Night)
+                    List<Schedule> finalNightEmployeeList = GenerateDaySchedule(day, dbShiftTypes, employeesNightShift, "Night");
 
-                // Populate FinalList with type List<Schedule> (Day)
-                List<Schedule> finalDayEmployeeList = GenerateDaySchedule(day, dbShiftTypes, employeesDayShift, "Day");
+                    // Populate IterationList with type List<Schedule> (Day)
+                    List<Schedule> finalDayEmployeeList = GenerateDaySchedule(day, dbShiftTypes, employeesDayShift, "Day");
 
-                PopulateFinalList(finalNightEmployeeList, finalDayEmployeeList);
+                    // Populate IterationList with type List<Schedule> for a whole Schedule (startDate -> endDate)
+                    PopulateIterationList(finalNightEmployeeList, finalDayEmployeeList);
+                }
+
+                // Order allEmployees list to test if there's a better solution in 
+                List<Employee> test = new List<Employee>(allEmployees.OrderByDescending(o => o.totalHours).ToList());
+                TestForBetterSolution(test, i);
+
+                // Clear iteration list so it's ready for a new iteration
+                IterationList.Clear();
+
+                // Resets values in allEmployees for each iteration
+                foreach (var item in allEmployees)
+                {
+                    item.totalHours = 0;
+                    item.numberOfNightShifts = 0;
+                    item.points = 0;
+                }
             }
-
+            //List<List<Schedule>> a = FinalList;
+            //foreach (var item in a)
+            //{
+            //    Console.Write(a);
+            //}
             // Adds to Schedule in Database
             AddToDatabase(FinalList);
-
-            foreach (var item in allEmployees)
-            {
-                Console.WriteLine("HELLO");
-            }
+  
         }
 
+        
         public List<DateTime> GetDatesOfSchedule(DateTime startDate, DateTime endDate)
         {
             List<DateTime> dates = new List<DateTime>();
@@ -93,6 +140,25 @@ namespace _5thSemesterProject.Models
                 dates.Add(firstDayOfSchedule.AddDays(i));
             }
             return dates;
+        }
+
+        public void SetNumberOfWorkingEmployees(string day)
+        {
+            switch (day)
+            {
+                case "Weekday":
+                    employeesDay = numberOfEMplyeesDay;
+                    employeesNight = numberOfEmployeesNight;
+                break;
+                case "Friday":
+                    employeesDay = numberOfEMplyeesDay;
+                    employeesNight = numberOfEmployeesWNight;
+                    break;
+                case "Weekend":
+                    employeesDay = numberOfEMplyeesWDay;
+                    employeesNight = numberOfEmployeesWNight;
+                    break;
+            }
         }
 
         public string GetDayType(string dayOfWeek)
@@ -122,14 +188,14 @@ namespace _5thSemesterProject.Models
             foreach (var item in employeeID)
             {
                 //int random = rnd.Next(0, 10);
-                Employee employee = new Employee(item, 0, 0.0, true);
+                Employee employee = new Employee(item, 0, 0.0, true, 0);
                 employeeObjects.Add(employee);
             }
             return employeeObjects;
         }
 
         // Removes all employees who is not eligeble to work
-        public List<Employee> findEligebleEmployees(List<Employee> allEmployees)
+        public List<Employee> FindEligebleEmployees(List<Employee> allEmployees)
         {
             List<Employee> tempList = new List<Employee>(allEmployees);
 
@@ -141,27 +207,35 @@ namespace _5thSemesterProject.Models
         }
 
         // Returns list of the decided number of employees with the lowest points
-        public List<Employee> findEligebles(List<Employee> eligibleEmployees, int numberOfEmployees)
+        public List<Employee> FindEligebles(List<Employee> eligibleEmployees, int numberOfEmployees, string shiftType)
         {
             List<Employee> eligebles = new List<Employee>();
-            int temp = eligibleEmployees[0].points; // lowest value
-            // Populate nightShiftEligebles with employees
+            int tempPoint = eligibleEmployees[0].points; // lowest value
+            double tempHours = eligibleEmployees[0].totalHours; // lowest value
+            // Populate eligebles with employees
             foreach (var item in eligibleEmployees)
             {
-                if (item.points == temp)
+                if (item.numberOfNightShifts < maxNumberOfNightShift || shiftType.Equals("Day"))
                 {
-                    eligebles.Add(item);
-                }
-                else
-                {
-                    if (eligebles.Count < numberOfEmployees)
+                    if (item.points == tempPoint)
                     {
-                        eligebles.Add(item);
-                        temp = item.points;
+                        if (item.totalHours <= tempHours)
+                        {
+                            eligebles.Add(item);
+                        }
                     }
                     else
                     {
-                        break;
+                        if (eligebles.Count < numberOfEmployees)
+                        {
+                            eligebles.Add(item);
+                            tempPoint = item.points;
+                            tempHours = item.totalHours;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
                 }
             }
@@ -231,6 +305,7 @@ namespace _5thSemesterProject.Models
                         element.points += s1.point;
                         element.isEligible = false;
                         element.totalHours += GetHoursOfShift(s1.start_time, s1.end_time);
+                        element.numberOfNightShifts++;
                         break;
                     case "WeekdayDay":
                     case "FridayDay":
@@ -249,6 +324,7 @@ namespace _5thSemesterProject.Models
                         element.points += s4.point;
                         element.isEligible = false;
                         element.totalHours += GetHoursOfShift(s4.start_time, s4.end_time);
+                        element.numberOfNightShifts++;
                         break;
                 }
             }
@@ -354,15 +430,51 @@ namespace _5thSemesterProject.Models
             return id;
         }
 
-        // Adds to FinalList which will be saved in the database
-        public void PopulateFinalList(List<Schedule> nightList, List<Schedule> dayList)
+        // Adds to IterationList which will be saved in the database
+        public void PopulateIterationList(List<Schedule> nightList, List<Schedule> dayList)
         {
             foreach (var schedule in nightList)
             {
                 dayList.Add(schedule);
             }
-            FinalList.Add(dayList);
+            IterationList.Add(dayList);
         }
+
+        // Tests if there's a better solution - if there is 
+        public void TestForBetterSolution(List<Employee> test, int i)
+        {
+            if (test[test.Count - 1].totalHours >= minHOURS && test[0].totalHours <= maxHOURS)
+            {
+                minHOURS = test[test.Count - 1].totalHours;
+                maxHOURS = test[0].totalHours;
+                //bestList.Clear();
+                //foreach (var item in test)
+                //{
+                //    bestList.Add(new Employee(item.employee_id, item.points, item.totalHours, item.isEligible, item.numberOfNightShifts););
+                //}
+                count = i;
+                SetNewFinalList(IterationList);
+            }
+        }
+
+        // Populates FinalList whenever there's a new best list
+        public void SetNewFinalList(List<List<Schedule>> iterationList)
+        {
+            // Temp list containing schedules of one day
+            List<Schedule> tempSchedules = new List<Schedule>();
+            // Clear FinalList to make room for new best list
+            FinalList.Clear();
+            foreach (var scheduleList in iterationList)
+            {
+                foreach (var item in scheduleList)
+                {
+                    tempSchedules.Add(new Schedule(item.employee_id, item.shift_id, item.date));
+                }
+                FinalList.Add(new List<Schedule>(tempSchedules));
+                tempSchedules.Clear();
+            }
+        }
+
 
         // Save to Database
         public void AddToDatabase(List<List<Schedule>> schedules)
@@ -377,6 +489,5 @@ namespace _5thSemesterProject.Models
 
             db.SaveChanges();
         }
-
     }
 }

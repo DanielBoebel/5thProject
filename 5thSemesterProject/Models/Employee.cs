@@ -32,13 +32,15 @@ namespace _5thSemesterProject.Models
         public int points { get; set; }
         public double totalHours { get; set; }
         public bool isEligible { get; set; }
+        public int numberOfNightShifts { get; set; }
 
-        public Employee(int employee_id, int points, double totalHours, bool isEligible)
+        public Employee(int employee_id, int points, double totalHours, bool isEligible, int numberOfNightShifts)
         {
             this.employee_id = employee_id;
             this.points = points;
             this.totalHours = totalHours;
             this.isEligible = isEligible;
+            this.numberOfNightShifts = numberOfNightShifts;
         }
 
         public virtual Position Position { get; set; }

@@ -329,8 +329,9 @@ namespace _5thSemesterProject.Controllers
                 ViewBag.sunday = sunday;
 
                 TempData["showingWeek"] = "Uge " + weekNum;
-                var schedule = db.Schedule.Where(x => x.date.Equals(monday) && x.Employee.employee_id == employeeID || x.date.Equals(tuesday) && x.Employee.employee_id == employeeID || x.date.Equals(wednesday) && x.Employee.employee_id == employeeID || x.date.Equals(thursday) && x.Employee.employee_id == employeeID || x.date.Equals(friday) && x.Employee.employee_id == employeeID || x.date.Equals(saturday) && x.Employee.employee_id == employeeID || x.date.Equals(sunday) && x.Employee.employee_id == employeeID);
-                return View(schedule.ToList());
+                //var schedule = db.Schedule.Where(x => x.date.Equals(monday) && x.Employee.employee_id == employeeID || x.date.Equals(tuesday) && x.Employee.employee_id == employeeID || x.date.Equals(wednesday) && x.Employee.employee_id == employeeID || x.date.Equals(thursday) && x.Employee.employee_id == employeeID || x.date.Equals(friday) && x.Employee.employee_id == employeeID || x.date.Equals(saturday) && x.Employee.employee_id == employeeID || x.date.Equals(sunday) && x.Employee.employee_id == employeeID);
+                var schedule = db.Schedule.Where(x => x.date.Equals(monday)|| x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday)  || x.date.Equals(friday)|| x.date.Equals(saturday) || x.date.Equals(sunday));
+                return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
             }
             else
             {
@@ -383,8 +384,9 @@ namespace _5thSemesterProject.Controllers
                 ViewBag.sunday = sunday;
 
                 TempData["showingWeek"] = "Uge " + weekId;
-                var schedule = db.Schedule.Where(x => x.date.Equals(monday) && x.Employee.employee_id == employeeID || x.date.Equals(tuesday) && x.Employee.employee_id == employeeID || x.date.Equals(wednesday) && x.Employee.employee_id == employeeID || x.date.Equals(thursday) && x.Employee.employee_id == employeeID || x.date.Equals(friday) && x.Employee.employee_id == employeeID || x.date.Equals(saturday) && x.Employee.employee_id == employeeID || x.date.Equals(sunday) && x.Employee.employee_id == employeeID);
-                return View(schedule.ToList());
+                //var schedule = db.Schedule.Where(x => x.date.Equals(monday) && x.Employee.employee_id == employeeID || x.date.Equals(tuesday) && x.Employee.employee_id == employeeID || x.date.Equals(wednesday) && x.Employee.employee_id == employeeID || x.date.Equals(thursday) && x.Employee.employee_id == employeeID || x.date.Equals(friday) && x.Employee.employee_id == employeeID || x.date.Equals(saturday) && x.Employee.employee_id == employeeID || x.date.Equals(sunday) && x.Employee.employee_id == employeeID);
+                var schedule = db.Schedule.Where(x => x.date.Equals(monday) || x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday) || x.date.Equals(friday) || x.date.Equals(saturday) || x.date.Equals(sunday));
+                return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
 
             }
             else
