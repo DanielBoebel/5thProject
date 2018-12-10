@@ -28,11 +28,31 @@ namespace _5thSemesterProject.Models
         public int position_id { get; set; }
         public string initials { get; set; }
         public string password { get; set; }
-    
+
+        public int points { get; set; }
+        public double totalHours { get; set; }
+        public bool isEligible { get; set; }
+        public int numberOfNightShifts { get; set; }
+
+        public Employee(int employee_id, int points, double totalHours, bool isEligible, int numberOfNightShifts)
+        {
+            this.employee_id = employee_id;
+            this.points = points;
+            this.totalHours = totalHours;
+            this.isEligible = isEligible;
+            this.numberOfNightShifts = numberOfNightShifts;
+        }
+
         public virtual Position Position { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SpecialAgreement> SpecialAgreement { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Schedule> Schedule { get; set; }
+
+
+        public string ToNiceString()
+        {
+            return "Employee ID" + employee_id + " Points: " + points + " TotalHours: " + totalHours + " isEligible: " + isEligible;
+        }
     }
 }

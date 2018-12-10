@@ -17,7 +17,9 @@ namespace _5thSemesterProject.Controllers
     {
         private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
 
-        
+        // For testing purposes
+        public int employeeID = 40;
+
 
         public ActionResult Index() {
 
@@ -292,6 +294,8 @@ namespace _5thSemesterProject.Controllers
 			return View(schedule.ToList());
 		}
 
+        int weekId = 0;
+
         // GET: Schedules for week
         public ActionResult CalendarWeek()
         {
@@ -299,7 +303,7 @@ namespace _5thSemesterProject.Controllers
             {
                 double dayOfYear = DateTime.Now.DayOfYear / 7.0;
                 double weekNum = Math.Ceiling(dayOfYear);
-                ViewBag.weekId = weekNum;
+                ViewBag.weekId = Convert.ToInt32(weekNum);
                 ViewBag.diff = 0;
 
                 // Current dayOfWeek (String format)
@@ -327,8 +331,9 @@ namespace _5thSemesterProject.Controllers
                 ViewBag.sunday = sunday;
 
                 TempData["showingWeek"] = "Uge " + weekNum;
-                var schedule = db.Schedule.Where(x => x.date.Equals(monday) || x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday) || x.date.Equals(friday) || x.date.Equals(saturday) || x.date.Equals(sunday));
-                return View(schedule.ToList());
+                var schedule = db.Schedule.Where(x => x.date.Equals(monday) && x.Employee.employee_id == employeeID || x.date.Equals(tuesday) && x.Employee.employee_id == employeeID || x.date.Equals(wednesday) && x.Employee.employee_id == employeeID || x.date.Equals(thursday) && x.Employee.employee_id == employeeID || x.date.Equals(friday) && x.Employee.employee_id == employeeID || x.date.Equals(saturday) && x.Employee.employee_id == employeeID || x.date.Equals(sunday) && x.Employee.employee_id == employeeID);
+                //var schedule = db.Schedule.Where(x => x.date.Equals(monday)|| x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday)  || x.date.Equals(friday)|| x.date.Equals(saturday) || x.date.Equals(sunday));
+                return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
             }
             else
             {
@@ -337,7 +342,7 @@ namespace _5thSemesterProject.Controllers
         }
 
         [HttpPost]
-        public ActionResult CalendarWeek(int weekId, int diff)
+        public ActionResult CalendarWeek(int? weekId, int? diff)
         {
             if (Session["employeeId"] != null)
             {
@@ -354,10 +359,10 @@ namespace _5thSemesterProject.Controllers
                 ViewBag.diff = diff;
 
                 // Current dayOfWeek (String format)
-                string dayOfWeek = DateTime.Now.AddDays(7 * diff).DayOfWeek.ToString();
+                string dayOfWeek = DateTime.Now.AddDays(7 * Convert.ToInt32(diff)).DayOfWeek.ToString();
 
                 // Array of dates of current week - Contains the first date of the week on index 0 and last date of the week on index 6
-                string[] dates = getDatesOfWeek(dayOfWeek, 7 * diff);
+                string[] dates = getDatesOfWeek(dayOfWeek, 7 * Convert.ToInt32(diff));
 
                 //double dayOfYear = DateTime.Now.AddDays(weekId).DayOfYear / 7;
                 //double weekNum = Math.Ceiling(dayOfYear);
@@ -381,8 +386,9 @@ namespace _5thSemesterProject.Controllers
                 ViewBag.sunday = sunday;
 
                 TempData["showingWeek"] = "Uge " + weekId;
-                var schedule = db.Schedule.Where(x => x.date.Equals(monday) || x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday) || x.date.Equals(friday) || x.date.Equals(saturday) || x.date.Equals(sunday));
-                return View(schedule.ToList());
+                var schedule = db.Schedule.Where(x => x.date.Equals(monday) && x.Employee.employee_id == employeeID || x.date.Equals(tuesday) && x.Employee.employee_id == employeeID || x.date.Equals(wednesday) && x.Employee.employee_id == employeeID || x.date.Equals(thursday) && x.Employee.employee_id == employeeID || x.date.Equals(friday) && x.Employee.employee_id == employeeID || x.date.Equals(saturday) && x.Employee.employee_id == employeeID || x.date.Equals(sunday) && x.Employee.employee_id == employeeID);
+                //var schedule = db.Schedule.Where(x => x.date.Equals(monday) || x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday) || x.date.Equals(friday) || x.date.Equals(saturday) || x.date.Equals(sunday));
+                return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
 
             }
             else
@@ -459,23 +465,17 @@ namespace _5thSemesterProject.Controllers
 
         public ActionResult GenerateSchedule() {
 
-
             return View();
         }
+
         [HttpPost]
-        public ActionResult GenerateSchedule(string start_date, string end_date)
+        public ActionResult GenerateSchedule(DateTime start_date, DateTime end_date)
         {
-            var start = start_date;
-            var end = end_date;
-            
-
-            var employee = db.Employee.Where(e => e.Position.name.Contains("Obstetriker")).Select(e => e.employee_id).ToList();
-
+            Algorithm x = new Algorithm();
+            x.GenerateSchedule(start_date, end_date);
 
             return RedirectToAction("Index");
         }
-
-
 
         protected override void Dispose(bool disposing)
         {
