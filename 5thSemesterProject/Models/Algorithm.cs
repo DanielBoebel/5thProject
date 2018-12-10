@@ -122,12 +122,12 @@ namespace _5thSemesterProject.Models
             //{
             //    Console.Write(a);
             //}
-            // Adds to Schedule in Database
+            //Adds to Schedule in Database
             AddToDatabase(FinalList);
-  
+
         }
 
-        
+
         public List<DateTime> GetDatesOfSchedule(DateTime startDate, DateTime endDate)
         {
             List<DateTime> dates = new List<DateTime>();
@@ -183,7 +183,7 @@ namespace _5thSemesterProject.Models
         public List<Employee> GenerateEmployeeElements(List<int> employeeID)
         {
             List<Employee> employeeObjects = new List<Employee>();
-            Random rnd = new Random();
+            //Random rnd = new Random();
 
             foreach (var item in employeeID)
             {
