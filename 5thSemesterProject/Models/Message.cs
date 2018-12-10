@@ -20,6 +20,7 @@ namespace _5thSemesterProject.Models
         public string date { get; set; }
         public string content { get; set; }
         public int sender_id { get; set; }
+        public Boolean isSender { get; set; }
 
         public Message()
         {
@@ -32,6 +33,16 @@ namespace _5thSemesterProject.Models
             this.reciever_id = reciever_id;
             this.date = date;
             this.content = content;
+        }
+
+        public Message(int message_id, int reciever_id, string date, string content, int sender_id, bool isSender)
+        {
+            this.message_id = message_id;
+            this.reciever_id = reciever_id;
+            this.date = date;
+            this.content = content;
+            this.sender_id = sender_id;
+            this.isSender = isSender;
         }
     }
 }
