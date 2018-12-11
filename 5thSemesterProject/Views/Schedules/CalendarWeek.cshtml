@@ -28,24 +28,24 @@
         <div class="card-header text-center" style="background-color: #ffffff;">
             <div class="btn-toolbar" style="padding: 0;margin: 0;">
                 <div class="btn-group btn-group-sm" role="group" style="padding: 0;margin: 0;height: 36px;font-size: 12px;">
-                    @using (Html.BeginForm("CalendarWeek", "Schedules", new { weekId = ViewBag.weekId - 1 }))
+                    @using (Html.BeginForm("CalendarWeek", "Schedules", new { weekId = ViewBag.weekId - 1, diff = ViewBag.diff - 1 }))
                     {
                         <button class="btn btn-primary border rounded" type="submit" id="prevWeek">Forrige uge</button>
                     }
-                    @using (Html.BeginForm("CalendarWeek", "Schedules", new { weekId = ViewBag.weekId - ViewBag.weekId }))
+                    @using (Html.BeginForm("CalendarWeek", "Schedules", FormMethod.Get))
                     {
                         <button class="btn btn-primary border rounded" type="submit" id="currentWeek" style="margin: 0px 10px 0px 10px;">Denne uge</button>
                     }
-                    @using (Html.BeginForm("CalendarWeek", "Schedules", new { weekId = ViewBag.weekId + 1 }))
+                    @using (Html.BeginForm("CalendarWeek", "Schedules", new { weekId = ViewBag.weekId + 1, diff = ViewBag.diff + 1 }))
                     {
                         <button class="btn btn-primary border rounded" type="submit" id="nextWeek">Næste uge</button>
-                    }
                         <button class="btn btn-secondary border rounded" type="button" disabled="disabled" style="margin: 0px 0px 0px 10px;">@TempData["showingWeek"]</button>
+                    }
                 </div>
             </div>
         </div>
         <div class="card-body" style="background-color: #ffffff;padding: 20px;">
-            
+            @ViewBag.test
 
             <div class="row weekdays" id="section1">
                 <div class="column" id="monday">
@@ -63,7 +63,7 @@
                                     {
                                         <tr id="dateCell">
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.firstname)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.initials)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
                                                 @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
@@ -91,7 +91,7 @@
                                     {
                                         <tr id="dateCell">
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.firstname)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.initials)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
                                                 @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
@@ -119,7 +119,7 @@
                                     {
                                         <tr id="dateCell">
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.firstname)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.initials)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
                                                 @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
@@ -147,7 +147,7 @@
                                     {
                                         <tr id="dateCell">
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.firstname)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.initials)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
                                                 @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
@@ -175,7 +175,7 @@
                                     {
                                         <tr id="dateCell">
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.firstname)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.initials)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
                                                 @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
@@ -203,7 +203,7 @@
                                     {
                                         <tr id="dateCell">
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.firstname)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.initials)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
                                                 @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
@@ -231,7 +231,7 @@
                                     {
                                         <tr id="dateCell">
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.firstname)<br />
+                                                @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.initials)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
                                                 @Html.DisplayFor(modelItem => item.Shift.start_time)<br />

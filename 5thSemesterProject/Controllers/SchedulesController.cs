@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
+using System.Windows.Forms;
 using _5thSemesterProject.Models;
 
 namespace _5thSemesterProject.Controllers
@@ -17,14 +14,14 @@ namespace _5thSemesterProject.Controllers
     {
         private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
 
-        
+        public int employeeID = 0;
 
         public ActionResult Index() {
 
             var schedule = db.Schedule;
 
-
-            return View(schedule.ToList());
+            
+            return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
         }
 
 
@@ -47,7 +44,7 @@ namespace _5thSemesterProject.Controllers
         // GET: Schedules/Create
         public ActionResult Create()
         {
-            ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "cpr");
+            ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "initials");
             ViewBag.shift_id = new SelectList(db.Shift, "shift_id", "name");
             return View();
         }
@@ -65,7 +62,7 @@ namespace _5thSemesterProject.Controllers
                 return RedirectToAction("CalendarMonth");
             }
 
-            ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "cpr", schedule.employee_id);
+            ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "initials", schedule.employee_id);
             ViewBag.shift_id = new SelectList(db.Shift, "shift_id", "name", schedule.shift_id);
             return View(schedule);
         }
@@ -82,7 +79,7 @@ namespace _5thSemesterProject.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "cpr", schedule.employee_id);
+            ViewBag.initials = new SelectList(db.Employee, "initials", "initials", schedule.employee_id);
             ViewBag.shift_id = new SelectList(db.Shift, "shift_id", "name", schedule.shift_id);
             return View(schedule);
         }
@@ -276,7 +273,7 @@ namespace _5thSemesterProject.Controllers
 					monthString = "September";
 					break;
 				case 10:
-					monthString = "October";
+					monthString = "Oktober";
 					break;
 				case 11:
 					monthString = "November";
@@ -292,108 +289,112 @@ namespace _5thSemesterProject.Controllers
 			return View(schedule.ToList());
 		}
 
-
-
+        int weekId = 0;
 
         // GET: Schedules for week
         public ActionResult CalendarWeek()
         {
-            double dayOfYear = DateTime.Now.DayOfYear / 7; 
-            double weekNum = Math.Ceiling(dayOfYear);
-            ViewBag.weekId = weekNum;
+            if (Session["employeeId"] != null)
+            {
+                employeeID = Convert.ToInt32(Session["employeeId"]);
+                double dayOfYear = DateTime.Now.DayOfYear / 7.0;
+                double weekNum = Math.Ceiling(dayOfYear);
+                ViewBag.weekId = Convert.ToInt32(weekNum);
+                ViewBag.diff = 0;
 
-            // Current dayOfWeek (String format)
-            string dayOfWeek = DateTime.Now.AddDays(0).DayOfWeek.ToString();
+                // Current dayOfWeek (String format)
+                string dayOfWeek = DateTime.Now.AddDays(0).DayOfWeek.ToString();
 
-            // Array of dates of current week - Contains the first date of the week on index 0 and last date of the week on index 6
-            string[] dates = getDatesOfWeek(dayOfWeek, 0);
+                // Array of dates of current week - Contains the first date of the week on index 0 and last date of the week on index 6
+                string[] dates = getDatesOfWeek(dayOfWeek, 0);
 
-            // Because LINQ is not smart
-            string monday = dates[0];
-            string tuesday = dates[1];
-            string wednesday = dates[2];
-            string thursday = dates[3];
-            string friday = dates[4];
-            string saturday = dates[5];
-            string sunday = dates[6];
+                // Because LINQ is not smart
+                string monday = dates[0];
+                string tuesday = dates[1];
+                string wednesday = dates[2];
+                string thursday = dates[3];
+                string friday = dates[4];
+                string saturday = dates[5];
+                string sunday = dates[6];
 
-            // Because spaghetti works
-            ViewBag.monday = monday;
-            ViewBag.tuesday = tuesday;
-            ViewBag.wednesday = wednesday;
-            ViewBag.thursday = thursday;
-            ViewBag.friday = friday;
-            ViewBag.saturday = saturday;
-            ViewBag.sunday = sunday;
+                // Because spaghetti works
+                ViewBag.monday = monday;
+                ViewBag.tuesday = tuesday;
+                ViewBag.wednesday = wednesday;
+                ViewBag.thursday = thursday;
+                ViewBag.friday = friday;
+                ViewBag.saturday = saturday;
+                ViewBag.sunday = sunday;
 
-            TempData["showingWeek"] = "Uge " + weekNum;
-            var schedule = db.Schedule.Where(x => x.date.Equals(monday) || x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday) || x.date.Equals(friday) || x.date.Equals(saturday) || x.date.Equals(sunday));
-            return View(schedule.ToList());
+                TempData["showingWeek"] = "Uge " + weekNum;
+                var schedule = db.Schedule.Where(x => x.date.Equals(monday) && x.Employee.employee_id == employeeID || x.date.Equals(tuesday) && x.Employee.employee_id == employeeID || x.date.Equals(wednesday) && x.Employee.employee_id == employeeID || x.date.Equals(thursday) && x.Employee.employee_id == employeeID || x.date.Equals(friday) && x.Employee.employee_id == employeeID || x.date.Equals(saturday) && x.Employee.employee_id == employeeID || x.date.Equals(sunday) && x.Employee.employee_id == employeeID);
+                //var schedule = db.Schedule.Where(x => x.date.Equals(monday)|| x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday)  || x.date.Equals(friday)|| x.date.Equals(saturday) || x.date.Equals(sunday));
+                return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
+            }
+            else
+            {
+                return RedirectToAction("../Home/Index");
+            }
         }
 
         [HttpPost]
-        public ActionResult CalendarWeek(int weekId)
+        public ActionResult CalendarWeek(int? weekId, int? diff)
         {
-            double dayOfYear = DateTime.Now.DayOfYear / 7;
-            double weekNum = Math.Ceiling(dayOfYear);
-            ViewBag.weekId = weekNum;
-
-            DateTime tempWeek = new DateTime();
-
-            // Current dayOfWeek (String format)
-            string dayOfWeek;
-            //int temp = ViewBag.weekId;
-            if (weekId > weekNum)
+            if (Session["employeeId"] != null)
             {
-                dayOfYear = DateTime.Now.AddDays(7).DayOfYear / 7;
-                weekNum = Math.Ceiling(dayOfYear);
-                dayOfWeek = DateTime.Now.AddDays(7).DayOfWeek.ToString();
-                ViewBag.weekId = weekNum;
+                employeeID = Convert.ToInt32(Session["employeeId"]);
+                if (weekId > 52) weekId = 1;
+                if (weekId < 1) weekId = 52;
+                //if (diff == 0)
+                //{
+                //    double dayOfYear = DateTime.Now.AddDays(weekId).DayOfYear / 7;
+                //    double weekNum = Math.Ceiling(dayOfYear);
+                //    weekId = Convert.ToInt32(Math.Ceiling(weekNum));
+                //}
+
+                ViewBag.weekId = weekId;
+                ViewBag.diff = diff;
+
+                // Current dayOfWeek (String format)
+                string dayOfWeek = DateTime.Now.AddDays(7 * Convert.ToInt32(diff)).DayOfWeek.ToString();
+
+                // Array of dates of current week - Contains the first date of the week on index 0 and last date of the week on index 6
+                string[] dates = getDatesOfWeek(dayOfWeek, 7 * Convert.ToInt32(diff));
+
+                //double dayOfYear = DateTime.Now.AddDays(weekId).DayOfYear / 7;
+                //double weekNum = Math.Ceiling(dayOfYear);
+
+                // Because LINQ is not smart
+                string monday = dates[0];
+                string tuesday = dates[1];
+                string wednesday = dates[2];
+                string thursday = dates[3];
+                string friday = dates[4];
+                string saturday = dates[5];
+                string sunday = dates[6];
+
+                // Because spaghetti works
+                ViewBag.monday = monday;
+                ViewBag.tuesday = tuesday;
+                ViewBag.wednesday = wednesday;
+                ViewBag.thursday = thursday;
+                ViewBag.friday = friday;
+                ViewBag.saturday = saturday;
+                ViewBag.sunday = sunday;
+
+                TempData["showingWeek"] = "Uge " + weekId;
+                var schedule = db.Schedule.Where(x => x.date.Equals(monday) && x.Employee.employee_id == employeeID || x.date.Equals(tuesday) && x.Employee.employee_id == employeeID || x.date.Equals(wednesday) && x.Employee.employee_id == employeeID || x.date.Equals(thursday) && x.Employee.employee_id == employeeID || x.date.Equals(friday) && x.Employee.employee_id == employeeID || x.date.Equals(saturday) && x.Employee.employee_id == employeeID || x.date.Equals(sunday) && x.Employee.employee_id == employeeID);
+                //var schedule = db.Schedule.Where(x => x.date.Equals(monday) || x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday) || x.date.Equals(friday) || x.date.Equals(saturday) || x.date.Equals(sunday));
+                return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
+
             }
-            else if (weekId < weekNum)
+            else
             {
-                dayOfYear = DateTime.Now.AddDays(-7).DayOfYear / 7;
-                weekNum = Math.Ceiling(dayOfYear);
-                dayOfWeek = DateTime.Now.AddDays(-7).DayOfWeek.ToString();
-                ViewBag.weekId = weekNum;
-            } else
-            {
-                dayOfYear = DateTime.Now.DayOfYear / 7;
-                weekNum = Math.Ceiling(dayOfYear);
-                dayOfWeek = DateTime.Now.AddDays(0).DayOfWeek.ToString();
-                ViewBag.weekId = weekNum;
+                return RedirectToAction("../Home/Index");
             }
-
-
-            //// Current dayOfWeek (String format)
-            //string dayOfWeek = DateTime.Now.AddDays(weekId).DayOfWeek.ToString();
-
-            // Array of dates of current week - Contains the first date of the week on index 0 and last date of the week on index 6
-            string[] dates = getDatesOfWeek(dayOfWeek, 2);
-
-            // Because LINQ is not smart
-            string monday = dates[0];
-            string tuesday = dates[1];
-            string wednesday = dates[2];
-            string thursday = dates[3];
-            string friday = dates[4];
-            string saturday = dates[5];
-            string sunday = dates[6];
-
-            // Because spaghetti works
-            ViewBag.monday = monday;
-            ViewBag.tuesday = tuesday;
-            ViewBag.wednesday = wednesday;
-            ViewBag.thursday = thursday;
-            ViewBag.friday = friday;
-            ViewBag.saturday = saturday;
-            ViewBag.sunday = sunday;
-
-            TempData["showingWeek"] = "Uge " + weekNum;
-            var schedule = db.Schedule.Where(x => x.date.Equals(monday) || x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday) || x.date.Equals(friday) || x.date.Equals(saturday) || x.date.Equals(sunday));
-            return View(schedule.ToList());
         }
 
+        // Returns array with dates of desired week. dayOfWeek and addDay hava to have the same number added 
         public string[] getDatesOfWeek(string dayOfWeek, int addDay)
         {
             // Current date (DateTime format)
@@ -409,7 +410,7 @@ namespace _5thSemesterProject.Controllers
             for (int i = 0; i < weekDays.Length; i++)
             {
                 daysToAdd--;
-                if (weekDays[i].Equals(dayOfWeek)) // if the weekDay is equal to current weekday, get starting date and last date
+                if (weekDays[i].Equals(dayOfWeek)) // if the weekDay is equal to current weekday, get start date -> last date
                 {
                     DateTime startDate = dt.AddDays(-i).Date;
 
@@ -426,26 +427,83 @@ namespace _5thSemesterProject.Controllers
         // GET: Schedules for today
         public ActionResult CalendarDay()
         {
-			ViewBag.dayId = 0;
-            string today = DateTime.Now.ToString("dd-MM-yyyy");
-            TempData["showingDate"] = today;
-            var schedule = db.Schedule.Where(x => x.date.Equals(today));
-            return View(schedule.ToList());
+            if (Session["employeeId"] != null)
+            {
+                employeeID = Convert.ToInt32(Session["employeeId"]);
+
+                ViewBag.dayId = 0;
+                string today = DateTime.Now.ToString("dd-MM-yyyy");
+                TempData["showingDate"] = today;
+                var schedule = db.Schedule.Where(x => x.date.Equals(today));
+                return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
+            }
+            else
+            {
+                return RedirectToAction("../Home/Index");
+            }
         }
 
 		[HttpPost]
 		public ActionResult CalendarDay(int dayId)
 		{
-			int dayTemp = dayId;
+            if (Session["employeeId"] != null)
+            {
+                employeeID = Convert.ToInt32(Session["employeeId"]);
 
-			ViewBag.dayId = dayTemp;
-			string day = DateTime.Now.AddDays(dayTemp).ToString("dd-MM-yyyy");
-			TempData["showingDate"] = day;
-			var schedule = db.Schedule.Where(x => x.date.Equals(day));
-			
+                int dayTemp = dayId;
 
-			return View(schedule.ToList());
-		}
+                ViewBag.dayId = dayTemp;
+                string day = DateTime.Now.AddDays(dayTemp).ToString("dd-MM-yyyy");
+                TempData["showingDate"] = day;
+                var schedule = db.Schedule.Where(x => x.date.Equals(day));
+                return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
+            }
+            else
+            {
+                return RedirectToAction("../Home/Index");
+            }
+        }
+
+        public ActionResult GenerateSchedule() {
+            if (Session["employeeId"] != null)
+            {
+                ViewData["Year"] = DateTime.Now.Year.ToString();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("../Home/Index");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult GenerateSchedule(string Month, int weekdayEmpDay, int weekdayEmpNight, int weekendEmpDay, int weekendEmpNight)
+        {
+            if (Session["employeeId"] != null)
+            {
+                DateTime date = Convert.ToDateTime(Month);
+                DateTime firstDayOfSchedule = new DateTime(date.Year, date.Month, 1);
+                DateTime lastDayOfSchedule = firstDayOfSchedule.AddMonths(1).AddDays(-1);
+
+                DialogResult result = MessageBox.Show("Er du sikker på at du vil oprette en vagtplan fra:\n" + firstDayOfSchedule.DayOfWeek+" "+ firstDayOfSchedule.ToString("dd-MM-yyyy") +" til " + lastDayOfSchedule.DayOfWeek + " " + lastDayOfSchedule.ToString("dd-MM-yyyy"), "Bekræft", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+                if (result == DialogResult.OK)
+                {
+                    Algorithm x = new Algorithm();
+                    x.GenerateSchedule(date, weekdayEmpDay, weekdayEmpNight, weekendEmpDay, weekendEmpNight);
+                }
+                if (result == DialogResult.Cancel)
+                {
+                    MessageBox.Show("Handling afbrudt", "Afbrudt");
+                }
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("../Home/Index");
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {

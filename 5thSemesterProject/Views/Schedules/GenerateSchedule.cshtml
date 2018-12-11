@@ -1,0 +1,44 @@
+﻿@model IEnumerable<_5thSemesterProject.Models.Schedule>
+
+@{
+    ViewBag.Title = "Opret vagtplan";
+}
+<br />
+<h2>Opret vagtplan</h2>
+<br />
+
+<form class="form-group" method="post">
+    <h3>Måned @ViewData["Year"]</h3>
+    <div class="form-group">
+        @Html.DropDownList("Month", new List<SelectListItem> {
+        new SelectListItem{Text = "Januar", Value = "01-01-"+@ViewData["Year"]},
+        new SelectListItem{Text = "Februar", Value = "01-02-"+@ViewData["Year"]},
+        new SelectListItem{Text = "Marst", Value = "01-03-"+@ViewData["Year"]},
+        new SelectListItem{Text = "April", Value = "01-04-"+@ViewData["Year"]},
+        new SelectListItem{Text = "Maj", Value = "01-05-"+@ViewData["Year"]},
+        new SelectListItem{Text = "Juni", Value = "01-06-"+@ViewData["Year"]},
+        new SelectListItem{Text = "Juli", Value = "01-07-"+@ViewData["Year"]},
+        new SelectListItem{Text = "August", Value = "01-08-"+@ViewData["Year"]},
+        new SelectListItem{Text = "September", Value = "01-09-"+@ViewData["Year"]},
+        new SelectListItem{Text = "Oktober", Value = "01-10-"+@ViewData["Year"]},
+        new SelectListItem{Text = "November", Value = "01-11-"+@ViewData["Year"]},
+        new SelectListItem{Text = "December", Value = "01-12-"+@ViewData["Year"]},
+         })
+    </div>
+    <h3>Hverdag</h3>
+    <label class="col-form-label">Dagvagter</label>
+    <div class="form-group"><input class="border rounded form-control" type="number" name="weekdayEmpDay" required="" min="15" max="30" style="font-size: 16px;"></div>
+    <label class="col-form-label">Aften-/nattevagter</label>
+    <div class="form-group"><input class="border rounded form-control" type="number" name="weekdayEmpNight" required="" min="4" max="8"></div>
+    <h3>Weekend</h3>
+    <label class="col-form-label">Dagvagter</label>
+    <div class="form-group"><input class="border rounded form-control" type="number" name="weekendEmpDay" required="" min="15" max="30" style="font-size: 16px;"></div>
+    <label class="col-form-label">Aften-/nattevagter</label>
+    <div class="form-group"><input class="border rounded form-control" type="number" name="weekendEmpNight" required="" min="4" max="8"></div>
+
+    <div class="form-group"><button class="btn btn-primary border rounded" type="submit" style="background-color: #059ee8;">Opret vagtplan</button></div>
+</form>
+
+<div>
+    @Html.ActionLink("Tilbage", "Index")
+</div>
