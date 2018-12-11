@@ -50,12 +50,28 @@ namespace _5thSemesterProject.Controllers
 
 			List<Message> listSender = new List<Message>();
 			List<Message> listReciever = new List<Message>();
-			List<CorrectOrder> listCorrectOrder = new List<CorrectOrder>();
+            List<Message> allMessages = new List<Message>();
+            List<CorrectOrder> listCorrectOrder = new List<CorrectOrder>();
 			listSender = db.Message.Where(x => x.sender_id == sender_id ).ToList();
-			listReciever = db.Message.Where(x => x.reciever_id == sender_id).ToList();
-			List<Employee> employeeList = db.Employee.ToList();
+            foreach (var hest in listSender)
+            {
+                Message messageSend = new Message(hest.message_id, hest.reciever_id, hest.date, hest.content, hest.sender_id, true);
+                allMessages.Add(messageSend);
+            }
+
+            listReciever = db.Message.Where(x => x.reciever_id == sender_id).ToList();
+            foreach (var hest in listReciever)
+            {
+                Message messageReceive = new Message(hest.message_id, hest.reciever_id, hest.date, hest.content, hest.sender_id, false);
+                allMessages.Add(messageReceive);
+            }
+            List<Message> sortedMessages = new List<Message>(allMessages.OrderBy(x => x.message_id));
+            //allMessages.OrderBy(x => x.message_id);
+            //allMessages.OrderBy(x => x.message_id);
+
+            List<Employee> employeeList = db.Employee.ToList();
 			model.employeeList = employeeList;
-			model.messageSenderList = listSender;
+			model.messageSenderList = sortedMessages;
 			model.messageRecieverList = listReciever;
 
 			
@@ -83,9 +99,13 @@ namespace _5thSemesterProject.Controllers
 			List<Employee> employeeList = db.Employee.ToList();
 			List<Message> listSender = new List<Message>();
 			List<Message> listReciever = new List<Message>();
-			listSender = db.Message.Where(x => x.sender_id == sender_id).ToList();
-			listReciever = db.Message.Where(x => x.reciever_id == sender_id).ToList();
-			model.messageSenderList = listSender;
+
+            listSender = db.Message.Where(x => x.sender_id == sender_id).ToList();
+            
+            listReciever = db.Message.Where(x => x.reciever_id == sender_id).ToList();
+            
+
+            model.messageSenderList = listSender;
 			model.messageRecieverList = listReciever;
 			model.employeeList = employeeList;
 
