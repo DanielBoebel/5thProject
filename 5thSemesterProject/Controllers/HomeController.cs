@@ -15,55 +15,16 @@ namespace _5thSemesterProject.Controllers
         {
 			if (Session["employeeId"] != null || Session["ADMINOBJ"] != null)
 			{
-				return View();
+                // To showcase who is logged in
+                int id = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
+                return View();
 			}
 			else { return RedirectToAction("../Login/Index"); }
         }
 
-        public ActionResult About()
-        {
-			if (Session["employeeId"] != null || Session["ADMINOBJ"] != null)
-			{
-				ViewBag.Message = "Your application description page.";
-
-				return View();
-			}
-			else { return RedirectToAction("../Login/Index"); }
-			
-        }
-
-        public ActionResult Contact()
-        {
-			if (Session["employeeId"] != null || Session["ADMINOBJ"] != null)
-			{
-				ViewBag.Message = "Your contact page.";
-
-				return View();
-			}
-			else { return RedirectToAction("../Login/Index"); }
-
-        }
-        public ActionResult Employee()
-        {
-			if (Session["employeeId"] != null || Session["ADMINOBJ"] != null)
-			{
-				ViewBag.Message = "Your employee page.";
-
-				return View(db.Employee.ToList());
-			}
-			else { return RedirectToAction("../Login/Index"); }
-
-        }
-        public ActionResult Delete()
-        {
-			if (Session["employeeId"] != null || Session["ADMINOBJ"] != null)
-			{
-				ViewBag.Message = "Your employee page.";
-
-				return View(db.Employee.ToList());
-			}
-			else { return RedirectToAction("../Login/Index"); }
-
-        }
     }
 }

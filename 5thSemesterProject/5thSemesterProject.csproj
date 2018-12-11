@@ -359,10 +359,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Employee.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Content\CSS\Login-Form-Clean.css" />
     <Content Include="Views\Employees\Create.cshtml" />
@@ -374,9 +370,7 @@
     <Content Include="Views\ChangePassword\Edit.cshtml" />
     <Content Include="Views\Schedules\Create.cshtml" />
     <Content Include="Views\Schedules\Delete.cshtml" />
-    <Content Include="Views\Schedules\Details.cshtml" />
     <Content Include="Views\Schedules\Edit.cshtml" />
-    <Content Include="Views\Schedules\NextDay.cshtml" />
     <Content Include="Views\Schedules\Index.cshtml" />
     <Content Include="Views\Schedules\GenerateSchedule.cshtml" />
   </ItemGroup>
