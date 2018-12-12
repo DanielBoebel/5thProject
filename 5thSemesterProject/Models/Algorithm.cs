@@ -43,8 +43,12 @@ namespace _5thSemesterProject.Models
         //public List<List<Schedule>> FinalList { get; set; }
 
         // First method called from the SchedulesController
-        public void GenerateSchedule(DateTime startDate, DateTime endDate) 
+        public void GenerateSchedule(DateTime date, int weekdayEmpDay, int weekdayEmpNight, int weekendEmpDay, int weekendEmpNight) 
         {
+            numberOfEmployeesWNight = weekendEmpNight;
+            numberOfEMplyeesWDay = weekendEmpDay;
+            numberOfEmployeesNight = weekdayEmpNight;
+            numberOfEMplyeesDay = weekdayEmpDay;
 
             // List containing all employees of the same position
             var employees = db.Employee.Where(e => e.Position.name.Contains("Obstetriker")).Select(e => e.employee_id).ToList();
@@ -56,7 +60,7 @@ namespace _5thSemesterProject.Models
             List<Employee> allEmployees = GenerateEmployeeElements(employees);
 
             // Gets all dates of current schedule
-            List<DateTime> dates = GetDatesOfSchedule(startDate, endDate);
+            List<DateTime> dates = GetDatesOfSchedule(date);
 
             // Number of maximum nightshift
             maxNumberOfNightShift =  Math.Ceiling(Convert.ToDouble(dates.Count * numberOfEmployeesNight) / employees.Count);
@@ -117,18 +121,18 @@ namespace _5thSemesterProject.Models
                     item.points = 0;
                 }
             }
-            //List<List<Schedule>> a = FinalList;
-            //foreach (var item in a)
-            //{
-            //    Console.Write(a);
-            //}
+            List<List<Schedule>> a = FinalList;
+            foreach (var item in a)
+            {
+                Console.Write(a);
+            }
             //Adds to Schedule in Database
-            AddToDatabase(FinalList);
+            //AddToDatabase(FinalList);
 
         }
 
 
-        public List<DateTime> GetDatesOfSchedule(DateTime startDate, DateTime endDate)
+        public List<DateTime> GetDatesOfSchedule(DateTime startDate)
         {
             List<DateTime> dates = new List<DateTime>();
             firstDayOfSchedule = new DateTime(startDate.Year, startDate.Month, 1);

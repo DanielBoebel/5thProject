@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<_5thSemesterProject.Models.Employee>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Alle medarbejdere";
 }
-
-<h2>Index</h2>
+<br />
+<h2>Alle medarbejdere</h2>
 
 <p>
-    @Html.ActionLink("Opret ny", "Create")
+    @Html.ActionLink("Opret ny medarbejder (Admin)", "Create")
 </p>
 <table class="table">
     <tr>
@@ -41,7 +41,7 @@
             @Html.DisplayFor(modelItem => item.Position.name)
         </td>
         <td>
-            @Html.ActionLink("Ændre", "Edit", new { id=item.employee_id }) |
+            @Html.ActionLink("Rediger", "Edit", new { id=item.employee_id }) |
             @Html.ActionLink("Detajler", "Details", new { id=item.employee_id }) |
             @Html.ActionLink("Slet", "Delete", new { id=item.employee_id })
         </td>

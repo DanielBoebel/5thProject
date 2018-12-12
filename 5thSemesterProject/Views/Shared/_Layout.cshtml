@@ -15,19 +15,19 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            @Html.ActionLink("Hjem", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            @Html.ActionLink("Hjem", "Index", "Home", new { area = "" }, new { @class = "navbar-brand"})
             <div class="navbar-collapse collapse" id="navbarSupportedContent">
 
                 <ul class="nav navbar-nav mr-auto">
-                    <li class="nav-item">@Html.ActionLink("About", "About", "Home", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Ændre Kodeord", "Edit", "ChangePassword", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Ansatte", "Index", "Employees", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Kalender", "CalendarMonth", "Schedules", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Beskeder", "Index", "Message", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Logs", "Index", "Log", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Se vagtplan", "Index", "Schedules", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Log ud", "Logout", "Login", null, new { @class = "nav-link" })</li>
-                    <li class="fa fa-bell" aria-hidden="true" style="color: white; font-size: 30px" ></li>
+                    @*<li class="nav-item">@Html.ActionLink("Ændre Kodeord", "Edit", "ChangePassword", null, new { @class = "nav-link" })</li>*@
+                    <li class="nav-item" style="color: #9A9DA0; font-weight: bold">@Html.ActionLink("Medarbejdere", "Index", "Employees", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item" style="color: #9A9DA0; font-weight: bold">@Html.ActionLink("Kalender", "CalendarMonth", "Schedules", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item" style="color: #9A9DA0; font-weight: bold">@Html.ActionLink("Beskeder", "Index", "Message", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item" style="color: #9A9DA0; font-weight: bold">@Html.ActionLink("Vagtplan", "Index", "Schedules", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item" style="color: #9A9DA0; font-weight: bold">@Html.ActionLink("Logs (Admin)", "Index", "Log", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item" style="color: #9A9DA0; margin-top:8px; margin-left: 0px; font-weight: bold">| @ViewBag.employeeLoggedIn</li>
+                    <li class="nav-item" style="color: #9A9DA0; font-weight: bold">@Html.ActionLink("Log ud", "Logout", "Login", null, new { @class = "nav-link" })</li>
+                    @*<li class="fa fa-bell" aria-hidden="true" style="color: white; font-size: 30px"></li>*@
 
                 </ul>
             </div>
@@ -38,7 +38,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.ToString("dd-MM-yyyy")</p>
         </footer>
     </div>
 

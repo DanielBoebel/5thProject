@@ -18,9 +18,9 @@
     <div class="card" style="background-color: #ffffff;">
         <div class="card-header text-center" style="background-color: #ffffff;">
             <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item"><a class="nav-link active" id="month" style="color: rgb(255,255,255);background-color: rgb(5,158,232);">@Html.ActionLink("Måned", "CalendarMonth")</a></li>
-                <li class="nav-item"><a class="nav-link active" style="color: #059ee8;background-color: #ffffff;">@Html.ActionLink("Uge", "CalendarWeek")</a></li>
-                <li class="nav-item"><a class="nav-link active" id="day" style="color: rgb(255,255,255);background-color: #059ee8;">@Html.ActionLink("Dag", "CalendarDay")</a></li>
+                <li class="nav-item" id="month" style="color: #059ee8;font-size: 20px;background-color: #ffffff;padding:20px">@Html.ActionLink("Måned", "CalendarMonth")</li>
+                <li class="nav-item" id="week" style="color: #059ee8;font-size: 20px;background-color: #ffffff;padding:20px">@Html.ActionLink("Uge", "CalendarWeek")</li>
+                <li class="nav-item" id="day" style="color: #059ee8;font-size: 20px;background-color: #ffffff;padding:20px">@Html.ActionLink("Dag", "CalendarDay")</li>
             </ul>
         </div>
     </div>
@@ -45,8 +45,6 @@
             </div>
         </div>
         <div class="card-body" style="background-color: #ffffff;padding: 20px;">
-            @ViewBag.test
-
             <div class="row weekdays" id="section1">
                 <div class="column" id="monday">
                     <div class="table-responsive">
@@ -66,8 +64,7 @@
                                                 @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.initials)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
-                                                @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
-                                                @Html.DisplayFor(modelItem => item.Shift.end_time)
+                                                @Html.DisplayFor(modelItem => item.Shift.start_time)-@Html.DisplayFor(modelItem => item.Shift.end_time)
                                             </td>
                                         </tr>
                                     }
@@ -94,8 +91,7 @@
                                                 @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.initials)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
-                                                @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
-                                                @Html.DisplayFor(modelItem => item.Shift.end_time)
+                                                @Html.DisplayFor(modelItem => item.Shift.start_time)-@Html.DisplayFor(modelItem => item.Shift.end_time)
                                             </td>
                                         </tr>
                                     }
@@ -122,8 +118,7 @@
                                                 @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.initials)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
-                                                @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
-                                                @Html.DisplayFor(modelItem => item.Shift.end_time)
+                                                @Html.DisplayFor(modelItem => item.Shift.start_time)-@Html.DisplayFor(modelItem => item.Shift.end_time)
                                             </td>
                                         </tr>
                                     }
@@ -150,8 +145,7 @@
                                                 @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.initials)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
-                                                @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
-                                                @Html.DisplayFor(modelItem => item.Shift.end_time)
+                                                @Html.DisplayFor(modelItem => item.Shift.start_time)-@Html.DisplayFor(modelItem => item.Shift.end_time)
                                             </td>
                                         </tr>
                                     }
@@ -178,8 +172,7 @@
                                                 @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.initials)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
-                                                @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
-                                                @Html.DisplayFor(modelItem => item.Shift.end_time)
+                                                @Html.DisplayFor(modelItem => item.Shift.start_time)-@Html.DisplayFor(modelItem => item.Shift.end_time)
                                             </td>
                                         </tr>
                                     }
@@ -206,8 +199,7 @@
                                                 @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.initials)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
-                                                @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
-                                                @Html.DisplayFor(modelItem => item.Shift.end_time)
+                                                @Html.DisplayFor(modelItem => item.Shift.start_time)-@Html.DisplayFor(modelItem => item.Shift.end_time)
                                             </td>
                                         </tr>
                                     }
@@ -234,8 +226,7 @@
                                                 @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.initials)<br />
                                                 @Html.DisplayFor(modelItem => item.Employee.Position.name)<br />
-                                                @Html.DisplayFor(modelItem => item.Shift.start_time)<br />
-                                                @Html.DisplayFor(modelItem => item.Shift.end_time)
+                                                @Html.DisplayFor(modelItem => item.Shift.start_time)-@Html.DisplayFor(modelItem => item.Shift.end_time)
                                             </td>
                                         </tr>
                                     }

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
+using System.Windows.Forms;
 using _5thSemesterProject.Models;
 
 namespace _5thSemesterProject.Controllers
@@ -17,16 +14,14 @@ namespace _5thSemesterProject.Controllers
     {
         private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
 
-        // For testing purposes
-        public int employeeID = 40;
-
+        public int employeeID = 0;
 
         public ActionResult Index() {
 
             var schedule = db.Schedule;
 
             
-            return View(schedule.ToList());
+            return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
         }
 
 
@@ -49,7 +44,7 @@ namespace _5thSemesterProject.Controllers
         // GET: Schedules/Create
         public ActionResult Create()
         {
-            ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "cpr");
+            ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "initials");
             ViewBag.shift_id = new SelectList(db.Shift, "shift_id", "name");
             return View();
         }
@@ -67,7 +62,7 @@ namespace _5thSemesterProject.Controllers
                 return RedirectToAction("CalendarMonth");
             }
 
-            ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "cpr", schedule.employee_id);
+            ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "initials", schedule.employee_id);
             ViewBag.shift_id = new SelectList(db.Shift, "shift_id", "name", schedule.shift_id);
             return View(schedule);
         }
@@ -84,7 +79,7 @@ namespace _5thSemesterProject.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "cpr", schedule.employee_id);
+            ViewBag.initials = new SelectList(db.Employee, "initials", "initials", schedule.employee_id);
             ViewBag.shift_id = new SelectList(db.Shift, "shift_id", "name", schedule.shift_id);
             return View(schedule);
         }
@@ -142,6 +137,7 @@ namespace _5thSemesterProject.Controllers
 			string dateTodayString = "";
 			string monthString = "";
 			int day1 = 0;
+			int employeeId = Convert.ToInt32(Session["employeeId"]);
 
 			DateTime date = DateTime.Today;
 			var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
@@ -203,9 +199,9 @@ namespace _5thSemesterProject.Controllers
 			}
 
 			var schedule = db.Schedule.Where(x => x.date.Substring(3, 2) == month);
-
+			var dates = db.Schedule.Where(x => x.employee_id == employeeId).Select(x => x.date);
 			TempData["showingMonth"] = monthString;
-
+			ViewBag.workingDates = dates;
 			return View(schedule.ToList());
         }
 
@@ -219,12 +215,15 @@ namespace _5thSemesterProject.Controllers
 			int monthTemp = monthId;
 			int dateToday = 0;
 			string dateTodayString = "";
+			int employeeId = Convert.ToInt32(Session["employeeId"]);
+
 
 			//DateTime dateMonth = DateTime.Today.AddMonths(monthTemp);
 			DateTime date = DateTime.Today.AddMonths(monthTemp);
 			string month = DateTime.Now.AddMonths(monthTemp).ToString("MM");
 
 			var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+
 			var firstDayOfMonthFormatted = new DateTime(date.Year, date.Month, 1).ToString("dd-MM-yyyy");
 			var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1).ToString("dd");
 
@@ -290,6 +289,8 @@ namespace _5thSemesterProject.Controllers
 			
 			TempData["showingMonth"] = monthString;
 			var schedule = db.Schedule.Where(x => x.date.Substring(3,2) == month);
+			var dates = db.Schedule.Where(x => x.employee_id == employeeId).Select(x => x.date);
+			ViewBag.workingDates = dates;
 
 			return View(schedule.ToList());
 		}
@@ -301,6 +302,7 @@ namespace _5thSemesterProject.Controllers
         {
             if (Session["employeeId"] != null)
             {
+                employeeID = Convert.ToInt32(Session["employeeId"]);
                 double dayOfYear = DateTime.Now.DayOfYear / 7.0;
                 double weekNum = Math.Ceiling(dayOfYear);
                 ViewBag.weekId = Convert.ToInt32(weekNum);
@@ -346,14 +348,9 @@ namespace _5thSemesterProject.Controllers
         {
             if (Session["employeeId"] != null)
             {
+                employeeID = Convert.ToInt32(Session["employeeId"]);
                 if (weekId > 52) weekId = 1;
                 if (weekId < 1) weekId = 52;
-                //if (diff == 0)
-                //{
-                //    double dayOfYear = DateTime.Now.AddDays(weekId).DayOfYear / 7;
-                //    double weekNum = Math.Ceiling(dayOfYear);
-                //    weekId = Convert.ToInt32(Math.Ceiling(weekNum));
-                //}
 
                 ViewBag.weekId = weekId;
                 ViewBag.diff = diff;
@@ -432,11 +429,13 @@ namespace _5thSemesterProject.Controllers
         {
             if (Session["employeeId"] != null)
             {
+                employeeID = Convert.ToInt32(Session["employeeId"]);
+
                 ViewBag.dayId = 0;
                 string today = DateTime.Now.ToString("dd-MM-yyyy");
                 TempData["showingDate"] = today;
                 var schedule = db.Schedule.Where(x => x.date.Equals(today));
-                return View(schedule.ToList());
+                return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
             }
             else
             {
@@ -449,13 +448,15 @@ namespace _5thSemesterProject.Controllers
 		{
             if (Session["employeeId"] != null)
             {
+                employeeID = Convert.ToInt32(Session["employeeId"]);
+
                 int dayTemp = dayId;
 
                 ViewBag.dayId = dayTemp;
                 string day = DateTime.Now.AddDays(dayTemp).ToString("dd-MM-yyyy");
                 TempData["showingDate"] = day;
                 var schedule = db.Schedule.Where(x => x.date.Equals(day));
-                return View(schedule.ToList());
+                return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
             }
             else
             {
@@ -464,18 +465,44 @@ namespace _5thSemesterProject.Controllers
         }
 
         public ActionResult GenerateSchedule() {
-            
-            return View();
+            if (Session["employeeId"] != null)
+            {
+                ViewData["Year"] = DateTime.Now.Year.ToString();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("../Home/Index");
+            }
         }
 
         [HttpPost]
-        public ActionResult GenerateSchedule(DateTime start_date, DateTime end_date)
+        public ActionResult GenerateSchedule(string Month, int weekdayEmpDay, int weekdayEmpNight, int weekendEmpDay, int weekendEmpNight)
         {
-            
-            Algorithm x = new Algorithm();
-            x.GenerateSchedule(start_date, end_date);
+            if (Session["employeeId"] != null)
+            {
+                DateTime date = Convert.ToDateTime(Month);
+                DateTime firstDayOfSchedule = new DateTime(date.Year, date.Month, 1);
+                DateTime lastDayOfSchedule = firstDayOfSchedule.AddMonths(1).AddDays(-1);
 
-            return RedirectToAction("Index");
+                DialogResult result = MessageBox.Show("Er du sikker på at du vil oprette en vagtplan fra:\n" + firstDayOfSchedule.DayOfWeek+" "+ firstDayOfSchedule.ToString("dd-MM-yyyy") +" til " + lastDayOfSchedule.DayOfWeek + " " + lastDayOfSchedule.ToString("dd-MM-yyyy"), "Bekræft", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+                if (result == DialogResult.OK)
+                {
+                    Algorithm x = new Algorithm();
+                    x.GenerateSchedule(date, weekdayEmpDay, weekdayEmpNight, weekendEmpDay, weekendEmpNight);
+                }
+                if (result == DialogResult.Cancel)
+                {
+                    MessageBox.Show("Handling afbrudt", "Afbrudt");
+                }
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("../Home/Index");
+            }
         }
 
         protected override void Dispose(bool disposing)
