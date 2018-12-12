@@ -19,6 +19,12 @@ namespace _5thSemesterProject.Controllers
         public ActionResult Index() {
             if (Session["employeeId"] != null)
             {
+                // To showcase who is logged in
+                int employeeid = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
                 var schedule = db.Schedule;
                 return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
             }
@@ -35,6 +41,12 @@ namespace _5thSemesterProject.Controllers
         {
             if (Session["employeeId"] != null)
             {
+                // To showcase who is logged in
+                int employeeid = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
                 if (id == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -57,6 +69,12 @@ namespace _5thSemesterProject.Controllers
         {
             if (Session["employeeId"] != null)
             {
+                // To showcase who is logged in
+                int employeeid = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
                 ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "initials");
                 ViewBag.shift_id = new SelectList(db.Shift, "shift_id", "name");
                 return View();
@@ -90,6 +108,12 @@ namespace _5thSemesterProject.Controllers
         {
             if (Session["employeeId"] != null)
             {
+                // To showcase who is logged in
+                int employeeid = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
                 if (id == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -157,6 +181,12 @@ namespace _5thSemesterProject.Controllers
         public ActionResult CalendarMonth() {
             if (Session["employeeId"] != null)
             {
+                // To showcase who is logged in
+                int id = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
                 int daysOfMonthConver = 0;
 			    int monthConvert = 0;
 			    int dateToday = 0;
@@ -241,6 +271,11 @@ namespace _5thSemesterProject.Controllers
 		{
             if (Session["employeeId"] != null)
             {
+                // To showcase who is logged in
+                int id = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
 
                 int daysOfMonthConver = 0;
 			    int monthConvert = 0;
@@ -343,6 +378,11 @@ namespace _5thSemesterProject.Controllers
                 ViewBag.weekId = Convert.ToInt32(weekNum);
                 ViewBag.diff = 0;
 
+                // To showcase who is logged in
+                var firstname = db.Employee.Where(x => x.employee_id == employeeID).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == employeeID).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
                 // Current dayOfWeek (String format)
                 string dayOfWeek = DateTime.Now.AddDays(0).DayOfWeek.ToString();
 
@@ -384,6 +424,11 @@ namespace _5thSemesterProject.Controllers
             if (Session["employeeId"] != null)
             {
                 employeeID = Convert.ToInt32(Session["employeeId"]);
+                // To showcase who is logged in
+                var firstname = db.Employee.Where(x => x.employee_id == employeeID).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == employeeID).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
                 if (weekId > 52) weekId = 1;
                 if (weekId < 1) weekId = 52;
 
@@ -488,7 +533,10 @@ namespace _5thSemesterProject.Controllers
             if (Session["employeeId"] != null)
             {
                 employeeID = Convert.ToInt32(Session["employeeId"]);
-
+                // To showcase who is logged in
+                var firstname = db.Employee.Where(x => x.employee_id == employeeID).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == employeeID).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
                 int dayTemp = dayId;
 
                 ViewBag.dayId = dayTemp;
@@ -506,6 +554,12 @@ namespace _5thSemesterProject.Controllers
         public ActionResult GenerateSchedule() {
             if (Session["employeeId"] != null)
             {
+                // To showcase who is logged in
+                int id = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
                 ViewData["Year"] = DateTime.Now.Year.ToString();
                 return View();
             }
