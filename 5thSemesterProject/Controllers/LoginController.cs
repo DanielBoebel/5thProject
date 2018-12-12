@@ -3,13 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
 namespace _5thSemesterProject.Controllers
 {
-	public class LoginController : Controller
+    public class LoginController : Controller
 	{
         private String ErrorMsg = "Forkert brugernavn eller kodeord";
 		private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
@@ -35,7 +34,7 @@ namespace _5thSemesterProject.Controllers
 				dbinitialer = db.Employee.Where(x => x.cpr == username).Select(x => x.initials).ToList();
 				dbusername = db.Employee.Where(x => x.cpr == username).Select(x => x.cpr).ToList();
 				dbpassword = db.Employee.Where(x => x.cpr == username).Select(x => x.password).ToList();
-				nonHashed = BCrypt.Net.BCrypt.Verify(password, dbpassword[0]);
+                nonHashed = BCrypt.Net.BCrypt.Verify(password, dbpassword[0]);
 
 			}
 			catch (Exception e)
@@ -53,6 +52,10 @@ namespace _5thSemesterProject.Controllers
 						Session["employeeId"] = employeeId[0];
 						Session["username"] = dbinitialer[0];
 						Session["employeeId"] = employeeId[0];
+                        Employee employee = db.Employee.Find(employeeId[0]);
+
+                        if (employee.Position.name.Equals("Administrator")) Session["ADMINOBJ"] = employee; 
+
 						FormsAuthentication.SetAuthCookie(dbinitialer[0], true);
 						string action = "Logged in";
 						var timestamp = DateTime.Now;
@@ -84,13 +87,8 @@ namespace _5thSemesterProject.Controllers
         
         public ActionResult ForgotPassword()
         {
-
-
             return View();
-
         }
-
-        
 
 
 		public ActionResult Logout()
@@ -102,14 +100,9 @@ namespace _5thSemesterProject.Controllers
 			db.Log.Add(logUser);
 			db.SaveChanges();
 			Session["employeeId"] = null;
-			return RedirectToAction("../Login/Index");
+            Session["ADMINOBJ"] = null;
+            Session.Clear();
+            return RedirectToAction("../Login/Index");
 		}
-
-
 	}
 }
-			//MessageViewModel messageViewModel = new MessageViewModel();
-			//List<Employee> employees = messageViewModel.Employees.ToList();
-			//List<Message> messages = messageViewModel.Messages.ToList();
-			//messageViewModel.Employees = db.Employee.ToList();
-			//messageViewModel.Messages = db.Message.ToList();

@@ -154,16 +154,23 @@ namespace _5thSemesterProject.Controllers
         // GET: Schedules/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (Session["employeeId"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Schedule schedule = db.Schedule.Find(id);
+                if (schedule == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(schedule);
             }
-            Schedule schedule = db.Schedule.Find(id);
-            if (schedule == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("../Home/Index");
             }
-            return View(schedule);
         }
 
         // POST: Schedules/Delete/5
