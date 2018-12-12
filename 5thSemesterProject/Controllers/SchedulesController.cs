@@ -464,13 +464,14 @@ namespace _5thSemesterProject.Controllers
         }
 
         public ActionResult GenerateSchedule() {
-
+            
             return View();
         }
 
         [HttpPost]
         public ActionResult GenerateSchedule(DateTime start_date, DateTime end_date)
         {
+            
             Algorithm x = new Algorithm();
             x.GenerateSchedule(start_date, end_date);
 

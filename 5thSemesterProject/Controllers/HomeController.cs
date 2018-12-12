@@ -15,7 +15,10 @@ namespace _5thSemesterProject.Controllers
         {
 			if (Session["employeeId"] != null || Session["ADMINOBJ"] != null)
 			{
-				return View();
+                var id = Session["employeeId"];
+                Employee employee = db.Employee.Find(id);
+                ViewBag.firstWeek = 30;
+				return View(employee);
 			}
 			else { return RedirectToAction("../Login/Index"); }
         }
