@@ -519,12 +519,10 @@ namespace _5thSemesterProject.Controllers
                 var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
                 ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
 
-                employeeID = Convert.ToInt32(Session["employeeId"]);
-
                 ViewBag.dayId = 0;
                 string today = DateTime.Now.ToString("dd-MM-yyyy");
                 TempData["showingDate"] = today;
-                var schedule = db.Schedule.Where(x => x.date.Equals(today));
+                var schedule = db.Schedule.Where(x => x.date.Equals(today) && x.Employee.employee_id == id);
                 return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
             }
             else
@@ -549,7 +547,7 @@ namespace _5thSemesterProject.Controllers
                 ViewBag.dayId = dayTemp;
                 string day = DateTime.Now.AddDays(dayTemp).ToString("dd-MM-yyyy");
                 TempData["showingDate"] = day;
-                var schedule = db.Schedule.Where(x => x.date.Equals(day));
+                var schedule = db.Schedule.Where(x => x.date.Equals(day) && x.Employee.employee_id == id);
                 return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
             }
             else

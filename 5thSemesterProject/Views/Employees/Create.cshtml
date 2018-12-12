@@ -17,7 +17,7 @@
         <div class="form-group">
             @Html.Label("CPR", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.cpr, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.cpr, new { htmlAttributes = new { @class = "form-control", minlength="10", maxlength="10"} })
                 @Html.ValidationMessageFor(model => model.cpr, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -39,7 +39,7 @@
         </div>
 
         <div class="form-group">
-            @Html.Label("Stilling", "position_id", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Stilling", "Stilling", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("position_id", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.position_id, "", new { @class = "text-danger" })
@@ -49,7 +49,7 @@
         <div class="form-group">
             @Html.Label("Initialer", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.initials, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.initials, new { htmlAttributes = new { @class = "form-control", maxlength="5" } })
                 @Html.ValidationMessageFor(model => model.initials, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -57,14 +57,14 @@
         <div class="form-group">
             @Html.Label("Kodeord", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", type = "password", id = "password", name = "password", placeholder = "Password" } })
+                @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", type = "password", id = "password", name = "password", placeholder = "Kodeord" } })
                 @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Opret" class="btn btn-default" />
+                <input type="submit" value="Opret medarbejder" class="btn btn-default" />
             </div>
         </div>
     </div>

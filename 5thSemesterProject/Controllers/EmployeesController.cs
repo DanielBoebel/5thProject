@@ -17,49 +17,70 @@ namespace _5thSemesterProject.Controllers
         // GET: Employees
         public ActionResult Index()
         {
-            // To showcase who is logged in
-            int id = Convert.ToInt32(Session["employeeId"]);
-            var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
-            var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
-            ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+            if (Session["employeeId"] != null)
+            {
+                // To showcase who is logged in
+                int id = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
 
-            var employee = db.Employee.Include(e => e.Position);
-            return View(employee.ToList());
+                var employee = db.Employee.Include(e => e.Position);
+                return View(employee.ToList());
+            }
+            else
+            {
+                return RedirectToAction("../Home/Index");
+            }
         }
 
         // GET: Employees/Details/5
         public ActionResult Details(int? id)
         {
-            // To showcase who is logged in
-            int employeeid = Convert.ToInt32(Session["employeeId"]);
-            var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
-            var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
-            ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+            if (Session["employeeId"] != null)
+            {
+                // To showcase who is logged in
+                int employeeid = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
 
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Employee employee = db.Employee.Find(id);
+                if (employee == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(employee);
             }
-            Employee employee = db.Employee.Find(id);
-            if (employee == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("../Home/Index");
             }
-            return View(employee);
         }
 
         // GET: Employees/Create
         public ActionResult Create()
         {
-            // To showcase who is logged in
-            int employeeid = Convert.ToInt32(Session["employeeId"]);
-            var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
-            var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
-            ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+            if (Session["employeeId"] != null)
+            {
+                // To showcase who is logged in
+                int employeeid = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
 
-            ViewBag.position_id = new SelectList(db.Position, "position_id", "name");
+                ViewBag.position_id = new SelectList(db.Position, "position_id", "name");
 
-            return View();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("../Home/Index");
+            }
         }
 
         // POST: Employees/Create
@@ -84,23 +105,30 @@ namespace _5thSemesterProject.Controllers
         // GET: Employees/Edit/5
         public ActionResult Edit(int? id)
         {
-            // To showcase who is logged in
-            int employeeid = Convert.ToInt32(Session["employeeId"]);
-            var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
-            var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
-            ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+            if (Session["employeeId"] != null)
+            {
+                // To showcase who is logged in
+                int employeeid = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
 
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Employee employee = db.Employee.Find(id);
+                if (employee == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.position_id = new SelectList(db.Position, "position_id", "name", employee.position_id);
+                return View(employee);
             }
-            Employee employee = db.Employee.Find(id);
-            if (employee == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("../Home/Index");
             }
-            ViewBag.position_id = new SelectList(db.Position, "position_id", "name", employee.position_id);
-            return View(employee);
         }
 
         // POST: Employees/Edit/5
@@ -123,22 +151,29 @@ namespace _5thSemesterProject.Controllers
         // GET: Employees/Delete/5
         public ActionResult Delete(int? id)
         {
-            // To showcase who is logged in
-            int employeeid = Convert.ToInt32(Session["employeeId"]);
-            var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
-            var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
-            ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+            if (Session["employeeId"] != null)
+            {
+                // To showcase who is logged in
+                int employeeid = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
 
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Employee employee = db.Employee.Find(id);
+                if (employee == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(employee);
             }
-            Employee employee = db.Employee.Find(id);
-            if (employee == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("../Home/Index");
             }
-            return View(employee);
         }
 
         // POST: Employees/Delete/5
