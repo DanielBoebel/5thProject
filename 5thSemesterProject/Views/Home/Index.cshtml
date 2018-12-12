@@ -1,7 +1,7 @@
 ﻿@model _5thSemesterProject.Models.Employee
 
 @{
-    ViewBag.Title = "Home Page";
+	ViewBag.Title = "Home Page";
 }
 <link rel="stylesheet" href="~/Content/bootstrap.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
@@ -27,7 +27,7 @@
 				title: {
                     text: "Arbejdstimer denne måned"
 				},
-				
+
 				data: [{
 					type: "pie",
 					indexLabel: "{y}",
@@ -58,81 +58,81 @@
 
 
 <div class="features-boxed">
-    <div class="container">
-        <div class="row justify-content-center features">
+	<div class="container">
+		<div class="row justify-content-center features">
 
-            <div class="col-sm-6 col-md-6 col-lg-6 item">
-                <div class="box" style="height:335px; ">
-                    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-                    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+			<div class="col-sm-6 col-md-6 col-lg-6 item">
+				<div class="box" style="height:335px; ">
+					<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+					<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
-                </div>
+				</div>
 
-            </div>
+			</div>
 
-            <div class="col-sm-6 col-md-6 col-lg-6 item">
-                <div class="box" style="height:335px; ">
-                    <dl class="dl-horizontal">
+			<div class="col-sm-6 col-md-6 col-lg-6 item">
+				<div class="box" style="height:335px; ">
+					<dl class="dl-horizontal">
 
-                        <dt>
-                            @Html.DisplayName("Navn")
-                        </dt>
-                        <dd>
-                            @Html.DisplayFor(model => model.firstname)
-                            @Html.DisplayFor(model => model.lastname)
-                        </dd>
+						<dt>
+							@Html.DisplayName("Navn")
+						</dt>
+						<dd>
+							@Html.DisplayFor(model => model.firstname)
+							@Html.DisplayFor(model => model.lastname)
+						</dd>
 
-                        <dt>
-                            @Html.DisplayName("Initialer")
-                        </dt>
+						<dt>
+							@Html.DisplayName("Initialer")
+						</dt>
 
-                        <dd>
-                            @Html.DisplayFor(model => model.initials)
-                        </dd>
+						<dd>
+							@Html.DisplayFor(model => model.initials)
+						</dd>
 
-                        <dt>
-                            @Html.DisplayName("Stilling")
-                        </dt>
+						<dt>
+							@Html.DisplayName("Stilling")
+						</dt>
 
-                        <dd>
-                            @Html.DisplayFor(model => model.Position.name)
-                        </dd>
+						<dd>
+							@Html.DisplayFor(model => model.Position.name)
+						</dd>
 
-                        <dt>
-                            @Html.DisplayName("Ændre oplysninger")
-                        </dt>
+						<dt>
+							@Html.DisplayName("Ændre oplysninger")
+						</dt>
 
-                        <dd>
-                            @Html.ActionLink("Ændre Kodeord", "Edit", "ChangePassword", null, new { @class = "nav-link" })
-                            @Html.ActionLink("Ændre Oplysninger", "Edit", "Employees", new { id = Session["employeeId"] }, new { @class = "nav-link" } )
-                            
-                        </dd>
-                    </dl>
+						<dd>
+							@Html.ActionLink("Ændre Kodeord", "Edit", "ChangePassword", null, new { @class = "nav-link" })
+							@Html.ActionLink("Ændre Oplysninger", "Edit", "Employees", new { id = Session["employeeId"] }, new { @class = "nav-link" })
 
-                </div>
+						</dd>
+					</dl>
 
-            </div>
+				</div>
 
-            <div class="col-sm-6 col-md-6 col-lg-6 item">
-                <div class="box" style="height:335px; ">
+			</div>
 
-
-                </div>
-
-            </div>
+			<div class="col-sm-6 col-md-6 col-lg-6 item">
+				<div class="box" style="height:335px; ">
 
 
-            <div class="col-sm-6 col-md-6 col-lg-6 item">
-                <div class="box" style="height:335px; ">
+				</div>
+
+			</div>
 
 
-                </div>
+			<div class="col-sm-6 col-md-6 col-lg-6 item">
+				<div class="box" style="height:335px; ">
 
-            </div>
 
-        </div>
+				</div>
 
-    </div>
+			</div>
+
+		</div>
+
+	</div>
 
 </div>
 
