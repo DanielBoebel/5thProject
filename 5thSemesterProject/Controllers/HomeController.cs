@@ -20,7 +20,7 @@ namespace _5thSemesterProject.Controllers
                 var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
                 var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
                 ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
-                var id = Session["employeeId"];
+                //var idEmployee = Session["employeeId"];
                 Employee employee = db.Employee.Find(id);
                 ViewBag.firstWeek = 30;
 				return View(employee);
@@ -28,10 +28,7 @@ namespace _5thSemesterProject.Controllers
 			else { return RedirectToAction("../Login/Index"); }
         }
 
-                return View();
-			}
-			else { return RedirectToAction("../Login/Index"); }
-        }
+            
 
     }
 }
