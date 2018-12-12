@@ -1,31 +1,140 @@
-﻿@{
+﻿@model _5thSemesterProject.Models.Employee
+
+@{
     ViewBag.Title = "Home Page";
 }
+<link rel="stylesheet" href="~/Content/bootstrap.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic">
+<link rel="stylesheet" href="~/Content/font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="~/Content/css/column.css">
+<link rel="stylesheet" href="~/Content/css/buttonCss.css">
+<link rel="stylesheet" href="~/Content/Features-Boxed.css">
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css">
+
+<script>
+		window.onload = function () {
+
+			var chart = new CanvasJS.Chart("chartContainer", {
+				animationEnabled: true,
+				theme: "light2", // "light1", "light2", "dark1", "dark2"
+				title: {
+                    text: "Arbejdstimer denne måned"
+				},
+				
+				data: [{
+					type: "pie",
+					indexLabel: "{y}",
+					indexLabelPlacement: "outside",
+					indexLabelOrientation: "horizontal",
+					indexLabelFontSize: 25,
+                    indexLabelFontWeight: "bold",
+                    showInLegend: "true",
+                    legendText: "{label}",
+
+					dataPoints: [
+						{ y: @ViewBag.firstWeek, label: "Uge 1" },
+						{ y: 25, label: "Uge 2" },
+						{ y: 42, label: "Uge 3" },
+						{ y: 40, label: "Uge 4" },
+
+
+
+
+
+					]
+				}]
+			});
+			chart.render();
+
+		};
+</script>
+
+
+<div class="features-boxed">
+    <div class="container">
+        <div class="row justify-content-center features">
+
+            <div class="col-sm-6 col-md-6 col-lg-6 item">
+                <div class="box" style="height:335px; ">
+                    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+                    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-6 col-md-6 col-lg-6 item">
+                <div class="box" style="height:335px; ">
+                    <dl class="dl-horizontal">
+
+                        <dt>
+                            @Html.DisplayName("Navn")
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.firstname)
+                            @Html.DisplayFor(model => model.lastname)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("Initialer")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.initials)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("Stilling")
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Position.name)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayName("Ændre oplysninger")
+                        </dt>
+
+                        <dd>
+                            @Html.ActionLink("Ændre Kodeord", "Edit", "ChangePassword", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Ændre Oplysninger", "Edit", "Employees", new { id = Session["employeeId"] }, new { @class = "nav-link" } )
+                            
+                        </dd>
+                    </dl>
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-6 col-md-6 col-lg-6 item">
+                <div class="box" style="height:335px; ">
+
+
+                </div>
+
+            </div>
+
+
+            <div class="col-sm-6 col-md-6 col-lg-6 item">
+                <div class="box" style="height:335px; ">
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
