@@ -559,7 +559,7 @@ namespace _5thSemesterProject.Controllers
         }
 
         public ActionResult GenerateSchedule() {
-            if (Session["employeeId"] != null)
+            if (Session["employeeId"] != null && Session["ADMINOBJ"] != null)
             {
                 // To showcase who is logged in
                 int id = Convert.ToInt32(Session["employeeId"]);
@@ -579,7 +579,7 @@ namespace _5thSemesterProject.Controllers
         [HttpPost]
         public ActionResult GenerateSchedule(string Month, int weekdayEmpDay, int weekdayEmpNight, int weekendEmpDay, int weekendEmpNight)
         {
-            if (Session["employeeId"] != null)
+            if (Session["employeeId"] != null && Session["ADMINOBJ"] != null)
             {
                 DateTime date = Convert.ToDateTime(Month);
                 DateTime firstDayOfSchedule = new DateTime(date.Year, date.Month, 1);

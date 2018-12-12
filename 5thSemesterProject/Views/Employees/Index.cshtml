@@ -5,10 +5,12 @@
 }
 <br />
 <h2>Alle medarbejdere</h2>
-
-<p>
-    @Html.ActionLink("Opret ny medarbejder (Admin)", "Create")
-</p>
+@if (Session["ADMINOBJ"] != null)
+{
+    <p>
+        @Html.ActionLink("Opret ny medarbejder (Admin)", "Create")
+    </p>
+}
 <table class="table">
     <tr>
         <th>
@@ -26,7 +28,8 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.firstname)
@@ -40,12 +43,15 @@
         <td>
             @Html.DisplayFor(modelItem => item.Position.name)
         </td>
-        <td>
-            @Html.ActionLink("Rediger", "Edit", new { id=item.employee_id }) |
-            @Html.ActionLink("Detajler", "Details", new { id=item.employee_id }) |
-            @Html.ActionLink("Slet", "Delete", new { id=item.employee_id })
-        </td>
-    </tr>
-}
+        @if (Session["ADMINOBJ"] != null)
+        {
+            <td>
+                @Html.ActionLink("Rediger", "Edit", new { id = item.employee_id }) |
+                @Html.ActionLink("Detajler", "Details", new { id = item.employee_id }) |
+                @Html.ActionLink("Slet", "Delete", new { id = item.employee_id })
+            </td>
+        }
+        </tr>
+    }
 
 </table>
