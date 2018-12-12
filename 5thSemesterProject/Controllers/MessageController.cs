@@ -15,107 +15,139 @@ namespace _5thSemesterProject.Controllers
 		// GET: Message
 		public ActionResult Index()
         {
-			MessageViewModel model = new MessageViewModel();
-			model.employeeList = new List<Employee>();
-			model.messageSenderList = new List<Message>();
-			model.messageRecieverList = new List<Message>();
+            if (Session["employeeId"] != null)
+            {
+                // To showcase who is logged in
+                int employeeid = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
+                MessageViewModel model = new MessageViewModel();
+			    model.employeeList = new List<Employee>();
+			    model.messageSenderList = new List<Message>();
+			    model.messageRecieverList = new List<Message>();
 
 
-			List<Employee> employeeList = db.Employee.ToList();
-			model.employeeList = employeeList;
+			    List<Employee> employeeList = db.Employee.ToList();
+			    model.employeeList = employeeList;
 
-			List<Message> messageSenderList = db.Message.ToList();
-			List<Message> messageReciverList = db.Message.ToList();
+			    List<Message> messageSenderList = db.Message.ToList();
+			    List<Message> messageReciverList = db.Message.ToList();
 
-			model.employeeList = employeeList;
-			model.messageSenderList = messageSenderList;
-			model.messageSenderList = messageReciverList;
+			    model.employeeList = employeeList;
+			    model.messageSenderList = messageSenderList;
+			    model.messageSenderList = messageReciverList;
 
-
-			return View(model);
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("../Login/Index");
+            }
         }
 
 		//Get Message content for specific person
 		[HttpGet]
 		public ActionResult _MessageContent(int reciever_id)
 		{
-			int sender_id = 0;
-			Int32.TryParse(Session["employeeId"].ToString(), out sender_id);
-			ViewBag.recieverId = reciever_id;
-			MessageViewModel model = new MessageViewModel();
-			model.employeeList = new List<Employee>();
-			model.messageSenderList = new List<Message>();
-			model.messageRecieverList = new List<Message>();
-
-
-			List<Message> listSender = new List<Message>();
-			List<Message> listReciever = new List<Message>();
-            List<Message> allMessages = new List<Message>();
-            List<CorrectOrder> listCorrectOrder = new List<CorrectOrder>();
-			listSender = db.Message.Where(x => x.sender_id == sender_id ).ToList();
-            foreach (var hest in listSender)
+            if (Session["employeeId"] != null )
             {
-                Message messageSend = new Message(hest.message_id, hest.reciever_id, hest.date, hest.content, hest.sender_id, true);
-                allMessages.Add(messageSend);
+                // To showcase who is logged in
+                int employeeid = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
+                int sender_id = 0;
+			    Int32.TryParse(Session["employeeId"].ToString(), out sender_id);
+			    ViewBag.recieverId = reciever_id;
+			    MessageViewModel model = new MessageViewModel();
+			    model.employeeList = new List<Employee>();
+			    model.messageSenderList = new List<Message>();
+			    model.messageRecieverList = new List<Message>();
+
+			    List<Message> listSender = new List<Message>();
+			    List<Message> listReciever = new List<Message>();
+                List<Message> allMessages = new List<Message>();
+                List<CorrectOrder> listCorrectOrder = new List<CorrectOrder>();
+			    listSender = db.Message.Where(x => x.sender_id == sender_id ).ToList();
+                foreach (var hest in listSender)
+                {
+                    Message messageSend = new Message(hest.message_id, hest.reciever_id, hest.date, hest.content, hest.sender_id, true);
+                    allMessages.Add(messageSend);
+                }
+
+                listReciever = db.Message.Where(x => x.reciever_id == sender_id).ToList();
+                foreach (var hest in listReciever)
+                {
+                    Message messageReceive = new Message(hest.message_id, hest.reciever_id, hest.date, hest.content, hest.sender_id, false);
+                    allMessages.Add(messageReceive);
+                }
+                List<Message> sortedMessages = new List<Message>(allMessages.OrderBy(x => x.message_id));
+                //allMessages.OrderBy(x => x.message_id);
+                //allMessages.OrderBy(x => x.message_id);
+
+                List<Employee> employeeList = db.Employee.ToList();
+			    model.employeeList = employeeList;
+			    model.messageSenderList = sortedMessages;
+			    model.messageRecieverList = listReciever;
+
+                return View(model);
             }
-
-            listReciever = db.Message.Where(x => x.reciever_id == sender_id).ToList();
-            foreach (var hest in listReciever)
-            {
-                Message messageReceive = new Message(hest.message_id, hest.reciever_id, hest.date, hest.content, hest.sender_id, false);
-                allMessages.Add(messageReceive);
+			else { 
+                return RedirectToAction("../Login/Index");
             }
-            List<Message> sortedMessages = new List<Message>(allMessages.OrderBy(x => x.message_id));
-            //allMessages.OrderBy(x => x.message_id);
-            //allMessages.OrderBy(x => x.message_id);
-
-            List<Employee> employeeList = db.Employee.ToList();
-			model.employeeList = employeeList;
-			model.messageSenderList = sortedMessages;
-			model.messageRecieverList = listReciever;
-
-			
-			return View(model);
-		}
+        }
 
 
 		//Sending a message
 		[HttpPost]
 		public ActionResult _MessageContent(int reciever_id, string content)
 		{
+            if (Session["employeeId"] != null)
+            {
+                // To showcase who is logged in
+                int employeeid = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
+                int sender_id = 0;
+			    Int32.TryParse(Session["employeeId"].ToString(), out sender_id);
+			    ViewBag.recieverId = reciever_id;
 
 
-			int sender_id = 0;
-			Int32.TryParse(Session["employeeId"].ToString(), out sender_id);
-			ViewBag.recieverId = reciever_id;
+			    MessageViewModel model = new MessageViewModel();
+			    model.employeeList = new List<Employee>();
+			    model.messageSenderList = new List<Message>();
+			    model.messageRecieverList = new List<Message>();
 
 
-			MessageViewModel model = new MessageViewModel();
-			model.employeeList = new List<Employee>();
-			model.messageSenderList = new List<Message>();
-			model.messageRecieverList = new List<Message>();
+			    List<Employee> employeeList = db.Employee.ToList();
+			    List<Message> listSender = new List<Message>();
+			    List<Message> listReciever = new List<Message>();
 
-
-			List<Employee> employeeList = db.Employee.ToList();
-			List<Message> listSender = new List<Message>();
-			List<Message> listReciever = new List<Message>();
-
-            listSender = db.Message.Where(x => x.sender_id == sender_id).ToList();
+                listSender = db.Message.Where(x => x.sender_id == sender_id).ToList();
             
-            listReciever = db.Message.Where(x => x.reciever_id == sender_id).ToList();
+                listReciever = db.Message.Where(x => x.reciever_id == sender_id).ToList();
             
 
-            model.messageSenderList = listSender;
-			model.messageRecieverList = listReciever;
-			model.employeeList = employeeList;
+                model.messageSenderList = listSender;
+			    model.messageRecieverList = listReciever;
+			    model.employeeList = employeeList;
 
 
-			DateTime timestamp = DateTime.Now;
-			Message message = new Message(sender_id, reciever_id, timestamp.ToString("dd/MM/yyyy HH:mm"), content);
-			db.Message.Add(message);
-			db.SaveChanges();
-			return View(model);
-		}
+			    DateTime timestamp = DateTime.Now;
+			    Message message = new Message(sender_id, reciever_id, timestamp.ToString("dd/MM/yyyy HH:mm"), content);
+			    db.Message.Add(message);
+			    db.SaveChanges();
+			    return View(model);
+            }
+			else { 
+                return RedirectToAction("../Login/Index");
+            }
+        }
 
     }
 }
