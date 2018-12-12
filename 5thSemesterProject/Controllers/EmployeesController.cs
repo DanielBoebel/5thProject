@@ -26,7 +26,7 @@ namespace _5thSemesterProject.Controllers
                 ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
 
                 var employee = db.Employee.Include(e => e.Position);
-                return View(employee.ToList());
+                return View(employee.OrderBy(o => o.lastname).ToList());
             }
             else
             {
