@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
+using System.Windows.Forms;
 using _5thSemesterProject.Models;
 
 namespace _5thSemesterProject.Controllers
@@ -17,39 +14,48 @@ namespace _5thSemesterProject.Controllers
     {
         private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
 
-        
+        public int employeeID = 0;
 
         public ActionResult Index() {
+            if (Session["employeeId"] != null)
+            {
+                var schedule = db.Schedule;
 
-            var schedule = db.Schedule;
+                // To showcase who is logged in
+                int id = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
 
-            
-            return View(schedule.ToList());
+                return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
+            }
+            else
+            {
+                return RedirectToAction("../Home/Index");
+            }
         }
 
-
-
-        // GET: Schedules/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Schedule schedule = db.Schedule.Find(id);
-            if (schedule == null)
-            {
-                return HttpNotFound();
-            }
-            return View(schedule);
-        }
 
         // GET: Schedules/Create
         public ActionResult Create()
         {
-            ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "cpr");
-            ViewBag.shift_id = new SelectList(db.Shift, "shift_id", "name");
-            return View();
+            if (Session["employeeId"] != null)
+            {
+                ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "initials");
+                ViewBag.shift_id = new SelectList(db.Shift, "shift_id", "name");
+
+                // To showcase who is logged in
+                int id = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("../Home/Index");
+            }
         }
 
         // POST: Schedules/Create
@@ -65,7 +71,7 @@ namespace _5thSemesterProject.Controllers
                 return RedirectToAction("CalendarMonth");
             }
 
-            ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "cpr", schedule.employee_id);
+            ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "initials", schedule.employee_id);
             ViewBag.shift_id = new SelectList(db.Shift, "shift_id", "name", schedule.shift_id);
             return View(schedule);
         }
@@ -73,18 +79,31 @@ namespace _5thSemesterProject.Controllers
         // GET: Schedules/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Session["employeeId"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                // To showcase who is logged in
+                int employeeid = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Schedule schedule = db.Schedule.Find(id);
+                if (schedule == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "initials", schedule.employee_id);
+                ViewBag.shift_id = new SelectList(db.Shift, "shift_id", "name", schedule.shift_id);
+                return View(schedule);
             }
-            Schedule schedule = db.Schedule.Find(id);
-            if (schedule == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("../Home/Index");
             }
-            ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "cpr", schedule.employee_id);
-            ViewBag.shift_id = new SelectList(db.Shift, "shift_id", "name", schedule.shift_id);
-            return View(schedule);
         }
 
         // POST: Schedules/Edit/5
@@ -94,30 +113,50 @@ namespace _5thSemesterProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "schedule_id,employee_id,shift_id,date")] Schedule schedule)
         {
-            if (ModelState.IsValid)
+            if (Session["employeeId"] != null)
             {
-                db.Entry(schedule).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(schedule).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "cpr", schedule.employee_id);
+                ViewBag.shift_id = new SelectList(db.Shift, "shift_id", "name", schedule.shift_id);
+                return View(schedule);
             }
-            ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "cpr", schedule.employee_id);
-            ViewBag.shift_id = new SelectList(db.Shift, "shift_id", "name", schedule.shift_id);
-            return View(schedule);
+            else
+            {
+                return RedirectToAction("../Home/Index");
+            }
         }
 
         // GET: Schedules/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (Session["employeeId"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                // To showcase who is logged in
+                int employeeid = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Schedule schedule = db.Schedule.Find(id);
+                if (schedule == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(schedule);
             }
-            Schedule schedule = db.Schedule.Find(id);
-            if (schedule == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("../Home/Index");
             }
-            return View(schedule);
         }
 
         // POST: Schedules/Delete/5
@@ -125,21 +164,38 @@ namespace _5thSemesterProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Schedule schedule = db.Schedule.Find(id);
-            db.Schedule.Remove(schedule);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Session["employeeId"] != null)
+            {
+                Schedule schedule = db.Schedule.Find(id);
+                db.Schedule.Remove(schedule);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("../Home/Index");
+            }
         }
 
         // GET: Schedules for month
         public ActionResult CalendarMonth() {
 
-			int daysOfMonthConver = 0;
+            if (Session["employeeId"] != null)
+            {
+                // To showcase who is logged in
+                int id = Convert.ToInt32(Session["employeeId"]);
+            var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
+            var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
+            ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
+
+            int daysOfMonthConver = 0;
 			int monthConvert = 0;
 			int dateToday = 0;
 			string dateTodayString = "";
 			string monthString = "";
 			int day1 = 0;
+			int employeeId = Convert.ToInt32(Session["employeeId"]);
 
 			DateTime date = DateTime.Today;
 			var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
@@ -201,16 +257,29 @@ namespace _5thSemesterProject.Controllers
 			}
 
 			var schedule = db.Schedule.Where(x => x.date.Substring(3, 2) == month);
-
+			var dates = db.Schedule.Where(x => x.employee_id == employeeId).Select(x => x.date);
 			TempData["showingMonth"] = monthString;
-
+			ViewBag.workingDates = dates;
 			return View(schedule.ToList());
+            }
+            else
+            {
+                return RedirectToAction("../Home/Index");
+            }
         }
 
 		[HttpPost]
 		public ActionResult CalendarMonth(int monthId)
 		{
-			int daysOfMonthConver = 0;
+            if (Session["employeeId"] != null)
+            {
+                // To showcase who is logged in
+                int id = Convert.ToInt32(Session["employeeId"]);
+            var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
+            var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
+            ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
+            int daysOfMonthConver = 0;
 			int monthConvert = 0;
 			string monthString = "";
 			int day1 = 0;
@@ -223,6 +292,7 @@ namespace _5thSemesterProject.Controllers
 			string month = DateTime.Now.AddMonths(monthTemp).ToString("MM");
 
 			var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+
 			var firstDayOfMonthFormatted = new DateTime(date.Year, date.Month, 1).ToString("dd-MM-yyyy");
 			var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1).ToString("dd");
 
@@ -290,16 +360,30 @@ namespace _5thSemesterProject.Controllers
 			var schedule = db.Schedule.Where(x => x.date.Substring(3,2) == month);
 
 			return View(schedule.ToList());
-		}
+            }
+            else
+            {
+                return RedirectToAction("../Home/Index");
+            }
+        }
+
+        
 
         // GET: Schedules for week
         public ActionResult CalendarWeek()
         {
             if (Session["employeeId"] != null)
             {
+                // To showcase who is logged in
+                int id = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
+                employeeID = Convert.ToInt32(Session["employeeId"]);
                 double dayOfYear = DateTime.Now.DayOfYear / 7.0;
                 double weekNum = Math.Ceiling(dayOfYear);
-                ViewBag.weekId = weekNum;
+                ViewBag.weekId = Convert.ToInt32(weekNum);
                 ViewBag.diff = 0;
 
                 // Current dayOfWeek (String format)
@@ -327,8 +411,9 @@ namespace _5thSemesterProject.Controllers
                 ViewBag.sunday = sunday;
 
                 TempData["showingWeek"] = "Uge " + weekNum;
-                var schedule = db.Schedule.Where(x => x.date.Equals(monday) || x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday) || x.date.Equals(friday) || x.date.Equals(saturday) || x.date.Equals(sunday));
-                return View(schedule.ToList());
+                var schedule = db.Schedule.Where(x => x.date.Equals(monday) && x.Employee.employee_id == employeeID || x.date.Equals(tuesday) && x.Employee.employee_id == employeeID || x.date.Equals(wednesday) && x.Employee.employee_id == employeeID || x.date.Equals(thursday) && x.Employee.employee_id == employeeID || x.date.Equals(friday) && x.Employee.employee_id == employeeID || x.date.Equals(saturday) && x.Employee.employee_id == employeeID || x.date.Equals(sunday) && x.Employee.employee_id == employeeID);
+                //var schedule = db.Schedule.Where(x => x.date.Equals(monday)|| x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday)  || x.date.Equals(friday)|| x.date.Equals(saturday) || x.date.Equals(sunday));
+                return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
             }
             else
             {
@@ -337,27 +422,28 @@ namespace _5thSemesterProject.Controllers
         }
 
         [HttpPost]
-        public ActionResult CalendarWeek(int weekId, int diff)
+        public ActionResult CalendarWeek(int? weekId, int? diff)
         {
             if (Session["employeeId"] != null)
             {
+                // To showcase who is logged in
+                int id = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
+                employeeID = Convert.ToInt32(Session["employeeId"]);
                 if (weekId > 52) weekId = 1;
                 if (weekId < 1) weekId = 52;
-                //if (diff == 0)
-                //{
-                //    double dayOfYear = DateTime.Now.AddDays(weekId).DayOfYear / 7;
-                //    double weekNum = Math.Ceiling(dayOfYear);
-                //    weekId = Convert.ToInt32(Math.Ceiling(weekNum));
-                //}
 
                 ViewBag.weekId = weekId;
                 ViewBag.diff = diff;
 
                 // Current dayOfWeek (String format)
-                string dayOfWeek = DateTime.Now.AddDays(7 * diff).DayOfWeek.ToString();
+                string dayOfWeek = DateTime.Now.AddDays(7 * Convert.ToInt32(diff)).DayOfWeek.ToString();
 
                 // Array of dates of current week - Contains the first date of the week on index 0 and last date of the week on index 6
-                string[] dates = getDatesOfWeek(dayOfWeek, 7 * diff);
+                string[] dates = getDatesOfWeek(dayOfWeek, 7 * Convert.ToInt32(diff));
 
                 //double dayOfYear = DateTime.Now.AddDays(weekId).DayOfYear / 7;
                 //double weekNum = Math.Ceiling(dayOfYear);
@@ -381,8 +467,9 @@ namespace _5thSemesterProject.Controllers
                 ViewBag.sunday = sunday;
 
                 TempData["showingWeek"] = "Uge " + weekId;
-                var schedule = db.Schedule.Where(x => x.date.Equals(monday) || x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday) || x.date.Equals(friday) || x.date.Equals(saturday) || x.date.Equals(sunday));
-                return View(schedule.ToList());
+                var schedule = db.Schedule.Where(x => x.date.Equals(monday) && x.Employee.employee_id == employeeID || x.date.Equals(tuesday) && x.Employee.employee_id == employeeID || x.date.Equals(wednesday) && x.Employee.employee_id == employeeID || x.date.Equals(thursday) && x.Employee.employee_id == employeeID || x.date.Equals(friday) && x.Employee.employee_id == employeeID || x.date.Equals(saturday) && x.Employee.employee_id == employeeID || x.date.Equals(sunday) && x.Employee.employee_id == employeeID);
+                //var schedule = db.Schedule.Where(x => x.date.Equals(monday) || x.date.Equals(tuesday) || x.date.Equals(wednesday) || x.date.Equals(thursday) || x.date.Equals(friday) || x.date.Equals(saturday) || x.date.Equals(sunday));
+                return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
 
             }
             else
@@ -426,11 +513,19 @@ namespace _5thSemesterProject.Controllers
         {
             if (Session["employeeId"] != null)
             {
+                // To showcase who is logged in
+                int id = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
+                employeeID = Convert.ToInt32(Session["employeeId"]);
+
                 ViewBag.dayId = 0;
                 string today = DateTime.Now.ToString("dd-MM-yyyy");
                 TempData["showingDate"] = today;
                 var schedule = db.Schedule.Where(x => x.date.Equals(today));
-                return View(schedule.ToList());
+                return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
             }
             else
             {
@@ -443,13 +538,19 @@ namespace _5thSemesterProject.Controllers
 		{
             if (Session["employeeId"] != null)
             {
+                // To showcase who is logged in
+                int id = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
                 int dayTemp = dayId;
 
                 ViewBag.dayId = dayTemp;
                 string day = DateTime.Now.AddDays(dayTemp).ToString("dd-MM-yyyy");
                 TempData["showingDate"] = day;
                 var schedule = db.Schedule.Where(x => x.date.Equals(day));
-                return View(schedule.ToList());
+                return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
             }
             else
             {
@@ -458,17 +559,56 @@ namespace _5thSemesterProject.Controllers
         }
 
         public ActionResult GenerateSchedule() {
+            if (Session["employeeId"] != null)
+            {
+                // To showcase who is logged in
+                int id = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
 
-            return View();
+                ViewData["Year"] = DateTime.Now.Year.ToString();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("../Home/Index");
+            }
         }
 
         [HttpPost]
-        public ActionResult GenerateSchedule(DateTime start_date, DateTime end_date)
+        public ActionResult GenerateSchedule(string Month, int weekdayEmpDay, int weekdayEmpNight, int weekendEmpDay, int weekendEmpNight)
         {
-            Algorithm x = new Algorithm();
-            x.GenerateSchedule(start_date, end_date);
+            if (Session["employeeId"] != null)
+            {
+                // To showcase who is logged in
+                int id = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
 
-            return RedirectToAction("Index");
+                DateTime date = Convert.ToDateTime(Month);
+                DateTime firstDayOfSchedule = new DateTime(date.Year, date.Month, 1);
+                DateTime lastDayOfSchedule = firstDayOfSchedule.AddMonths(1).AddDays(-1);
+
+                DialogResult result = MessageBox.Show("Er du sikker på at du vil oprette en vagtplan fra:\n" + firstDayOfSchedule.DayOfWeek+" "+ firstDayOfSchedule.ToString("dd-MM-yyyy") +" til " + lastDayOfSchedule.DayOfWeek + " " + lastDayOfSchedule.ToString("dd-MM-yyyy"), "Bekræft", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+                if (result == DialogResult.OK)
+                {
+                    Algorithm x = new Algorithm();
+                    x.GenerateSchedule(date, weekdayEmpDay, weekdayEmpNight, weekendEmpDay, weekendEmpNight);
+                }
+                if (result == DialogResult.Cancel)
+                {
+                    MessageBox.Show("Handling afbrudt", "Afbrudt");
+                }
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("../Home/Index");
+            }
         }
 
         protected override void Dispose(bool disposing)

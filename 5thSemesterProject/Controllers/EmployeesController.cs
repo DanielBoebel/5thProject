@@ -17,6 +17,12 @@ namespace _5thSemesterProject.Controllers
         // GET: Employees
         public ActionResult Index()
         {
+            // To showcase who is logged in
+            int id = Convert.ToInt32(Session["employeeId"]);
+            var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
+            var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
+            ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
             var employee = db.Employee.Include(e => e.Position);
             return View(employee.ToList());
         }
@@ -24,6 +30,12 @@ namespace _5thSemesterProject.Controllers
         // GET: Employees/Details/5
         public ActionResult Details(int? id)
         {
+            // To showcase who is logged in
+            int employeeid = Convert.ToInt32(Session["employeeId"]);
+            var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
+            var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
+            ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -39,7 +51,13 @@ namespace _5thSemesterProject.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
-			ViewBag.position_id = new SelectList(db.Position, "position_id", "name");
+            // To showcase who is logged in
+            int employeeid = Convert.ToInt32(Session["employeeId"]);
+            var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
+            var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
+            ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
+            ViewBag.position_id = new SelectList(db.Position, "position_id", "name");
 
             return View();
         }
@@ -66,6 +84,12 @@ namespace _5thSemesterProject.Controllers
         // GET: Employees/Edit/5
         public ActionResult Edit(int? id)
         {
+            // To showcase who is logged in
+            int employeeid = Convert.ToInt32(Session["employeeId"]);
+            var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
+            var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
+            ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -99,6 +123,12 @@ namespace _5thSemesterProject.Controllers
         // GET: Employees/Delete/5
         public ActionResult Delete(int? id)
         {
+            // To showcase who is logged in
+            int employeeid = Convert.ToInt32(Session["employeeId"]);
+            var firstname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.firstname).ToList();
+            var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
+            ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

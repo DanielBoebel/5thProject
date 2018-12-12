@@ -18,9 +18,9 @@
     <div class="card text-center d-flex d-sm-flex justify-content-center justify-content-sm-center" style="background-color: #ffffff;">
         <div class="card-header" style="background-color: #ffffff;">
             <ul class="nav nav-tabs card-header-tabs text-center" style="margin: 0px -4px -12px;">
-                <li class="nav-item"><a class="nav-link active" id="month" style="color: rgb(255,255,255);background-color: rgb(5,158,232);">@Html.ActionLink("Måned", "CalendarMonth")</a></li>
-                <li class="nav-item"><a class="nav-link active" style="color: #059ee8;background-color: #ffffff;">@Html.ActionLink("Uge", "CalendarWeek")</a></li>
-                <li class="nav-item"><a class="nav-link active" id="day" style="color: rgb(255,255,255);background-color: #059ee8;">@Html.ActionLink("Dag", "CalendarDay")</a></li>
+                <li class="nav-item" id="month" style="color: #059ee8;font-size: 20px;background-color: #ffffff;padding:20px">@Html.ActionLink("Måned", "CalendarMonth")</li>
+                <li class="nav-item" id="week" style="color: #059ee8;font-size: 20px;background-color: #ffffff;padding:20px">@Html.ActionLink("Uge", "CalendarWeek")</li>
+                <li class="nav-item" id="day" style="color: #059ee8;font-size: 20px;background-color: #ffffff;padding:20px">@Html.ActionLink("Dag", "CalendarDay")</li>
             </ul>
         </div>
     </div>
@@ -71,9 +71,34 @@
 
 									@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = date - @ViewBag.currentDate }))
 									{
-										<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @date</button>
+
+										if (ViewBag.workingDates != null)
+										{
+											int count = 0;
+											foreach (var item in ViewBag.workingDates)
+											{
+
+												string dateItem = item;
+												if (dateItem.Substring(0,2) == date.ToString() || dateItem.Substring(0, 2) == "0" +date.ToString() )
+												{
+														<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @date</button>
+													count++;
+													break;
+												}
+
+											}
+											if (count == 0)
+											{
+												<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">Den @date</button>
+											}
+											else
+											{
+												count = 1;
+											}
+
+										}
 									}
-								
+
 								</td>
 
 							}
@@ -91,7 +116,31 @@
 							<td>
 								@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
 								{
-									<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+									if (ViewBag.workingDates != null)
+									{
+										int count = 0;
+										foreach (var item in ViewBag.workingDates)
+										{
+
+											string dateItem = item;
+											if (dateItem.Substring(0, 2) == i.ToString() || dateItem.Substring(0, 2) == "0" + i.ToString())
+											{
+												<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+												count++;
+												break;
+											}
+
+										}
+										if (count == 0)
+										{
+											<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">Den @i</button>
+										}
+										else
+										{
+											count = 1;
+										}
+
+									}
 								}
 							</td>
 						}
@@ -103,7 +152,31 @@
 							<td>
 								@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
 								{
-									<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+									if (ViewBag.workingDates != null)
+									{
+										int count = 0;
+										foreach (var item in ViewBag.workingDates)
+										{
+
+											string dateItem = item;
+											if (dateItem.Substring(0, 2) == i.ToString() || dateItem.Substring(0, 2) == "0" + i.ToString())
+											{
+												<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+												count++;
+												break;
+											}
+
+										}
+										if (count == 0)
+										{
+											<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">Den @i</button>
+										}
+										else
+										{
+											count = 1;
+										}
+
+									}
 								}
 							</td>
 						}
@@ -115,7 +188,31 @@
 							<td>
 								@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
 								{
-									<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+									if (ViewBag.workingDates != null)
+									{
+										int count = 0;
+										foreach (var item in ViewBag.workingDates)
+										{
+
+											string dateItem = item;
+											if (dateItem.Substring(0, 2) == i.ToString() || dateItem.Substring(0, 2) == "0" + i.ToString())
+											{
+												<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+												count++;
+												break;
+											}
+
+										}
+										if (count == 0)
+										{
+											<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">Den @i</button>
+										}
+										else
+										{
+											count = 1;
+										}
+
+									}
 								}
 							</td>
 						}
@@ -133,7 +230,31 @@
 								<td>
 									@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
 									{
-										<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+										if (ViewBag.workingDates != null)
+										{
+											int count = 0;
+											foreach (var item in ViewBag.workingDates)
+											{
+
+												string dateItem = item;
+												if (dateItem.Substring(0, 2) == i.ToString() || dateItem.Substring(0, 2) == "0" + i.ToString())
+												{
+													<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+													count++;
+													break;
+												}
+
+											}
+											if (count == 0)
+											{
+												<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">Den @i</button>
+											}
+											else
+											{
+												count = 1;
+											}
+
+										}
 									}
 								</td>
 							}
@@ -153,7 +274,31 @@
 							<td>
 								@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
 								{
-									<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+									if (ViewBag.workingDates != null)
+									{
+										int count = 0;
+										foreach (var item in ViewBag.workingDates)
+										{
+
+											string dateItem = item;
+											if (dateItem.Substring(0, 2) == i.ToString() || dateItem.Substring(0, 2) == "0" + i.ToString())
+											{
+												<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+												count++;
+												break;
+											}
+
+										}
+										if (count == 0)
+										{
+											<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">Den @i</button>
+										}
+										else
+										{
+											count = 1;
+										}
+
+									}
 								}
 							</td>
 						}

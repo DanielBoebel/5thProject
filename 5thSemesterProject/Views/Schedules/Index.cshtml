@@ -1,31 +1,35 @@
 ﻿@model IEnumerable<_5thSemesterProject.Models.Schedule>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Vagter";
 }
 
-<h2>Index</h2>
+<br />
+<h2>Alle vagter</h2>
 
 <p>
-    @Html.ActionLink("Opret ny vagt", "Create") / @Html.ActionLink("Opret ny vagtplan", "GenerateSchedule")
+    @Html.ActionLink("Opret ny vagt (Admin)", "Create") / @Html.ActionLink("Opret ny vagtplan (Admin)", "GenerateSchedule")
 
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.date)
+            Dato
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Employee.initials)
+            Navn
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Shift.name)
+            Initialer
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Shift.start_time)
+            Vagttype
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Shift.end_time)
+            Vagt start
+        </th>
+        <th>
+            Vagt slut
         </th>
         <th></th>
     </tr>
@@ -34,6 +38,9 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Employee.initials)
@@ -48,9 +55,8 @@
             @Html.DisplayFor(modelItem => item.Shift.end_time)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.schedule_id }) |
-            @Html.ActionLink("Details", "Details", new { id = item.schedule_id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.schedule_id })
+            @Html.ActionLink("Rediger", "Edit", new { id = item.schedule_id }) |
+            @Html.ActionLink("Slet", "Delete", new { id = item.schedule_id })
         </td>
     </tr>
 }

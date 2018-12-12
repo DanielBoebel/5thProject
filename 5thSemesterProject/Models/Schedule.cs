@@ -21,5 +21,14 @@ namespace _5thSemesterProject.Models
     
         public virtual Employee Employee { get; set; }
         public virtual Shift Shift { get; set; }
+
+        public Schedule() { }
+
+        public Schedule(int employee_id, int shift_id, string date)
+        {
+            this.employee_id = employee_id;
+            this.shift_id = shift_id;
+            this.date = date;
+        }
     }
 }
