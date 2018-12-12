@@ -32,14 +32,14 @@
         <div class="form-group">
             @Html.LabelFor(model => model.date, "Dato", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control", placeholder="DD-MM-YYYY" }})
+                @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control", placeholder="DD-MM-YYYY", pattern= "(0[1-9]|1[0-9]|2[0-9]|3[01])-(0[1-9]|1[012])-[0-9]{4}" }})
                 @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Opret vagt" class="btn btn-default" />
             </div>
         </div>
     </div>

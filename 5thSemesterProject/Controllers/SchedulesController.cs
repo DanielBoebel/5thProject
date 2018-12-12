@@ -429,12 +429,16 @@ namespace _5thSemesterProject.Controllers
         {
             if (Session["employeeId"] != null)
             {
-                employeeID = Convert.ToInt32(Session["employeeId"]);
+                // To showcase who is logged in
+                int id = Convert.ToInt32(Session["employeeId"]);
+                var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
+                var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
+                ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
 
                 ViewBag.dayId = 0;
                 string today = DateTime.Now.ToString("dd-MM-yyyy");
                 TempData["showingDate"] = today;
-                var schedule = db.Schedule.Where(x => x.date.Equals(today));
+                var schedule = db.Schedule.Where(x => x.date.Equals(today) && x.Employee.employee_id == id);
                 return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
             }
             else
@@ -455,7 +459,7 @@ namespace _5thSemesterProject.Controllers
                 ViewBag.dayId = dayTemp;
                 string day = DateTime.Now.AddDays(dayTemp).ToString("dd-MM-yyyy");
                 TempData["showingDate"] = day;
-                var schedule = db.Schedule.Where(x => x.date.Equals(day));
+                var schedule = db.Schedule.Where(x => x.date.Equals(day) && x.Employee.employee_id == id);
                 return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
             }
             else

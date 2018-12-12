@@ -14,13 +14,12 @@
 }
 
 
-<h2>Edit</h2>
-
 @using (Html.BeginForm("Ændre kodeord", "ChangePassword", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
+        <br />
         <h4>Medarbejder</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
