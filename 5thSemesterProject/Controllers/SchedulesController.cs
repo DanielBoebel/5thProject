@@ -195,6 +195,7 @@ namespace _5thSemesterProject.Controllers
 			string dateTodayString = "";
 			string monthString = "";
 			int day1 = 0;
+			int employeeId = Convert.ToInt32(Session["employeeId"]);
 
 			DateTime date = DateTime.Today;
 			var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
@@ -256,9 +257,9 @@ namespace _5thSemesterProject.Controllers
 			}
 
 			var schedule = db.Schedule.Where(x => x.date.Substring(3, 2) == month);
-
+			var dates = db.Schedule.Where(x => x.employee_id == employeeId).Select(x => x.date);
 			TempData["showingMonth"] = monthString;
-
+			ViewBag.workingDates = dates;
 			return View(schedule.ToList());
             }
             else
@@ -291,6 +292,7 @@ namespace _5thSemesterProject.Controllers
 			string month = DateTime.Now.AddMonths(monthTemp).ToString("MM");
 
 			var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+
 			var firstDayOfMonthFormatted = new DateTime(date.Year, date.Month, 1).ToString("dd-MM-yyyy");
 			var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1).ToString("dd");
 

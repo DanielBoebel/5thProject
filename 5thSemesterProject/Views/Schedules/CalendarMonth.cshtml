@@ -71,9 +71,34 @@
 
 									@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = date - @ViewBag.currentDate }))
 									{
-										<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @date</button>
+
+										if (ViewBag.workingDates != null)
+										{
+											int count = 0;
+											foreach (var item in ViewBag.workingDates)
+											{
+
+												string dateItem = item;
+												if (dateItem.Substring(0,2) == date.ToString() || dateItem.Substring(0, 2) == "0" +date.ToString() )
+												{
+														<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @date</button>
+													count++;
+													break;
+												}
+
+											}
+											if (count == 0)
+											{
+												<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">Den @date</button>
+											}
+											else
+											{
+												count = 1;
+											}
+
+										}
 									}
-								
+
 								</td>
 
 							}
@@ -91,7 +116,31 @@
 							<td>
 								@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
 								{
-									<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+									if (ViewBag.workingDates != null)
+									{
+										int count = 0;
+										foreach (var item in ViewBag.workingDates)
+										{
+
+											string dateItem = item;
+											if (dateItem.Substring(0, 2) == i.ToString() || dateItem.Substring(0, 2) == "0" + i.ToString())
+											{
+												<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+												count++;
+												break;
+											}
+
+										}
+										if (count == 0)
+										{
+											<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">Den @i</button>
+										}
+										else
+										{
+											count = 1;
+										}
+
+									}
 								}
 							</td>
 						}
@@ -103,7 +152,31 @@
 							<td>
 								@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
 								{
-									<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+									if (ViewBag.workingDates != null)
+									{
+										int count = 0;
+										foreach (var item in ViewBag.workingDates)
+										{
+
+											string dateItem = item;
+											if (dateItem.Substring(0, 2) == i.ToString() || dateItem.Substring(0, 2) == "0" + i.ToString())
+											{
+												<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+												count++;
+												break;
+											}
+
+										}
+										if (count == 0)
+										{
+											<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">Den @i</button>
+										}
+										else
+										{
+											count = 1;
+										}
+
+									}
 								}
 							</td>
 						}
@@ -115,7 +188,31 @@
 							<td>
 								@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
 								{
-									<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+									if (ViewBag.workingDates != null)
+									{
+										int count = 0;
+										foreach (var item in ViewBag.workingDates)
+										{
+
+											string dateItem = item;
+											if (dateItem.Substring(0, 2) == i.ToString() || dateItem.Substring(0, 2) == "0" + i.ToString())
+											{
+												<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+												count++;
+												break;
+											}
+
+										}
+										if (count == 0)
+										{
+											<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">Den @i</button>
+										}
+										else
+										{
+											count = 1;
+										}
+
+									}
 								}
 							</td>
 						}
@@ -133,7 +230,31 @@
 								<td>
 									@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
 									{
-										<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+										if (ViewBag.workingDates != null)
+										{
+											int count = 0;
+											foreach (var item in ViewBag.workingDates)
+											{
+
+												string dateItem = item;
+												if (dateItem.Substring(0, 2) == i.ToString() || dateItem.Substring(0, 2) == "0" + i.ToString())
+												{
+													<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+													count++;
+													break;
+												}
+
+											}
+											if (count == 0)
+											{
+												<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">Den @i</button>
+											}
+											else
+											{
+												count = 1;
+											}
+
+										}
 									}
 								</td>
 							}
@@ -153,7 +274,31 @@
 							<td>
 								@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
 								{
-									<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+									if (ViewBag.workingDates != null)
+									{
+										int count = 0;
+										foreach (var item in ViewBag.workingDates)
+										{
+
+											string dateItem = item;
+											if (dateItem.Substring(0, 2) == i.ToString() || dateItem.Substring(0, 2) == "0" + i.ToString())
+											{
+												<button class="btn btn-primary border rounded" type="submit" style="background-color:green">Den @i</button>
+												count++;
+												break;
+											}
+
+										}
+										if (count == 0)
+										{
+											<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">Den @i</button>
+										}
+										else
+										{
+											count = 1;
+										}
+
+									}
 								}
 							</td>
 						}
