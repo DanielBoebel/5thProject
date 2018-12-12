@@ -435,12 +435,6 @@ namespace _5thSemesterProject.Controllers
                 employeeID = Convert.ToInt32(Session["employeeId"]);
                 if (weekId > 52) weekId = 1;
                 if (weekId < 1) weekId = 52;
-                //if (diff == 0)
-                //{
-                //    double dayOfYear = DateTime.Now.AddDays(weekId).DayOfYear / 7;
-                //    double weekNum = Math.Ceiling(dayOfYear);
-                //    weekId = Convert.ToInt32(Math.Ceiling(weekNum));
-                //}
 
                 ViewBag.weekId = weekId;
                 ViewBag.diff = diff;
