@@ -46,7 +46,7 @@ namespace _5thSemesterProject.Controllers
                     }
                 }
 
-                //employeeList.Insert(0, employeeList[employeeList.Count -1]);
+                employeeList.Insert(0, employeeList[employeeList.Count -1]);
 
 			    model.employeeList = employeeList;
 			    model.messageSenderList = messageSenderList;
