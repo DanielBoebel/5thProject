@@ -31,9 +31,22 @@ namespace _5thSemesterProject.Controllers
 
 			    List<Employee> employeeList = db.Employee.ToList();
 			    model.employeeList = employeeList;
+                List<Employee> tempEmployeeList = db.Employee.ToList();
 
-			    List<Message> messageSenderList = db.Message.ToList();
+
+                List<Message> messageSenderList = db.Message.ToList();
 			    List<Message> messageReciverList = db.Message.ToList();
+
+                employeeList.OrderByDescending(x => x.employee_id);
+                foreach (var item in tempEmployeeList)
+                {
+                    if (item.Position.name.Equals("ADMIN"))
+                    {
+                        employeeList.Insert(0, item);
+                    }
+                }
+
+                //employeeList.Insert(0, employeeList[employeeList.Count -1]);
 
 			    model.employeeList = employeeList;
 			    model.messageSenderList = messageSenderList;
