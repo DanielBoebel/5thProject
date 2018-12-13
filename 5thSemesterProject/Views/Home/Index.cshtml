@@ -13,9 +13,6 @@
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-
-
-
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css">
 
 <script>
@@ -114,21 +111,21 @@
 
 
 			<div class="col-sm-6 col-md-6 col-lg-6 item">
-				<div class="box" style="height:335px; ">
+				<div class="box" style="height:335px; overflow: auto;">
 					<table class="table" id="dayTable">
-						<thead>
-							<tr>
-								<th>Beskeder fra Administrator</th>
-							</tr>
-						</thead>
+								<h4>Beskeder fra Administrator</h4>
 						<tbody>
 							@foreach (var item in Model.adminmessageList)
 							{
-								<tr id="dateCell">
-									<td>
-										@Html.DisplayFor(modelItem => item.content) 
-									</td>
-								</tr>
+                            <tr id="dateCell">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.content)
+                                </td>
+                                <td style="column-width: 250px;">
+                                    @Html.DisplayFor(modelItem => item.date)
+                                </td>
+
+                            </tr>
 							}
 						</tbody>
 					</table>

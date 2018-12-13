@@ -11,47 +11,50 @@
         @Html.ActionLink("Opret ny medarbejder (Admin)", "Create")
     </p>
 }
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayName("Fornavn")
-        </th>
-        <th>
-            @Html.DisplayName("Efternavn")
-        </th>
-        <th>
-            @Html.DisplayName("Initialer")
-        </th>
-        <th>
-            @Html.DisplayName("Stilling")
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.firstname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.lastname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.initials)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Position.name)
-        </td>
-        @if (Session["ADMINOBJ"] != null)
-        {
-            <td>
-                @Html.ActionLink("Rediger", "Edit", new { id = item.employee_id }) |
-                @Html.ActionLink("Detajler", "Details", new { id = item.employee_id }) |
-                @Html.ActionLink("Slet", "Delete", new { id = item.employee_id })
-            </td>
-        }
-        </tr>
-    }
+    <div style="height:800px; overflow: auto;">
+        <table class="table" style="height:100%">
+            <tr>
+                <th>
+                    @Html.DisplayName("Fornavn")
+                </th>
+                <th>
+                    @Html.DisplayName("Efternavn")
+                </th>
+                <th>
+                    @Html.DisplayName("Initialer")
+                </th>
+                <th>
+                    @Html.DisplayName("Stilling")
+                </th>
+                <th></th>
+            </tr>
 
-</table>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.firstname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.lastname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.initials)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Position.name)
+                    </td>
+                    @if (Session["ADMINOBJ"] != null)
+                    {
+                        <td>
+                            @Html.ActionLink("Rediger", "Edit", new { id = item.employee_id }) |
+                            @Html.ActionLink("Detajler", "Details", new { id = item.employee_id }) |
+                            @Html.ActionLink("Slet", "Delete", new { id = item.employee_id })
+                        </td>
+                    }
+                </tr>
+            }
+
+        </table>
+    </div>
