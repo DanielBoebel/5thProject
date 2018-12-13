@@ -13,6 +13,7 @@ namespace _5thSemesterProject.Controllers
 		private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
 
 		// GET: Message
+ 
 		public ActionResult Index()
         {
             if (Session["employeeId"] != null)
@@ -31,22 +32,24 @@ namespace _5thSemesterProject.Controllers
 
 			    List<Employee> employeeList = db.Employee.ToList();
 			    model.employeeList = employeeList;
-                List<Employee> tempEmployeeList = db.Employee.ToList();
+                
 
 
                 List<Message> messageSenderList = db.Message.ToList();
 			    List<Message> messageReciverList = db.Message.ToList();
 
                 employeeList.OrderByDescending(x => x.employee_id);
+
+                List<Employee> tempEmployeeList = db.Employee.ToList();
                 foreach (var item in tempEmployeeList)
                 {
-                    if (item.Position.name.Equals("ADMIN"))
+                    if (item.Position.name.Equals("Administrator"))
                     {
                         employeeList.Insert(0, item);
                     }
                 }
 
-                employeeList.Insert(0, employeeList[employeeList.Count -1]);
+                //employeeList.Insert(0, employeeList[employeeList.Count -1]);
 
 			    model.employeeList = employeeList;
 			    model.messageSenderList = messageSenderList;
@@ -102,7 +105,17 @@ namespace _5thSemesterProject.Controllers
                 //allMessages.OrderBy(x => x.message_id);
 
                 List<Employee> employeeList = db.Employee.ToList();
-			    model.employeeList = employeeList;
+
+                List<Employee> tempEmployeeList = db.Employee.ToList();
+                foreach (var item in tempEmployeeList)
+                {
+                    if (item.Position.name.Equals("Administrator"))
+                    {
+                        employeeList.Insert(0, item);
+                    }
+                }
+
+                model.employeeList = employeeList;
 			    model.messageSenderList = sortedMessages;
 			    model.messageRecieverList = listReciever;
 
@@ -153,6 +166,16 @@ namespace _5thSemesterProject.Controllers
 
 			    DateTime timestamp = DateTime.Now;
 			    Message message = new Message(sender_id, reciever_id, timestamp.ToString("dd/MM/yyyy HH:mm"), content);
+
+                var admin_id = db.Employee.Where(x => x.Position.name == "Administrator").Select(o => o.employee_id).ToList();
+
+                if (sender_id.Equals(admin_id[0])) {
+                    foreach (var item in employeeList)
+                    {
+                        Message adminMessage = new Message(sender_id, item.employee_id, timestamp.ToString("dd/MM/yyyy HH:mm"), content);
+                        db.Message.Add(adminMessage);
+                    }
+                }
 			    db.Message.Add(message);
 			    db.SaveChanges();
 			    return View(model);
