@@ -6,11 +6,13 @@
 
 <br />
 <h2>Alle vagter</h2>
+@if (Session["ADMINOBJ"] != null)
+{
+    <p>
+        @Html.ActionLink("Opret ny vagt (Admin)", "Create") / @Html.ActionLink("Opret ny vagtplan (Admin)", "GenerateSchedule")
 
-<p>
-    @Html.ActionLink("Opret ny vagt (Admin)", "Create") / @Html.ActionLink("Opret ny vagtplan (Admin)", "GenerateSchedule")
-
-</p>
+    </p>
+}
 <table class="table">
     <tr>
         <th>
@@ -34,7 +36,8 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.date)
@@ -54,11 +57,14 @@
         <td>
             @Html.DisplayFor(modelItem => item.Shift.end_time)
         </td>
-        <td>
-            @Html.ActionLink("Rediger", "Edit", new { id = item.schedule_id }) |
-            @Html.ActionLink("Slet", "Delete", new { id = item.schedule_id })
-        </td>
-    </tr>
-}
+        @if (Session["ADMINOBJ"] != null)
+        {
+            <td>
+                @Html.ActionLink("Rediger", "Edit", new { id = item.schedule_id }) |
+                @Html.ActionLink("Slet", "Delete", new { id = item.schedule_id })
+            </td>
+        }
+        </tr>
+    }
 
 </table>

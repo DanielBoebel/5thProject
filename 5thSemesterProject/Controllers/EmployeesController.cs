@@ -26,7 +26,7 @@ namespace _5thSemesterProject.Controllers
                 ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
 
                 var employee = db.Employee.Include(e => e.Position);
-                return View(employee.ToList());
+                return View(employee.OrderBy(o => o.lastname).ToList());
             }
             else
             {
@@ -37,7 +37,7 @@ namespace _5thSemesterProject.Controllers
         // GET: Employees/Details/5
         public ActionResult Details(int? id)
         {
-            if (Session["employeeId"] != null)
+            if (Session["employeeId"] != null && Session["ADMINOBJ"] != null)
             {
                 // To showcase who is logged in
                 int employeeid = Convert.ToInt32(Session["employeeId"]);
@@ -65,7 +65,7 @@ namespace _5thSemesterProject.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
-            if (Session["employeeId"] != null)
+            if (Session["employeeId"] != null && Session["ADMINOBJ"] != null)
             {
                 // To showcase who is logged in
                 int employeeid = Convert.ToInt32(Session["employeeId"]);
@@ -105,7 +105,7 @@ namespace _5thSemesterProject.Controllers
         // GET: Employees/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (Session["employeeId"] != null)
+            if (Session["employeeId"] != null && Session["ADMINOBJ"] != null)
             {
                 // To showcase who is logged in
                 int employeeid = Convert.ToInt32(Session["employeeId"]);
@@ -151,7 +151,7 @@ namespace _5thSemesterProject.Controllers
         // GET: Employees/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (Session["employeeId"] != null)
+            if (Session["employeeId"] != null && Session["ADMINOBJ"] != null)
             {
                 // To showcase who is logged in
                 int employeeid = Convert.ToInt32(Session["employeeId"]);
