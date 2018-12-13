@@ -1,4 +1,4 @@
-﻿@model _5thSemesterProject.Models.Employee
+﻿@model _5thSemesterProject.Models.HomepageViewModel
 
 @{
 	ViewBag.Title = "Home Page";
@@ -39,15 +39,8 @@
                     legendText: "{label}",
 
                     dataPoints: [
-                        { y: @ViewBag.firstWeek, label: "Uge 1" },
-                        { y: 25, label: "Uge 2" },
-                        { y: 42, label: "Uge 3" },
-                        { y: 40, label: "Uge 4" },
-
-
-
-
-
+                        { y: @ViewBag.countNight, label: "Aftentimer" },
+                        { y: @ViewBag.countDay, label: "Dagstimer" },                       
                     ]
                 }]
             });
@@ -78,8 +71,8 @@
 							@Html.DisplayName("Navn")
 						</dt>
 						<dd>
-							@Html.DisplayFor(model => model.firstname)
-							@Html.DisplayFor(model => model.lastname)
+							@Html.DisplayFor(model => model.employee.firstname)
+							@Html.DisplayFor(model => model.employee.lastname)
 						</dd>
 
 						<dt>
@@ -87,7 +80,7 @@
 						</dt>
 
 						<dd>
-							@Html.DisplayFor(model => model.initials)
+							@Html.DisplayFor(model => model.employee.initials)
 						</dd>
 
 						<dt>
@@ -95,16 +88,14 @@
 						</dt>
 
 						<dd>
-							@Html.DisplayFor(model => model.Position.name)
+							@Html.DisplayFor(model => model.employee.Position.name)
 						</dd>
 
-						<dt>
-							@Html.DisplayName("Ændre oplysninger")
-						</dt>
-
-						<dd>
-							@Html.ActionLink("Ændre Kodeord", "Edit", "ChangePassword", null, new { @class = "nav-link" })
-							@Html.ActionLink("Ændre Oplysninger", "Edit", "Employees", new { id = Session["employeeId"] }, new { @class = "nav-link" })
+                        <dd>
+                            @Html.ActionLink("Ændre Kodeord", "Edit", "ChangePassword", null, new { @class = "nav-link" })
+                            
+                        </dd>
+                    </dl>
 
 						</dd>
 					</dl>
@@ -124,7 +115,23 @@
 
 			<div class="col-sm-6 col-md-6 col-lg-6 item">
 				<div class="box" style="height:335px; ">
-
+					<table class="table" id="dayTable">
+						<thead>
+							<tr>
+								<th>Beskeder fra Administrator</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model.adminmessageList)
+							{
+								<tr id="dateCell">
+									<td>
+										@Html.DisplayFor(modelItem => item.content) 
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
 
 				</div>
 

@@ -178,6 +178,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Algorithm.cs" />
+    <Compile Include="Models\HomepageViewModel.cs" />
     <Compile Include="Models\CorrectOrder.cs" />
     <Compile Include="Models\Employee.cs">
       <DependentUpon>Model.tt</DependentUpon>
@@ -365,10 +366,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Content\CSS\Login-Form-Clean.css" />
-    <Content Include="Views\Employees\Create.cshtml" />
-    <Content Include="Views\Employees\Delete.cshtml" />
-    <Content Include="Views\Employees\Details.cshtml" />
-    <Content Include="Views\Employees\Edit.cshtml" />
     <Content Include="Views\Employees\Index.cshtml" />
     <Content Include="Views\Log\Index.cshtml" />
     <Content Include="Views\ChangePassword\Edit.cshtml" />
