@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using _5thSemesterProject.Models;
+using PagedList;
 
 namespace _5thSemesterProject.Controllers
 {
@@ -15,7 +16,7 @@ namespace _5thSemesterProject.Controllers
         private DB5thSemesterEntities1 db = new DB5thSemesterEntities1();
         
         // GET: Employees
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             if (Session["employeeId"] != null)
             {
@@ -25,9 +26,93 @@ namespace _5thSemesterProject.Controllers
                 var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
                 ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
 
-                var employee = db.Employee.Include(e => e.Position);
-                return View(employee.OrderBy(o => o.lastname).ToList());
+                //var employee = db.Employee.Include(e => e.Position);
+
+                int myID = 0;
+                ViewBag.CurrentSort = sortOrder;
+                ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
+                ViewBag.FirstNameSortParm = sortOrder == "firstname" ? "firstname_desc" : "firstname";
+                ViewBag.LastNameSortParm = sortOrder == "lastname" ? "lastname_desc" : "lastname";
+                ViewBag.InitialsSortParm = sortOrder == "initials" ? "initials_desc" : "initials";
+                ViewBag.PositionSortParm = sortOrder == "position" ? "position_desc" : "position";
+
+                if (searchString != null)
+                {
+                    page = 1;
+                }
+                else
+                {
+                    searchString = currentFilter;
+                }
+
+                ViewBag.CurrentFilter = searchString;
+
+                var employee = from s in db.Employee.Include(e => e.Position).ToList()
+                           select s;
+
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    try
+                    {
+                        myID = Int32.Parse(searchString);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                    if (myID != 0)
+                    {
+                        employee = employee.Where(s => s.employee_id == myID);
+                    }
+                    else
+                    {
+                        employee = employee.Where(s => s.firstname.ToUpper().Contains(searchString.ToUpper()) || s.lastname.ToUpper().Contains(searchString.ToUpper()) ||
+                        s.initials.ToString().ToUpper().Contains(searchString.ToUpper()) || s.Position.name.ToUpper().Contains(searchString.ToUpper()));
+                    }
+                }
+
+
+
+                switch (sortOrder)
+                {
+                    case "firstname":
+                        employee = employee.OrderBy(s => s.firstname);
+                        break;
+                    case "firstname_desc":
+                        employee = employee.OrderByDescending(s => s.firstname);
+                        break;
+                    case "lastname":
+                        employee = employee.OrderBy(s => s.lastname);
+                        break;
+                    case "lastname_desc":
+                        employee = employee.OrderByDescending(s => s.lastname);
+                        break;
+                    case "initials":
+                        employee = employee.OrderBy(s => s.initials);
+                        break;
+                    case "initials_desc":
+                        employee = employee.OrderByDescending(s => s.initials);
+                        break;
+                    case "position":
+                        employee = employee.OrderBy(s => s.Position.name);
+                        break;
+                    case "position_desc":
+                        employee = employee.OrderByDescending(s => s.Position.name);
+                        break;
+                    default:
+                        employee = employee.OrderByDescending(s => s.employee_id);
+                        break;
+                }
+
+                int pageSize = 25;
+                int pageNumber = (page ?? 1);
+                return View(employee.ToPagedList(pageNumber, pageSize));
             }
+
+
+
+           
+            
             else
             {
                 return RedirectToAction("../Home/Index");
