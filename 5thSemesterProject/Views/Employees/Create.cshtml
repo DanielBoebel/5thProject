@@ -41,7 +41,7 @@
         <div class="form-group">
             @Html.Label("Stilling", "Stilling", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("position_id", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("position_id", null, htmlAttributes: new { @class = "form-control",  required = "" })
                 @Html.ValidationMessageFor(model => model.position_id, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -57,7 +57,7 @@
         <div class="form-group">
             @Html.Label("Kodeord", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", type = "password", id = "password", name = "password", placeholder = "Kodeord" } })
+                @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", type = "password", id = "password", name = "password", placeholder = "Kodeord", required = "" } })
                 @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
             </div>
         </div>
