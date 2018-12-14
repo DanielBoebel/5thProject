@@ -47,7 +47,11 @@ namespace _5thSemesterProject.Controllers
                     {
                         employeeList.Insert(0, item);
                     }
+                    if (item.employee_id.Equals(employeeid)) {
+                        employeeList.Remove(item);
+                    }
                 }
+
 
                 //employeeList.Insert(0, employeeList[employeeList.Count -1]);
 
