@@ -201,8 +201,9 @@ namespace _5thSemesterProject.Controllers
 			    string monthString = "";
 			    int day1 = 0;
 			    int employeeId = Convert.ToInt32(Session["employeeId"]);
+                ViewBag.employeeIdView = employeeId;
 
-			    DateTime date = DateTime.Today;
+                DateTime date = DateTime.Today;
 			    var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
 			    var firstDayOfMonthFormatted = new DateTime(date.Year, date.Month, 1).ToString("dd-MM-yyyy");
 			    var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1).ToString("dd");
@@ -213,7 +214,12 @@ namespace _5thSemesterProject.Controllers
 			    ViewBag.numbOfDaysInMonth = daysOfMonthConver;
 			    dateTodayString = date.ToString("dd");
 
-			    Int32.TryParse(dateTodayString, out dateToday);
+
+                DateTime dateMonths = DateTime.Today;
+                string dateMonthNumb = dateMonths.ToString().Substring(3,2);
+                ViewBag.currentMonthNumb = dateMonthNumb;
+
+                Int32.TryParse(dateTodayString, out dateToday);
 			    ViewBag.currentDate = dateToday;
 
 			    day1 = (int)firstDayOfMonth.DayOfWeek;
@@ -280,6 +286,8 @@ namespace _5thSemesterProject.Controllers
             {
                 // To showcase who is logged in
                 int id = Convert.ToInt32(Session["employeeId"]);
+                ViewBag.employeeIdView = id;
+
                 var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
                 var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
                 ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
@@ -295,6 +303,8 @@ namespace _5thSemesterProject.Controllers
 
 			    //DateTime dateMonth = DateTime.Today.AddMonths(monthTemp);
 			    DateTime date = DateTime.Today.AddMonths(monthTemp);
+                string dateMonthNumb = date.ToString().Substring(3,2);
+                ViewBag.currentMonthNumb = dateMonthNumb;
 			    string month = DateTime.Now.AddMonths(monthTemp).ToString("MM");
 
 			    var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
