@@ -208,6 +208,7 @@ namespace _5thSemesterProject.Controllers
                 {
                     return HttpNotFound();
                 }
+                ViewBag.employee_id = new SelectList(db.Employee, "employee_id", "initials");
                 ViewBag.initials = new SelectList(db.Employee, "initials", "initials", schedule.employee_id);
                 ViewBag.shift_id = new SelectList(db.Shift, "shift_id", "name", schedule.shift_id);
                 return View(schedule);

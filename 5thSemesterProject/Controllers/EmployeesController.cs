@@ -223,14 +223,34 @@ namespace _5thSemesterProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "employee_id,cpr,firstname,lastname,position_id,initials,password")] Employee employee)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(employee).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(employee).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                ViewBag.position_id = new SelectList(db.Position, "position_id", "name", employee.position_id);
+                return View(employee);
             }
-            ViewBag.position_id = new SelectList(db.Position, "position_id", "name", employee.position_id);
-            return View(employee);
+            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+            {
+                Exception raise = dbEx;
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        string message = string.Format("{0}:{1}",
+                            validationErrors.Entry.Entity.ToString(),
+                            validationError.ErrorMessage);
+                        // raise a new exception nesting  
+                        // the current instance as InnerException  
+                        raise = new InvalidOperationException(message, raise);
+                    }
+                }
+                throw raise;
+            }
         }
 
         // GET: Employees/Delete/5
