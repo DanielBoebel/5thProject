@@ -1,51 +1,81 @@
-﻿@model IEnumerable<_5thSemesterProject.Models.Employee>
+﻿@model PagedList.IPagedList<_5thSemesterProject.Models.Employee>
+@using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Alle medarbejdere";
+	ViewBag.Title = "Alle medarbejdere";
 }
 <br />
 <h2>Alle medarbejdere</h2>
-
-<p>
-    @Html.ActionLink("Opret ny medarbejder (Admin)", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayName("Fornavn")
-        </th>
-        <th>
-            @Html.DisplayName("Efternavn")
-        </th>
-        <th>
-            @Html.DisplayName("Initialer")
-        </th>
-        <th>
-            @Html.DisplayName("Stilling")
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.firstname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.lastname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.initials)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Position.name)
-        </td>
-        <td>
-            @Html.ActionLink("Rediger", "Edit", new { id=item.employee_id }) |
-            @Html.ActionLink("Detajler", "Details", new { id=item.employee_id }) |
-            @Html.ActionLink("Slet", "Delete", new { id=item.employee_id })
-        </td>
-    </tr>
+@if (Session["ADMINOBJ"] != null)
+{
+	<p>
+		@Html.ActionLink("Opret ny medarbejder (Admin)", "Create")
+	</p>
 }
 
-</table>
+<form id="floating-panel">
+
+	@using (Html.BeginForm("Index", "Employee", FormMethod.Get, null))
+	{<p>
+
+			Søgefelt: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { id = "searchBar" })
+			<input type="submit" value="Søg" />
+			<button onclick="document.getElementById('searchBar').value = ''">Ryd</button>
+		</p>
+	}
+
+</form>
+
+<div sstyle="overflow: auto;">
+	<table class="table">
+		<tr>
+			<th>
+				@Html.ActionLink("Fornavn", "Index", new { sortOrder = ViewBag.FirstNameSortParm, currentFilter = ViewBag.CurrentFilter })
+
+			</th>
+			<th>
+				@Html.ActionLink("Efternavn", "Index", new { sortOrder = ViewBag.LastNameSortParm, currentFilter = ViewBag.CurrentFilter })
+			</th>
+			<th>
+				@Html.ActionLink("Initialer", "Index", new { sortOrder = ViewBag.InitialsSortParm, currentFilter = ViewBag.CurrentFilter })
+
+			</th>
+			<th>
+				@Html.ActionLink("Stilling", "Index", new { sortOrder = ViewBag.PositionSortParm, currentFilter = ViewBag.CurrentFilter })
+
+			</th>
+			<th></th>
+		</tr>
+
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.firstname)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.lastname)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.initials)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Position.name)
+				</td>
+				@if (Session["ADMINOBJ"] != null)
+				{
+					<td>
+						@Html.ActionLink("Rediger", "Edit", new { id = item.employee_id }) |
+						@Html.ActionLink("Detajler", "Details", new { id = item.employee_id }) |
+						@Html.ActionLink("Slet", "Delete", new { id = item.employee_id })
+					</td>
+				}
+			</tr>
+		}
+
+	</table>
+	Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+	@Html.PagedListPager(Model, page => Url.Action("Index",
+		new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div>

@@ -17,7 +17,7 @@ namespace _5thSemesterProject.Controllers
 		// GET: Log
 		public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            if (Session["employeeId"] != null)
+            if (Session["employeeId"] != null && Session["ADMINOBJ"] != null)
             {
                 // To showcase who is logged in
                 int employeeid = Convert.ToInt32(Session["employeeId"]);

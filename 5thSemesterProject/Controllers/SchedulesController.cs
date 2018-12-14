@@ -6,6 +6,7 @@ using System.Net;
 using System.Web.Mvc;
 using System.Windows.Forms;
 using _5thSemesterProject.Models;
+using PagedList;
 
 namespace _5thSemesterProject.Controllers
 {
@@ -16,7 +17,7 @@ namespace _5thSemesterProject.Controllers
 
         public int employeeID = 0;
 
-        public ActionResult Index() {
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page) {
             if (Session["employeeId"] != null)
             {
                 // To showcase who is logged in
@@ -25,9 +26,93 @@ namespace _5thSemesterProject.Controllers
                 var lastname = db.Employee.Where(x => x.employee_id == employeeid).Select(o => o.lastname).ToList();
                 ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
 
-                var schedule = db.Schedule;
-                return View(schedule.OrderBy(o => o.Employee.lastname).ToList());
+
+                int myID = 0;
+                ViewBag.CurrentSort = sortOrder;
+                ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
+                ViewBag.DateSortParm = sortOrder == "date" ? "date_desc" : "date";
+                ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
+                ViewBag.InitialsSortParm = sortOrder == "initials" ? "initials_desc" : "initials";
+                ViewBag.ShiftTypeSortParm = sortOrder == "shifttype" ? "shifttype_desc" : "shifttype";
+                ViewBag.ShiftStartSortParm = sortOrder == "shiftstart" ? "shiftstart_desc" : "shiftstart";
+                ViewBag.ShiftEndSortParm = sortOrder == "shiftend" ? "shiftend_desc" : "shiftend";
+
+
+
+                //var schedule = db.Schedule;
+                if (searchString != null)
+                {
+                    page = 1;
+                }
+                else
+                {
+                    searchString = currentFilter;
+                }
+
+                ViewBag.CurrentFilter = searchString;
+
+                var schedule = from s in db.Schedule.ToList()
+                               select s;
+
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    try
+                    {
+                        myID = Int32.Parse(searchString);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                    if (myID != 0)
+                    {
+                        schedule = schedule.Where(s => s.schedule_id == myID);
+                    }
+                    else
+                    {
+                        schedule = schedule.Where(s => s.date.ToUpper().Contains(searchString.ToUpper()) || s.Employee.firstname.ToUpper().Contains(searchString.ToUpper()) || s.Employee.lastname.ToUpper().Contains(searchString.ToUpper()) ||
+                        s.Employee.initials.ToString().ToUpper().Contains(searchString.ToUpper()) || s.Shift.name.ToUpper().Contains(searchString.ToUpper()));
+                    }
+                }
+
+
+
+                switch (sortOrder)
+                {
+                    case "date":
+                        schedule = schedule.OrderBy(s => s.date);
+                        break;
+                    case "date_desc":
+                        schedule = schedule.OrderByDescending(s => s.date);
+                        break;
+                    case "name":
+                        schedule = schedule.OrderBy(s => s.Employee.lastname);
+                        break;
+                    case "name_desc":
+                        schedule = schedule.OrderByDescending(s => s.Employee.lastname);
+                        break;
+                    case "initials":
+                        schedule = schedule.OrderBy(s => s.Employee.initials);
+                        break;
+                    case "initials_desc":
+                        schedule = schedule.OrderByDescending(s => s.Employee.initials);
+                        break;
+                    case "shifttype":
+                        schedule = schedule.OrderBy(s => s.Shift.name);
+                        break;
+                    case "shifttype_desc":
+                        schedule = schedule.OrderByDescending(s => s.Shift.name);
+                        break;
+                    default:
+                        schedule = schedule.OrderByDescending(s => s.schedule_id);
+                        break;
+                }
+
+                int pageSize = 25;
+                int pageNumber = (page ?? 1);
+                return View(schedule.ToPagedList(pageNumber, pageSize));
             }
+           
             else
             {
                 return RedirectToAction("../Home/Index");
@@ -154,16 +239,23 @@ namespace _5thSemesterProject.Controllers
         // GET: Schedules/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (Session["employeeId"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Schedule schedule = db.Schedule.Find(id);
+                if (schedule == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(schedule);
             }
-            Schedule schedule = db.Schedule.Find(id);
-            if (schedule == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("../Home/Index");
             }
-            return View(schedule);
         }
 
         // POST: Schedules/Delete/5
@@ -194,8 +286,9 @@ namespace _5thSemesterProject.Controllers
 			    string monthString = "";
 			    int day1 = 0;
 			    int employeeId = Convert.ToInt32(Session["employeeId"]);
+                ViewBag.employeeIdView = employeeId;
 
-			    DateTime date = DateTime.Today;
+                DateTime date = DateTime.Today;
 			    var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
 			    var firstDayOfMonthFormatted = new DateTime(date.Year, date.Month, 1).ToString("dd-MM-yyyy");
 			    var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1).ToString("dd");
@@ -206,7 +299,12 @@ namespace _5thSemesterProject.Controllers
 			    ViewBag.numbOfDaysInMonth = daysOfMonthConver;
 			    dateTodayString = date.ToString("dd");
 
-			    Int32.TryParse(dateTodayString, out dateToday);
+
+                DateTime dateMonths = DateTime.Today;
+                string dateMonthNumb = dateMonths.ToString().Substring(3,2);
+                ViewBag.currentMonthNumb = dateMonthNumb;
+
+                Int32.TryParse(dateTodayString, out dateToday);
 			    ViewBag.currentDate = dateToday;
 
 			    day1 = (int)firstDayOfMonth.DayOfWeek;
@@ -273,6 +371,8 @@ namespace _5thSemesterProject.Controllers
             {
                 // To showcase who is logged in
                 int id = Convert.ToInt32(Session["employeeId"]);
+                ViewBag.employeeIdView = id;
+
                 var firstname = db.Employee.Where(x => x.employee_id == id).Select(o => o.firstname).ToList();
                 var lastname = db.Employee.Where(x => x.employee_id == id).Select(o => o.lastname).ToList();
                 ViewBag.employeeLoggedIn = firstname[0] + " " + lastname[0];
@@ -288,6 +388,8 @@ namespace _5thSemesterProject.Controllers
 
 			    //DateTime dateMonth = DateTime.Today.AddMonths(monthTemp);
 			    DateTime date = DateTime.Today.AddMonths(monthTemp);
+                string dateMonthNumb = date.ToString().Substring(3,2);
+                ViewBag.currentMonthNumb = dateMonthNumb;
 			    string month = DateTime.Now.AddMonths(monthTemp).ToString("MM");
 
 			    var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
@@ -552,7 +654,7 @@ namespace _5thSemesterProject.Controllers
         }
 
         public ActionResult GenerateSchedule() {
-            if (Session["employeeId"] != null)
+            if (Session["employeeId"] != null && Session["ADMINOBJ"] != null)
             {
                 // To showcase who is logged in
                 int id = Convert.ToInt32(Session["employeeId"]);
@@ -572,7 +674,7 @@ namespace _5thSemesterProject.Controllers
         [HttpPost]
         public ActionResult GenerateSchedule(string Month, int weekdayEmpDay, int weekdayEmpNight, int weekendEmpDay, int weekendEmpNight)
         {
-            if (Session["employeeId"] != null)
+            if (Session["employeeId"] != null && Session["ADMINOBJ"] != null)
             {
                 DateTime date = Convert.ToDateTime(Month);
                 DateTime firstDayOfSchedule = new DateTime(date.Year, date.Month, 1);

@@ -1,64 +1,90 @@
-﻿@model IEnumerable<_5thSemesterProject.Models.Schedule>
-
+﻿@model PagedList.IPagedList<_5thSemesterProject.Models.Schedule>
+@using PagedList.Mvc;
 @{
-    ViewBag.Title = "Vagter";
+	ViewBag.Title = "Vagter";
 }
 
 <br />
 <h2>Alle vagter</h2>
+@if (Session["ADMINOBJ"] != null)
+{
+	<p>
+		@Html.ActionLink("Opret ny vagt (Admin)", "Create") / @Html.ActionLink("Opret ny vagtplan (Admin)", "GenerateSchedule")
 
-<p>
-    @Html.ActionLink("Opret ny vagt (Admin)", "Create") / @Html.ActionLink("Opret ny vagtplan (Admin)", "GenerateSchedule")
-
-</p>
-<table class="table">
-    <tr>
-        <th>
-            Dato
-        </th>
-        <th>
-            Navn
-        </th>
-        <th>
-            Initialer
-        </th>
-        <th>
-            Vagttype
-        </th>
-        <th>
-            Vagt start
-        </th>
-        <th>
-            Vagt slut
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Employee.initials)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Shift.name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Shift.start_time)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Shift.end_time)
-        </td>
-        <td>
-            @Html.ActionLink("Rediger", "Edit", new { id = item.schedule_id }) |
-            @Html.ActionLink("Slet", "Delete", new { id = item.schedule_id })
-        </td>
-    </tr>
+	</p>
 }
+<form id="floating-panel">
+
+	@using (Html.BeginForm("Index", "Schedules", FormMethod.Get, null))
+	{<p>
+
+			Søgefelt: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { id = "searchBar" })
+			<input type="submit" value="Søg" />
+			<button onclick="document.getElementById('searchBar').value = ''">Ryd</button>
+		</p>
+	}
+
+</form>
+<table class="table">
+	<tr>
+		<th>
+
+			@Html.ActionLink("Dato", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+		</th>
+		<th>
+			@Html.ActionLink("Navn", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+		</th>
+		<th>
+			@Html.ActionLink("Initialer", "Index", new { sortOrder = ViewBag.InitialsSortParm, currentFilter = ViewBag.CurrentFilter })
+		</th>
+		<th>
+			@Html.ActionLink("Vagttype", "Index", new { sortOrder = ViewBag.ShiftTypeSortParm, currentFilter = ViewBag.CurrentFilter })
+		</th>
+		<th>
+			@*@Html.ActionLink("Vagt Start", "Index", new { sortOrder = ViewBag.ShiftStartSortParm, currentFilter = ViewBag.CurrentFilter })*@
+            Vagt start
+		</th>
+		<th>
+			@*@Html.ActionLink("Vagt Slut", "Index", new { sortOrder = ViewBag.ShiftEndSortParm, currentFilter = ViewBag.CurrentFilter })*@
+            Vagt slut
+		</th>
+		<th></th>
+	</tr>
+
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.date)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Employee.firstname) @Html.DisplayFor(modelItem => item.Employee.lastname)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Employee.initials)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Shift.name)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Shift.start_time)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Shift.end_time)
+			</td>
+			@if (Session["ADMINOBJ"] != null)
+			{
+				<td>
+					@Html.ActionLink("Rediger", "Edit", new { id = item.schedule_id }) |
+					@Html.ActionLink("Slet", "Delete", new { id = item.schedule_id })
+				</td>
+			}
+		</tr>
+	}
 
 </table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+	new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

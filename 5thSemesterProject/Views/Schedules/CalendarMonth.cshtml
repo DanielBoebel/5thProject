@@ -67,44 +67,54 @@
 							{
 								int date = i - @ViewBag.startDate + 1;
 								
-								<td>
+                        <td>
 
-									@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = date - @ViewBag.currentDate }))
-									{
+                            @using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = date - @ViewBag.currentDate }))
+                            {
 
-										if (ViewBag.workingDates != null)
-										{
-											int count = 0;
-											foreach (var item in ViewBag.workingDates)
-											{
+                                if (ViewBag.workingDates != null)
+                                {
+                                    int count = 0;
+                                    foreach (var item in ViewBag.workingDates)
+                                    {
+                                        string dateItem = item;
+                                        if (dateItem.Substring(0, 5) == date.ToString() + "-" + ViewBag.currentMonthNumb || dateItem.Substring(0, 5) == "0" + date.ToString() + "-" + ViewBag.currentMonthNumb)
+                                        {
+                                            foreach (var d in Model)
+                                            {
+                                                if (d.Shift.name.Contains("Aften") && d.date.Equals(dateItem) && d.employee_id == ViewBag.employeeIdView)
+                                                {
+                                                    <button class="btn btn-primary border rounded" type="submit" style="background-color:#6D78AD">@date.</button>
+                                                    count++;
+                                                    break;
+                                                }
+                                                if (d.Shift.name.Contains("Dag") && d.date.Equals(dateItem) && d.employee_id == ViewBag.employeeIdView)
+                                                {
+                                                    <button class="btn btn-primary border rounded" type="submit" style="background-color:#51CDA0">@date.</button>
+                                                    count++;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (count == 0)
+                                    {
+                                        <button class="btn btn-primary border rounded" type="submit" style="background-color:grey">@date.</button>
+                                    }
+                                    else
+                                    {
+                                        count = 1;
+                                    }
 
-												string dateItem = item;
-												if (dateItem.Substring(0,2) == date.ToString() || dateItem.Substring(0, 2) == "0" +date.ToString() )
-												{
-														<button class="btn btn-primary border rounded" type="submit" style="background-color:green">@date.</button>
-													count++;
-													break;
-												}
+                                }
+                            }
 
-											}
-											if (count == 0)
-											{
-												<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">@date.</button>
-											}
-											else
-											{
-												count = 1;
-											}
-
-										}
-									}
-
-								</td>
+                        </td>
 
 							}
 							else
 							{
-								<td>////</td>
+                        <td>    </td>
 							}
 
 						}
@@ -113,113 +123,149 @@
 						<td>2</td>
 						@for (int i = 8 - @ViewBag.Startdate + 1; i <= 14 - @ViewBag.Startdate + 1; i++)
 						{
-							<td>
-								@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
-								{
-									if (ViewBag.workingDates != null)
-									{
-										int count = 0;
-										foreach (var item in ViewBag.workingDates)
-										{
+                        <td>
+                            @using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
+                            {
+                                if (ViewBag.workingDates != null)
+                                {
+                                    int count = 0;
+                                    foreach (var item in ViewBag.workingDates)
+                                    {
 
-											string dateItem = item;
-											if (dateItem.Substring(0, 2) == i.ToString() || dateItem.Substring(0, 2) == "0" + i.ToString())
-											{
-												<button class="btn btn-primary border rounded" type="submit" style="background-color:green">@i.</button>
-												count++;
-												break;
-											}
+                                        string dateItem = item;
+                                        if (dateItem.Substring(0, 5) == i.ToString() + "-" + ViewBag.currentMonthNumb || dateItem.Substring(0, 5) == "0" + i.ToString() + "-" + ViewBag.currentMonthNumb)
+                                        {
+                                            foreach (var d in Model)
+                                            {
+                                                if (d.Shift.name.Contains("Aften") && d.date.Equals(dateItem) && d.employee_id == ViewBag.employeeIdView)
+                                                {
+                                                    <button class="btn btn-primary border rounded" type="submit" style="background-color:#6D78AD">@i.</button>
+                                                    count++;
+                                                    break;
+                                                }
+                                                if (d.Shift.name.Contains("Dag") && d.date.Equals(dateItem) && d.employee_id == ViewBag.employeeIdView)
+                                                {
+                                                    <button class="btn btn-primary border rounded" type="submit" style="background-color:#51CDA0">@i.</button>
+                                                    count++;
+                                                    break;
+                                                }
+                                            }
+                                        }
 
-										}
-										if (count == 0)
-										{
-											<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">@i.</button>
-										}
-										else
-										{
-											count = 1;
-										}
+                                    }
+                                    if (count == 0)
+                                    {
+                                        <button class="btn btn-primary border rounded" type="submit" style="background-color:grey">@i.</button>
+                                    }
+                                    else
+                                    {
+                                        count = 1;
+                                    }
 
-									}
-									else
-									{
-										<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">@i.</button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-primary border rounded" type="submit" style="background-color:grey">@i.</button>
 
-									}
-								}
-							</td>
+                                }
+                            }
+                        </td>
 						}
 					</tr>
 					<tr>
 						<td>3</td>
 						@for (int i = 15 - @ViewBag.Startdate + 1; i <= 21 - @ViewBag.Startdate + 1; i++)
 						{
-							<td>
-								@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
-								{
-									if (ViewBag.workingDates != null)
-									{
-										int count = 0;
-										foreach (var item in ViewBag.workingDates)
-										{
+                        <td>
+                            @using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
+                            {
+                                if (ViewBag.workingDates != null)
+                                {
+                                    int count = 0;
+                                    foreach (var item in ViewBag.workingDates)
+                                    {
 
-											string dateItem = item;
-											if (dateItem.Substring(0, 2) == i.ToString() || dateItem.Substring(0, 2) == "0" + i.ToString())
-											{
-												<button class="btn btn-primary border rounded" type="submit" style="background-color:green">@i.</button>
-												count++;
-												break;
-											}
+                                        string dateItem = item;
+                                        if (dateItem.Substring(0, 5) == i.ToString() + "-" + ViewBag.currentMonthNumb || dateItem.Substring(0, 5) == "0" + i.ToString() + "-" + ViewBag.currentMonthNumb)
+                                        {
+                                            foreach (var d in Model)
+                                            {
+                                                if (d.Shift.name.Contains("Aften") && d.date.Equals(dateItem) && d.employee_id == ViewBag.employeeIdView)
+                                                {
+                                                    <button class="btn btn-primary border rounded" type="submit" style="background-color:#6D78AD">@i.</button>
+                                                        count++;
+                                                        break;
+                                                    }
+                                                    if (d.Shift.name.Contains("Dag") && d.date.Equals(dateItem) && d.employee_id == ViewBag.employeeIdView)
+                                                {
+                                                    <button class="btn btn-primary border rounded" type="submit" style="background-color:#51CDA0">@i.</button>
+                                                    count++;
+                                                    break;
+                                                }
+                                            }
+                                        }
 
-										}
-										if (count == 0)
-										{
-											<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">@i.</button>
-										}
-										else
-										{
-											count = 1;
-										}
+                                    }
+                                    if (count == 0)
+                                    {
+                                        <button class="btn btn-primary border rounded" type="submit" style="background-color:grey">@i.</button>
+                                    }
+                                    else
+                                    {
+                                        count = 1;
+                                    }
 
-									}
-								}
-							</td>
+                                }
+                            }
+                        </td>
 						}
 					</tr>
 					<tr>
 						<td>4</td>
 						@for (int i = 22 - @ViewBag.Startdate + 1; i <= 28 - @ViewBag.Startdate + 1; i++)
 						{
-							<td>
-								@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
-								{
-									if (ViewBag.workingDates != null)
-									{
-										int count = 0;
-										foreach (var item in ViewBag.workingDates)
-										{
+                        <td>
+                            @using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
+                            {
+                                if (ViewBag.workingDates != null)
+                                {
+                                    int count = 0;
+                                    foreach (var item in ViewBag.workingDates)
+                                    {
 
-											string dateItem = item;
-											if (dateItem.Substring(0, 2) == i.ToString() || dateItem.Substring(0, 2) == "0" + i.ToString())
-											{
-												<button class="btn btn-primary border rounded" type="submit" style="background-color:green">@i.</button>
-												count++;
-												break;
-											}
+                                        string dateItem = item;
+                                        if (dateItem.Substring(0, 5) == i.ToString() + "-" + ViewBag.currentMonthNumb || dateItem.Substring(0, 5) == "0" + i.ToString() + "-" + ViewBag.currentMonthNumb)
+                                        {
+                                            foreach (var d in Model)
+                                            {
+                                                if (d.Shift.name.Contains("Aften") && d.date.Equals(dateItem) && d.employee_id == ViewBag.employeeIdView)
+                                                {
+                                                    <button class="btn btn-primary border rounded" type="submit" style="background-color:#6D78AD">@i.</button>
+                                                    count++;
+                                                    break;
+                                                }
+                                                if (d.Shift.name.Contains("Dag") && d.date.Equals(dateItem) && d.employee_id == ViewBag.employeeIdView)
+                                                {
+                                                    <button class="btn btn-primary border rounded" type="submit" style="background-color:#51CDA0">@i.</button>
+                                                    count++;
+                                                    break;
+                                                }
+                                            }
+                                        }
 
-										}
-										if (count == 0)
-										{
-											<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">@i.</button>
-										}
-										else
-										{
-											count = 1;
-										}
+                                    }
+                                    if (count == 0)
+                                    {
+                                        <button class="btn btn-primary border rounded" type="submit" style="background-color:grey">@i.</button>
+                                    }
+                                    else
+                                    {
+                                        count = 1;
+                                    }
 
-									}
-								}
-							</td>
+                                }
+                            }
+                        </td>
 						}
 					</tr>
 					<tr>
@@ -232,36 +278,48 @@
 							}
 							else
 							{
-								<td>
-									@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
-									{
-										if (ViewBag.workingDates != null)
-										{
-											int count = 0;
-											foreach (var item in ViewBag.workingDates)
-											{
+                        <td>
+                            @using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
+                            {
+                                if (ViewBag.workingDates != null)
+                                {
+                                    int count = 0;
+                                    foreach (var item in ViewBag.workingDates)
+                                    {
 
-												string dateItem = item;
-												if (dateItem.Substring(0, 2) == i.ToString() || dateItem.Substring(0, 2) == "0" + i.ToString())
-												{
-													<button class="btn btn-primary border rounded" type="submit" style="background-color:green">@i.</button>
-													count++;
-													break;
-												}
+                                        string dateItem = item;
+                                        if (dateItem.Substring(0, 5) == i.ToString() + "-" + ViewBag.currentMonthNumb || dateItem.Substring(0, 5) == "0" + i.ToString() + "-" + ViewBag.currentMonthNumb)
+                                        {
+                                            foreach (var d in Model)
+                                            {
+                                                if (d.Shift.name.Contains("Aften") && d.date.Equals(dateItem) && d.employee_id == ViewBag.employeeIdView)
+                                                {
+                                                    <button class="btn btn-primary border rounded" type="submit" style="background-color:#6D78AD">@i.</button>
+                                                    count++;
+                                                    break;
+                                                }
+                                                if (d.Shift.name.Contains("Dag") && d.date.Equals(dateItem) && d.employee_id == ViewBag.employeeIdView)
+                                                {
+                                                    <button class="btn btn-primary border rounded" type="submit" style="background-color:#51CDA0">@i.</button>
+                                                    count++;
+                                                    break;
+                                                }
+                                            }
+                                        }
 
-											}
-											if (count == 0)
-											{
-												<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">@i.</button>
-											}
-											else
-											{
-												count = 1;
-											}
+                                    }
+                                    if (count == 0)
+                                    {
+                                        <button class="btn btn-primary border rounded" type="submit" style="background-color:grey">@i.</button>
+                                    }
+                                    else
+                                    {
+                                        count = 1;
+                                    }
 
-										}
-									}
-								</td>
+                                }
+                            }
+                        </td>
 							}
 
 						}
@@ -276,36 +334,48 @@
 						}
 						else
 						{
-							<td>
-								@using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
-								{
-									if (ViewBag.workingDates != null)
-									{
-										int count = 0;
-										foreach (var item in ViewBag.workingDates)
-										{
+                        <td>
+                            @using (Html.BeginForm("CalendarDay", "Schedules", new { dayId = i - @ViewBag.currentDate }))
+                            {
+                                if (ViewBag.workingDates != null)
+                                {
+                                    int count = 0;
+                                    foreach (var item in ViewBag.workingDates)
+                                    {
 
-											string dateItem = item;
-											if (dateItem.Substring(0, 2) == i.ToString() || dateItem.Substring(0, 2) == "0" + i.ToString())
-											{
-												<button class="btn btn-primary border rounded" type="submit" style="background-color:green">@i.</button>
-												count++;
-												break;
-											}
+                                        string dateItem = item;
+                                        if (dateItem.Substring(0, 5) == i.ToString() + "-" + ViewBag.currentMonthNumb || dateItem.Substring(0, 5) == "0" + i.ToString() + "-" + ViewBag.currentMonthNumb)
+                                        {
+                                            foreach (var d in Model)
+                                            {
+                                                if (d.Shift.name.Contains("Aften") && d.date.Equals(dateItem) && d.employee_id == ViewBag.employeeIdView)
+                                                {
+                                                    <button class="btn btn-primary border rounded" type="submit" style="background-color:#6D78AD">@i.</button>
+                                                    count++;
+                                                    break;
+                                                }
+                                                if (d.Shift.name.Contains("Dag") && d.date.Equals(dateItem) && d.employee_id == ViewBag.employeeIdView)
+                                                {
+                                                    <button class="btn btn-primary border rounded" type="submit" style="background-color:#51CDA0">@i.</button>
+                                                    count++;
+                                                    break;
+                                                }
+                                            }
+                                        }
 
-										}
-										if (count == 0)
-										{
-											<button class="btn btn-primary border rounded" type="submit" style="background-color:grey">@i.</button>
-										}
-										else
-										{
-											count = 1;
-										}
+                                    }
+                                    if (count == 0)
+                                    {
+                                        <button class="btn btn-primary border rounded" type="submit" style="background-color:grey">@i.</button>
+                                    }
+                                    else
+                                    {
+                                        count = 1;
+                                    }
 
-									}
-								}
-							</td>
+                                }
+                            }
+                        </td>
 						}
 
 					}
