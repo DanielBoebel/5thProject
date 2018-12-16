@@ -348,6 +348,10 @@
     <Content Include="Views\Message\_MessageContent.cshtml" />
     <Content Include="Views\Login\ForgotPassword.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Employees\Create.cshtml" />
+    <Content Include="Views\Employees\Delete.cshtml" />
+    <Content Include="Views\Employees\Details.cshtml" />
+    <Content Include="Views\Employees\Edit.cshtml" />
     <None Include="Views\Schedules\CalendarDay.cshtml" />
     <Content Include="Views\Schedules\CalendarMonth.cshtml" />
     <None Include="Views\Schedules\CalendarWeek.cshtml" />

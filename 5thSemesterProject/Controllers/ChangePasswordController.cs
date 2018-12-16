@@ -64,7 +64,7 @@ namespace _5thSemesterProject.Controllers
                             //string action = "changed password";
                             //logAction(action);
 
-                            return View(employee);
+                            return RedirectToAction("../Home/Index");
                         }
                         else
                         {
