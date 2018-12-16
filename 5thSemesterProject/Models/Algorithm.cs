@@ -131,7 +131,7 @@ namespace _5thSemesterProject.Models
 
         }
 
-
+        // Returns a list of all dates of selected month
         public List<DateTime> GetDatesOfSchedule(DateTime startDate)
         {
             List<DateTime> dates = new List<DateTime>();
@@ -217,24 +217,24 @@ namespace _5thSemesterProject.Models
             int tempPoint = eligibleEmployees[0].points; // lowest value
             double tempHours = eligibleEmployees[0].totalHours; // lowest value
             // Populate eligebles with employees
-            foreach (var item in eligibleEmployees)
+            foreach (var employee in eligibleEmployees)
             {
-                if (item.numberOfNightShifts < maxNumberOfNightShift || shiftType.Equals("Day"))
+                if (employee.numberOfNightShifts < maxNumberOfNightShift || shiftType.Equals("Day"))
                 {
-                    if (item.points == tempPoint)
+                    if (employee.points == tempPoint)
                     {
-                        if (item.totalHours <= tempHours)
+                        if (employee.totalHours <= tempHours)
                         {
-                            eligebles.Add(item);
+                            eligebles.Add(employee);
                         }
                     }
                     else
                     {
                         if (eligebles.Count < numberOfEmployees)
                         {
-                            eligebles.Add(item);
-                            tempPoint = item.points;
-                            tempHours = item.totalHours;
+                            eligebles.Add(employee);
+                            tempPoint = employee.points;
+                            tempHours = employee.totalHours;
                         }
                         else
                         {
@@ -334,40 +334,35 @@ namespace _5thSemesterProject.Models
             }
         }
 
-        // Converst start and end time to a double
+        // Converts start time and end time (strings) to a total time (double)
         public double GetHoursOfShift(string start, string end)
         {            
             double startTime = Convert.ToDouble(start) / 100;
             double endTime = Convert.ToDouble(end) / 100;
-
             double time = 0.0;
 
-            // night shift
-            if (startTime > endTime)
+            if (startTime > endTime) // night shift
             {
                 time = 24 - (startTime - endTime);
-            } else if (startTime < endTime)
+            } else if (startTime < endTime) // day shift
             {
                 time = endTime - startTime;
-            } else
+            } else // just in case
             {
                 time = 24;
             }
-
             return time;
-        }
+        } 
 
 
         // Remove selected employee (for night shift) from eligible employees
         public void RemoveNightShiftFromEligible(List<Employee> nighShifts, List<Employee> eligible) {
-
             List<Employee> tempList = new List<Employee>(eligible);
             foreach (var item in tempList)
             {
                 if (nighShifts.Find(e => e.employee_id == item.employee_id) != null) {
                     eligible.Remove(item);    
                 } 
-
             }
         }
 
